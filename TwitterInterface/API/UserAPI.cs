@@ -65,5 +65,35 @@ namespace TwitterInterface.API
         //POST friendships/destroy
         User DestroyFriendship(Account account, long userId);
         User DestroyFriendship(Account account, string screenName);
+
+        //GET blocks/ids
+        CursoredList<long> GetBlockIds(Account account, long cursor = -1);
+        //GET blocks/list
+        CursoredList<User> GetBlockList(Account account, long cursor = -1, bool includeUserEntities = false, bool skipStatus = true);
+
+        //GET mutes/users/ids
+        CursoredList<long> GetMuteIds(Account account, long cursor = -1);
+        //GET mutes/users/list
+        CursoredList<User> GetMuteIds(Account account, long cursor = -1, bool includeUserEntities = false, bool skipStatus = true);
+
+        //POST blocks/create
+        User Block(Account account, long userId, bool includeUserEntities = false, bool skipStatus = true);
+        User Block(Account account, string screenName, bool includeUserEntities = false, bool skipStatus = true);
+
+        //POST blocks/destroy
+        User Unblock(Account account, long userId, bool includeUserEntities = false, bool skipStatus = true);
+        User Unblock(Account account, string screenName, bool includeUserEntities = false, bool skipStatus = true);
+
+        //POST mutes/users/create
+        User Mute(Account account, long userId);
+        User Mute(Account account, string screenName);
+
+        //POST mutes/users/create
+        User Unmute(Account account, long userId);
+        User Unmute(Account account, string screenName);
+
+        //POST users/report_spam
+        User ReportSpam(Account account, long userId, bool performBlock = true);
+        User ReportSpam(Account account, string screenName, bool performBlock = true);
     }
 }
