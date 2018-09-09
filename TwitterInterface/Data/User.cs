@@ -7,7 +7,7 @@ namespace TwitterInterface.Data
     /// <summary>
     /// 트위터에 존재하는 유저
     /// </summary>
-    class User
+    public class User
     {
         public long id;
         public string nickName;

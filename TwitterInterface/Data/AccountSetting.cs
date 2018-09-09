@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.Data
 {
-    class AccountSetting
+    public class AccountSetting
     {
         public class SleepTime
         {

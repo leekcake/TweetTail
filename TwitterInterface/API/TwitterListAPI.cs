@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
-    interface TwitterListAPI
+    public interface TwitterListAPI
     {
         //GET lists/list
         List<TwitterList> GetLists(Account account, string screenName, bool reverse = false);

@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
-    interface AccountAPI
+    public interface AccountAPI
     {
         //GET account/settings
         AccountSetting GetAccountSetting(Account account);

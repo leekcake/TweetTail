@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.Data
 {
-    class StatusUpdate
+    public class StatusUpdate
     {
         string text;
 

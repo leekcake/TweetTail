@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API.Result
 {
-    struct GetEntriesResult
+    public struct GetEntriesResult
     {
         Collection collection;
         List<Status> tweet;

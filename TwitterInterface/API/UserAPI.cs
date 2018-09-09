@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
-    interface UserAPI
+    public interface UserAPI
     {
         //GET followers/ids
         CursoredList<long> GetFollowerIds(Account account, long userId, long cursor = -1, long count = 100);

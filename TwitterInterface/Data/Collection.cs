@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.Data
 {
-    class Collection
+    public class Collection
     {
         public enum Order
         {

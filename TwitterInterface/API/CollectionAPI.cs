@@ -6,7 +6,7 @@ using TwitterInterface.API.Result;
 
 namespace TwitterInterface.API
 {
-    interface CollectionAPI
+    public interface CollectionAPI
     {
         //GET collections/entries
         GetEntriesResult GetEntries(string id, long count, long maxPosition = -1, long minPosition = -1);

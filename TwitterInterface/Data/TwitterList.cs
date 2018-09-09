@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.Data
 {
-    class TwitterList
+    public class TwitterList
     {
         public long id;
 

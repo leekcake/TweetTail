@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API.Result
 {
-    struct FindListResult
+    public struct FindListResult
     {
         List<Collection> collections;
 

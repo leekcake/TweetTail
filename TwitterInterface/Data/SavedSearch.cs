@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.Data
 {
-    class SavedSearch
+    public class SavedSearch
     {
         public long id;
 

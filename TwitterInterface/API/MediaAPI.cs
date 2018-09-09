@@ -6,7 +6,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
-    interface MediaAPI
+    public interface MediaAPI
     {
         //POST media/upload
         long uploadMedia(Account account, Stream image);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.Data
 {
-    class Friendship
+    public class Friendship
     {
         public long id;
 

@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
-    interface StatusAPI
+    public interface StatusAPI
     {
         //GET statuses/home_timeline
         List<Status> GetTimeline(Account account, long count = 200, long sinceId = -1, long maxId = -1);

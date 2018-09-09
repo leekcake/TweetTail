@@ -5,7 +5,7 @@ using TwitterInterface.Data.Entity;
 
 namespace TwitterInterface.Data
 {
-    class Status
+    public class Status
     {
         public long id;
 
