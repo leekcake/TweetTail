@@ -10,7 +10,7 @@ namespace TwitterInterface.API
     {
         //POST oauth/request_token
         //POST oauth/access_token
-        LoginToken GetLoginToken();
+        LoginToken GetLoginToken(Token consumerToken);
 
         //GET account/settings
         AccountSetting GetAccountSetting(Account account);
