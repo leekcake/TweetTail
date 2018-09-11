@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TwitterInterface.Container;
 using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
     public interface AccountAPI
     {
+        //POST oauth/request_token
+        //POST oauth/access_token
+        LoginToken GetLoginToken();
+
         //GET account/settings
         AccountSetting GetAccountSetting(Account account);
         //GET account/verify_credentials
