@@ -13,6 +13,11 @@ namespace TwitterLibrary
 {
     class Utils
     {
+        public static void VerifyTwitterResponse(HttpResponseMessage responseMessage)
+        {
+            //TODO: Verify
+        }
+
         public static readonly Random random = new Random();
 
         public static string HMACSHA1Encode(string input, byte[] key)
@@ -20,59 +25,124 @@ namespace TwitterLibrary
             HMACSHA1 myhmacsha1 = new HMACSHA1(key);
             byte[] byteArray = Encoding.ASCII.GetBytes(input);
             MemoryStream stream = new MemoryStream(byteArray);
-            return myhmacsha1.ComputeHash(stream).Aggregate("", (s, e) => s + String.Format("{0:x2}", e), s => s);
+            return Convert.ToBase64String(myhmacsha1.ComputeHash(stream));
         }
 
-        public static void authorizeHttpRequest(HttpRequestMessage message, Token consumerToken, Token? oauthToken)
+        private static string CreateOAuthTimestamp()
         {
-            var authorization = new Dictionary<string, string>();
 
-            var nonce = new byte[32];
-            random.NextBytes(nonce);
+            var nowUtc = DateTime.UtcNow;
+            var timeSpan = nowUtc - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var timestamp = Convert.ToInt64(timeSpan.TotalSeconds).ToString();
+
+            return timestamp;
+        }
+
+        private static string GenerateNonce()
+        {
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < 8; i++)
+            {
+                int g = random.Next(3);
+                switch (g)
+                {
+                    case 0:
+                        // lowercase alpha
+                        sb.Append((char)(random.Next(26) + 97), 1);
+                        break;
+                    default:
+                        // numeric digits
+                        sb.Append((char)(random.Next(10) + 48), 1);
+                        break;
+                }
+            }
+            return sb.ToString();
+        }
+
+        public static string ToWebString(SortedDictionary<string, string> source)
+        {
+            var body = new StringBuilder();
+
+            foreach (var requestParameter in source)
+            {
+                body.Append(requestParameter.Key);
+                body.Append("=");
+                body.Append(Uri.EscapeDataString(requestParameter.Value));
+                body.Append("&");
+            }
+            if (body.Length != 0)
+            {
+                //remove trailing '&'
+                body.Remove(body.Length - 1, 1);
+            }
+            return body.ToString();
+        }
+
+        /// <summary>
+        /// Generate HttpRequestMessage with authentication
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="uri"></param>
+        /// <param name="query"></param>
+        /// <param name="consumerToken"></param>
+        /// <param name="oauthToken"></param>
+        /// <returns></returns>
+        public static HttpRequestMessage generateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
+        {
+            HttpRequestMessage message = new HttpRequestMessage();
+            message.Method = method;
+            message.RequestUri = uri;
+
+            //Oauth Parameters
+            var authorization = new SortedDictionary<string, string>();
+
+            //Other parameters
+            var queryDict = new SortedDictionary<string, string>();
+
+            //Collect oauth from query
+            foreach(var pair in query)
+            {
+                if(pair.Key.StartsWith("oauth"))
+                {
+                    authorization.Add(pair.Key, pair.Value);
+                }
+                else
+                {
+                    queryDict.Add(pair.Key, pair.Value);
+                }
+            }
+
+            //Generate authorization keys
             authorization.Add("oauth_consumer_key", consumerToken.key);
+            authorization.Add("oauth_nonce", GenerateNonce());
             authorization.Add("oauth_signature_method", "HMAC-SHA1");
-            authorization.Add("oauth_nonce", Convert.ToBase64String(nonce));
-            authorization.Add("oauth_timestamp", DateTime.Now.Second.ToString());
-            authorization.Add("oauth_version", "1.0");
-
+            authorization.Add("oauth_timestamp", CreateOAuthTimestamp());
             if (oauthToken != null)
             {
                 authorization.Add("oauth_token", oauthToken.Value.key);
             }
+            authorization.Add("oauth_version", "1.0");
+
+            //Collect parameters for create signature base
+            var parameters = new SortedDictionary<string, string>();
+            foreach (var pair in authorization)
+            {
+                parameters.Add(pair.Key, pair.Value);
+            }
+            foreach (var pair in queryDict)
+            {
+                parameters.Add(pair.Key, pair.Value);
+            }
+            parameters.OrderBy(pair => pair.Key);
 
             var signatureBase = new StringBuilder();
-
-            signatureBase.Append(message.Method.ToString().ToUpper());
+            signatureBase.Append(method.ToString().ToUpper());
             signatureBase.Append("&");
-            signatureBase.Append(Uri.EscapeDataString(message.RequestUri.ToString()));
+            signatureBase.Append(Uri.EscapeDataString(uri.ToString()));
+            signatureBase.Append("&");
+            signatureBase.Append(Uri.EscapeDataString( ToWebString(parameters) ));
 
-            var headers = new List<KeyValuePair<string, string>>();
-            message.Headers.ToList().ForEach(x =>
-            {
-                headers.Add(new KeyValuePair<string, string>(x.Key, string.Join("\r\n", x.Value)));
-            });
-            var query = HttpUtility.ParseQueryString(message.RequestUri.Query);
-            query.AllKeys.ToList().ForEach(x =>
-            {
-                headers.Add(new KeyValuePair<string, string>(x, query.Get(x)));
-            });
-
-            headers.Sort(
-                delegate (KeyValuePair<string, string> pair1,
-                KeyValuePair<string, string> pair2)
-                {
-                    return pair1.Value.CompareTo(pair2.Value);
-                }
-            );
-
-            headers.ForEach(key =>
-            {
-                signatureBase.Append("&");
-                signatureBase.Append(Uri.EscapeDataString(key.Key));
-                signatureBase.Append("=");
-                signatureBase.Append(Uri.EscapeDataString(key.Value));
-            });
-
+            //Generate signing key for signture
             var signatureKey = new StringBuilder();
             signatureKey.Append(Uri.EscapeDataString(consumerToken.secret));
             signatureKey.Append("&");
@@ -81,28 +151,29 @@ namespace TwitterLibrary
                 signatureKey.Append(Uri.EscapeDataString(oauthToken.Value.secret));
             }
 
+            //Add signature to Oauth parameters
             authorization.Add("oauth_signature", HMACSHA1Encode(signatureBase.ToString(), Encoding.UTF8.GetBytes(signatureKey.ToString())));
+            authorization.OrderBy(pair => pair.Key);
 
-            var authorizationBuilder = new StringBuilder();
-            authorizationBuilder.Append("OAuth");
-            bool firstAuth = true;
-            authorization.ToList().ForEach(pair =>
+            //Register Oauth parameters to Authorization Header
+            var authorizationValue = new StringBuilder();
+            authorizationValue.Append("OAuth ");
+            foreach(var pair in authorization)
             {
-                if (firstAuth)
-                {
-                    firstAuth = false;
-                }
-                else
-                {
-                    authorizationBuilder.Append(", ");
-                }
-                authorizationBuilder.Append(Uri.EscapeDataString(pair.Key));
-                authorizationBuilder.Append("=");
-                authorizationBuilder.Append("\"");
-                authorizationBuilder.Append(Uri.EscapeDataString(pair.Value));
-                authorizationBuilder.Append("\"");
-            });
-            message.Headers.Authorization = new AuthenticationHeaderValue("Authorization", authorizationBuilder.ToString());
+                authorizationValue.Append(pair.Key);
+                authorizationValue.Append("=");
+                authorizationValue.Append( Uri.EscapeDataString( pair.Value ) );
+                authorizationValue.Append(", ");
+            }
+            authorizationValue.Remove(authorizationValue.Length - 2, 2); //Cut ', ' from built value
+            message.Headers.Add("Authorization", authorizationValue.ToString());
+
+            //Add other parameters
+            if (queryDict.Count != 0)
+            {
+                message.RequestUri = new Uri(uri.ToString() + "?" + ToWebString(queryDict) );
+            }
+            return message;
         }
     }
 }
