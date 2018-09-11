@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Net;
 using System.Web;
-using TwitterLibrary.Data;
 using System.Net.Http;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.IO;
+using TwitterInterface.Data;
 
 namespace TwitterLibrary
 {
     class Utils
     {
         public static readonly Random random = new Random();
-        public static readonly HttpClient httpClient = new HttpClient();
 
         public static string HMACSHA1Encode(string input, byte[] key)
         {
