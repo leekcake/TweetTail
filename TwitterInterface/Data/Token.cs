@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitterLibrary.Data
+namespace TwitterInterface.Data
 {
     public struct Token
     {
