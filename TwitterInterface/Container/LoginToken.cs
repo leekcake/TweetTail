@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TwitterInterface.Data;
 
 namespace TwitterInterface.Container
@@ -13,6 +14,6 @@ namespace TwitterInterface.Container
             get;
         }
 
-        Account login(string pin);
+        Task<Account> login(string pin);
     }
 }
