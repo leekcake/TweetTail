@@ -8,6 +8,7 @@ using System.Web;
 using TwitterInterface.API;
 using TwitterInterface.Container;
 using TwitterInterface.Data;
+using TwitterLibrary.Data;
 using TwitterLibrary.Container;
 
 namespace TwitterLibrary
@@ -68,6 +69,11 @@ namespace TwitterLibrary
         public Task<List<SavedSearch>> GetSavedSearches(Account account)
         {
             throw new NotImplementedException();
+        }
+
+        public Account LoadAccount(Stream stream)
+        {
+            return LibAccount.Load(stream);
         }
 
         public Task RemoveProfileBanner(Account account)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace TwitterInterface.Data
 {
@@ -10,5 +11,12 @@ namespace TwitterInterface.Data
     public class Account
     {
         public long id;
+
+        public virtual void Save(Stream stream)
+        {
+            var writer = new BinaryWriter(stream);
+            writer.Write(1); //Version Code
+            writer.Write(id);
+        }
     }
 }

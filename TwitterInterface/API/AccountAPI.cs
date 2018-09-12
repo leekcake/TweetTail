@@ -9,6 +9,8 @@ namespace TwitterInterface.API
 {
     public interface AccountAPI
     {
+        Account LoadAccount(Stream stream);
+
         //POST oauth/request_token
         //POST oauth/access_token
         Task<LoginToken> GetLoginTokenAsync(Token consumerToken);
