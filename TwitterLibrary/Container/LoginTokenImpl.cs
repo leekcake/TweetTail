@@ -27,14 +27,14 @@ namespace TwitterLibrary.Container
         public async Task<Account> login(string pin)
         {
             var message = Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/oauth/access_token"), new KeyValuePair<string, string>[] {
-                //new KeyValuePair<string, string>("oauth_verifier", pin)
-            }, consumer, null);
+                new KeyValuePair<string, string>("oauth_verifier", pin)
+            }, consumer, oauth);
             
-            //Utils.authorizeHttpRequest(message, consumer, oauth);
             var response = await owner.httpClient.SendAsync(message);
             Utils.VerifyTwitterResponse(response);
 
-            var data = HttpUtility.ParseQueryString(response.Content.ToString());
+            var responseText = await response.Content.ReadAsStringAsync();
+            var data = HttpUtility.ParseQueryString(responseText);
 
             var account = new LibAccount();
             account.token = new Token(data["oauth_token"], data["oauth_token_secret"]);
