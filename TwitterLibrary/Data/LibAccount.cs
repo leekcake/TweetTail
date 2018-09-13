@@ -8,7 +8,7 @@ namespace TwitterLibrary.Data
 {
     class LibAccount : Account
     {
-        public Token token;
+        public Token consumer, oauth;
 
         public override void Save(Stream stream)
         {
@@ -17,8 +17,11 @@ namespace TwitterLibrary.Data
             writer.Write(1); //Version Code
             writer.Write(id);
 
-            writer.Write(token.key);
-            writer.Write(token.secret);
+            writer.Write(consumer.key);
+            writer.Write(consumer.secret);
+
+            writer.Write(oauth.key);
+            writer.Write(oauth.secret);
         }
 
         public static LibAccount Load(Stream stream)
@@ -28,12 +31,15 @@ namespace TwitterLibrary.Data
             var version = reader.ReadInt32();
 
             var id = reader.ReadInt64();
-            var key = reader.ReadString();
-            var secret = reader.ReadString();
+            var consumerKey = reader.ReadString();
+            var consumerSecret = reader.ReadString();
+            var oauthKey = reader.ReadString();
+            var oauthSecret = reader.ReadString();
 
             var result = new LibAccount();
             result.id = id;
-            result.token = new Token(key, secret);
+            result.consumer = new Token(consumerKey, consumerSecret);
+            result.oauth = new Token(oauthKey, oauthSecret);
 
             return result;
         }

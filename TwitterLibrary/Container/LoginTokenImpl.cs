@@ -37,7 +37,8 @@ namespace TwitterLibrary.Container
             var data = HttpUtility.ParseQueryString(responseText);
 
             var account = new LibAccount();
-            account.token = new Token(data["oauth_token"], data["oauth_token_secret"]);
+            account.consumer = consumer;
+            account.oauth = new Token(data["oauth_token"], data["oauth_token_secret"]);
             account.id = long.Parse(data["user_id"]);
 
             return account;
