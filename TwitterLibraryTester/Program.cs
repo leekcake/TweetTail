@@ -26,6 +26,7 @@ namespace TwitterLibraryTester
         {
             var api = new APIImpl();
             LoginTest(api).Wait();
+            VerifyTest(api).Wait();
 
             Console.WriteLine("End of Test");
             Console.ReadLine();
@@ -59,6 +60,20 @@ namespace TwitterLibraryTester
             var stream = new FileStream("Account.bin", FileMode.Create);
             account.Save(stream);
             stream.Close();
+
+            Console.WriteLine("Login Test OK");
+        }
+
+        static async Task VerifyTest(APIImpl api)
+        {
+            Console.WriteLine("Verify Test");
+
+            var user = await api.VerifyCredentials(account);
+
+            Console.WriteLine(user.nickName + " (@" + user.screenName + ") verify complete");
+
+
+            Console.WriteLine("Verify Test OK");
         }
     }
 }

@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.IO;
 using TwitterInterface.Data;
+using TwitterLibrary.Data;
+using System.Threading.Tasks;
 
 namespace TwitterLibrary
 {
@@ -76,6 +78,28 @@ namespace TwitterLibrary
                 body.Remove(body.Length - 1, 1);
             }
             return body.ToString();
+        }
+        public async static Task<string> readStringFromRequestMessage(HttpClient client, HttpRequestMessage message)
+        {
+            var response = await client.SendAsync(message);
+            VerifyTwitterResponse(response);
+
+           return await response.Content.ReadAsStringAsync();
+        }
+
+        public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, LibAccount account)
+        {
+            return await readStringFromRequestMessage(client, generateHttpRequest(method, uri, query, account));
+        }
+
+        public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
+        {
+            return await readStringFromRequestMessage(client, generateHttpRequest(method, uri, query, consumerToken, oauthToken));
+        }
+
+        public static HttpRequestMessage generateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, LibAccount account)
+        {
+            return generateHttpRequest(method, uri, query, account.consumer, account.oauth);
         }
 
         /// <summary>

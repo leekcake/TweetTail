@@ -10,11 +10,32 @@ using TwitterInterface.Container;
 using TwitterInterface.Data;
 using TwitterLibrary.Data;
 using TwitterLibrary.Container;
+using Newtonsoft.Json.Linq;
 
 namespace TwitterLibrary
 {
     public class APIImpl : AccountAPI
     {
+        internal async Task<string> Get(string uri, Account account, KeyValuePair<string, string>[] query)
+        {
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query, account as LibAccount);
+        }
+
+        internal async Task<string> Get(string uri, Token consumer, Token? oauth, KeyValuePair<string, string>[] query)
+        {
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query, consumer, oauth);
+        }
+
+        internal async Task<string> Post(string uri, Account account, KeyValuePair<string, string>[] query)
+        {
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query, account as LibAccount);
+        }
+
+        internal async Task<string> Post(string uri, Token consumer, Token? oauth, KeyValuePair<string, string>[] query)
+        {
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query, consumer, oauth);
+        }
+
         internal readonly HttpClient httpClient = new HttpClient();
 
         public Task<SavedSearch> CreateSavedSearch(Account account, string query)
@@ -44,15 +65,10 @@ namespace TwitterLibrary
 
         public async Task<LoginToken> GetLoginTokenAsync(Token consumerToken)
         {
-            var message = Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/oauth/request_token"), new KeyValuePair<string, string>[] {
-                //new KeyValuePair<string, string>("oauth_callback", "obb")
-            }, consumerToken, null);
+            var response = await Post("https://api.twitter.com/oauth/request_token", consumerToken, null, new KeyValuePair<string, string>[] {
 
-            var response = await httpClient.SendAsync(message);
-            Utils.VerifyTwitterResponse(response);
-
-            var responseText = await response.Content.ReadAsStringAsync();
-            var data = HttpUtility.ParseQueryString(responseText);
+            });
+            var data = HttpUtility.ParseQueryString(response);
 
             var token = new Token();
             token.key = data["oauth_token"];
@@ -96,9 +112,13 @@ namespace TwitterLibrary
             throw new NotImplementedException();
         }
 
-        public Task<User> VerifyCredentials(Account account, bool includeEntities = true, bool skipStatus = false, bool includeEmail = false)
+        public async Task<User> VerifyCredentials(Account account, bool includeEntities = true, bool skipStatus = false, bool includeEmail = false)
         {
-            throw new NotImplementedException();
+            var response = await Get("https://api.twitter.com/1.1/account/verify_credentials.json", account, new KeyValuePair<string, string>[] {
+                
+            });
+
+            return TwitterDataFactory.parseUser(JObject.Parse(response));
         }
     }
 }
