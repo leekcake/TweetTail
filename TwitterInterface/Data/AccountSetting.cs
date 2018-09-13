@@ -27,7 +27,7 @@ namespace TwitterInterface.Data
             //}
 
             public string url;
-            public string woeid;
+            public long woeid;
         }
 
         public bool isAlwaysUseHttps;
