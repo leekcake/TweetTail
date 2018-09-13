@@ -22,12 +22,12 @@ namespace TwitterInterface.Data
         public bool isProtected;
         public bool isVerified;
 
-        public int follerCount;
-        public int followingCount;
-        public int listedCount;
+        public long followerCount;
+        public long followingCount;
+        public long listedCount;
 
-        public int favouritesCount;
-        public int statusesCount;
+        public long favouritesCount;
+        public long statusesCount;
         public DateTime createdAt;
 
         public bool geoEnabled;
@@ -40,6 +40,6 @@ namespace TwitterInterface.Data
 
         public string profileBannerURL;
         public string profileImageURL;
-        public string profileHtppsImageURL;
+        public string profileHttpsImageURL;
     }
 }
