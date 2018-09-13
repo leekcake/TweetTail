@@ -19,9 +19,12 @@ namespace TwitterInterface.API
         Task<AccountSetting> GetAccountSetting(Account account);
         //GET account/verify_credentials
         Task<User> VerifyCredentials(Account account, bool includeEntities = true, bool skipStatus = false, bool includeEmail = false);
+        
+        /* TODO:
         //GET users/profile_banner
         Task<string[]> GetBannerImageVariant(Account account, long userId);
         Task<string[]> GetBannerImageVariant(Account account, string screenName);
+        */
 
         //POST account/remove_profile_banner
         Task RemoveProfileBanner(Account account);
