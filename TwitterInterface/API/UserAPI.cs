@@ -75,7 +75,7 @@ namespace TwitterInterface.API
         //GET mutes/users/ids
         Task<CursoredList<long>> GetMuteIds(Account account, long cursor = -1);
         //GET mutes/users/list
-        Task<CursoredList<User>> GetMuteIds(Account account, long cursor = -1);
+        Task<CursoredList<User>> GetMuteUsers(Account account, long cursor = -1);
 
         //POST blocks/create
         Task<User> Block(Account account, long userId);
