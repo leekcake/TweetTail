@@ -8,11 +8,12 @@ namespace TwitterInterface.Data.Entity
     {
         public class Option
         {
-            int position;
-            string name;
+            public int position;
+            public string name;
         }
 
         public DateTime endDateTime;
         public int durationMinutes;
+        public Option[] options;
     }
 }

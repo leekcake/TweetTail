@@ -9,6 +9,7 @@ namespace TwitterInterface.Data.Entity
         public long id;
 
         public string mediaURL;
+        public string mediaURLHttps;
         public URL url;
 
         public string type;
