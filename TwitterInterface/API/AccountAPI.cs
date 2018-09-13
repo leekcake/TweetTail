@@ -18,7 +18,7 @@ namespace TwitterInterface.API
         //GET account/settings
         Task<AccountSetting> GetAccountSetting(Account account);
         //GET account/verify_credentials
-        Task<User> VerifyCredentials(Account account, bool includeEntities = true, bool skipStatus = false, bool includeEmail = false);
+        Task<User> VerifyCredentials(Account account);
         
         /* TODO:
         //GET users/profile_banner
@@ -31,11 +31,11 @@ namespace TwitterInterface.API
         //TODO: POST account/settings
 
         //POST account/update_profile
-        Task<User> UpdateProfile(Account account, string name, string url, string location, string description, string profileLinkColor, bool includeEntities = true, bool skipStatus = false);
+        Task<User> UpdateProfile(Account account, string name, string url, string location, string description, string profileLinkColor);
         //POST account/update_profile_banner
         Task UpdateProfileBanner(Account account, Stream image);
         //POST account/update_profile_image
-        Task<User> UpdateProfileImage(Account account, Stream image, bool includeEntities = true, bool skipStatus = false);
+        Task<User> UpdateProfileImage(Account account, Stream image);
 
 
         //GET saved_searches/list

@@ -170,7 +170,7 @@ namespace TwitterLibrary
             });
         }
 
-        public async Task<User> UpdateProfile(Account account, string name, string url, string location, string description, string profileLinkColor, bool includeEntities = true, bool skipStatus = false)
+        public async Task<User> UpdateProfile(Account account, string name, string url, string location, string description, string profileLinkColor)
         {
             return TwitterDataFactory.parseUser(
                 JObject.Parse(
@@ -187,7 +187,7 @@ namespace TwitterLibrary
                 makeQuery("banner", streamToBase64(image)));
         }
 
-        public async Task<User> UpdateProfileImage(Account account, Stream image, bool includeEntities = true, bool skipStatus = false)
+        public async Task<User> UpdateProfileImage(Account account, Stream image)
         {
             return TwitterDataFactory.parseUser(
                 JObject.Parse(
@@ -197,7 +197,7 @@ namespace TwitterLibrary
                 );
         }
 
-        public async Task<User> VerifyCredentials(Account account, bool includeEntities = true, bool skipStatus = false, bool includeEmail = false)
+        public async Task<User> VerifyCredentials(Account account)
         {
             var response = await Get("https://api.twitter.com/1.1/account/verify_credentials.json", account, new KeyValuePair<string, string>[] {
 

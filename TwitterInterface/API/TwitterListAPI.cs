@@ -13,18 +13,18 @@ namespace TwitterInterface.API
         Task<List<TwitterList>> GetLists(Account account, long userId, bool reverse = false);
 
         //GET lists/members
-        Task<CursoredList<User>> GetMemberOfList(Account account, long listId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<CursoredList<User>> GetMemberOfList(Account account, string slug, long ownerId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<CursoredList<User>> GetMemberOfList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
+        Task<CursoredList<User>> GetMemberOfList(Account account, long listId, long count = 20, long cursor = -1);
+        Task<CursoredList<User>> GetMemberOfList(Account account, string slug, long ownerId, long count = 20, long cursor = -1);
+        Task<CursoredList<User>> GetMemberOfList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1);
 
         //GET lists/members/show
-        Task<User> GetUserFromList(Account account, long userId, long listId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetUserFromList(Account account, long userId, string slug, long ownerId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetUserFromList(Account account, long userId, string slug, string ownerScreenName, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
+        Task<User> GetUserFromList(Account account, long userId, long listId, long count = 20, long cursor = -1);
+        Task<User> GetUserFromList(Account account, long userId, string slug, long ownerId, long count = 20, long cursor = -1);
+        Task<User> GetUserFromList(Account account, long userId, string slug, string ownerScreenName, long count = 20, long cursor = -1);
         //GET lists/members/show
-        Task<User> GetUserFromList(Account account, string screenName, long listId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetUserFromList(Account account, string screenName, string slug, long ownerId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetUserFromList(Account account, string screenName, string slug, string ownerScreenName, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
+        Task<User> GetUserFromList(Account account, string screenName, long listId, long count = 20, long cursor = -1);
+        Task<User> GetUserFromList(Account account, string screenName, string slug, long ownerId, long count = 20, long cursor = -1);
+        Task<User> GetUserFromList(Account account, string screenName, string slug, string ownerScreenName, long count = 20, long cursor = -1);
 
         //GET lists/memberships
         Task<CursoredList<TwitterList>> GetMembershipsOfUser(Account account, long userId, long count = 20, long cursor = -1, bool filterToOwnedLists = false);
@@ -40,23 +40,23 @@ namespace TwitterInterface.API
         Task<TwitterList> GetList(Account account, string slug, string ownerScreenName);
 
         //GET lists/statuses
-        Task<List<Status>> GetListline(Account account, long listId, long sinceId, long maxId, bool includeEntities = true, bool includeRts = false);
-        Task<List<Status>> GetListline(Account account, string slug, long ownerId, long sinceId, long maxId, bool includeEntities = true, bool includeRts = false);
-        Task<List<Status>> GetListline(Account account, string slug, string ownerScreenName, long sinceId, long maxId, bool includeEntities = true, bool includeRts = false);
+        Task<List<Status>> GetListline(Account account, long listId, long sinceId, long maxId);
+        Task<List<Status>> GetListline(Account account, string slug, long ownerId, long sinceId, long maxId);
+        Task<List<Status>> GetListline(Account account, string slug, string ownerScreenName, long sinceId, long maxId);
 
         //GET lists/subscribers
-        Task<CursoredList<User>> GetSubScribersFromList(Account account, long listId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, long ownerId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
+        Task<CursoredList<User>> GetSubScribersFromList(Account account, long listId, long count = 20, long cursor = -1);
+        Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, long ownerId, long count = 20, long cursor = -1);
+        Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1);
 
         //GET lists/subscribers/show
-        Task<User> GetSubScriberFromList(Account account, long userId, long listId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetSubScriberFromList(Account account, long userId, string slug, long ownerId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetSubScriberFromList(Account account, long userId, string slug, string ownerScreenName, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
+        Task<User> GetSubScriberFromList(Account account, long userId, long listId, long count = 20, long cursor = -1);
+        Task<User> GetSubScriberFromList(Account account, long userId, string slug, long ownerId, long count = 20, long cursor = -1);
+        Task<User> GetSubScriberFromList(Account account, long userId, string slug, string ownerScreenName, long count = 20, long cursor = -1);
         //GET lists/subscribers/show
-        Task<User> GetSubScriberFromList(Account account, string screenName, long listId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, long ownerId, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
-        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, string ownerScreenName, long count = 20, long cursor = -1, bool includeEntities = true, bool skipStatus = false);
+        Task<User> GetSubScriberFromList(Account account, string screenName, long listId, long count = 20, long cursor = -1);
+        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, long ownerId, long count = 20, long cursor = -1);
+        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, string ownerScreenName, long count = 20, long cursor = -1);
 
         //GET lists/subscriptions
         Task<CursoredList<TwitterList>> GetUserSubscriptions(Account account, long userId, long count = 20, long cursor = -1);
