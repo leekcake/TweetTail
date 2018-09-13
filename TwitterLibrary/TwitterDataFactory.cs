@@ -264,5 +264,17 @@ namespace TwitterLibrary
 
             return variant;
         }
+
+        public static SavedSearch parseSavedSearch(JObject obj)
+        {
+            var savedSearch = new SavedSearch();
+
+            savedSearch.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
+            savedSearch.id = obj["id"].ToObject<long>();
+            savedSearch.name = obj["name"].ToString();
+            savedSearch.query = obj["query"].ToString();
+
+            return savedSearch;
+        }
     }
 }
