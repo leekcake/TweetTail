@@ -20,17 +20,17 @@ namespace TwitterInterface.Data
             Newest //tweet_reverse_chron
         }
 
-        string name;
-        string type;
-        string description;
+        public string name;
+        public string type;
+        public string description;
 
-        long userId;
+        public long userId;
 
-        string collectionURL;
-        string url;
+        public string collectionURL;
+        public string url;
 
-        bool isPrivate;
+        public bool isPrivate;
 
-        Order timelineOrder;
+        public Order timelineOrder;
     }
 }
