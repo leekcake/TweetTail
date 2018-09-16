@@ -439,7 +439,7 @@ namespace TwitterLibrary
                 makeQuery("status", update.text, 
                 "in_reply_to_status_id", update.inReplyToStatusId != -1 ? update.inReplyToStatusId.ToString() : null,
                 "auto_populate_reply_metadata", update.autoPopulateReplyMetadata ? "true" : null,
-                "exclude_reply_user_ids", update.excludeReplyUserIds != null ? string.Join(",", update.excludeReplyUserIds),
+                "exclude_reply_user_ids", update.excludeReplyUserIds != null ? string.Join(",", update.excludeReplyUserIds) : null,
                 "attachment_url", update.attachmentURL,
                 "media_ids", update.mediaIDs != null ? string.Join(",", update.mediaIDs) : null,
                 "possibly_sensitive", update.possiblySensitive ? "true" : null
