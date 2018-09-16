@@ -98,13 +98,13 @@ namespace TwitterLibrary
             user.statusesCount = obj["statuses_count"].ToObject<long>();
             user.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
             user.geoEnabled = obj["geo_enabled"].ToObject<bool>();
-            user.language = obj["lang"].ToString();
+            user.language = SafeGetString(obj, "lang");
             //TODO: contributors_enabled
             user.profileBackgroundColor = obj["profile_background_color"].ToString();
             user.profileBackgroundImageURL = obj["profile_background_image_url"].ToString();
             user.profileHttpsBackgroundImageURL = obj["profile_background_image_url_https"].ToString();
             user.profileBackgroundTile = obj["profile_background_tile"].ToObject<bool>();
-            user.profileBannerURL = obj["profile_banner_url"].ToString();
+            user.profileBannerURL = SafeGetString(obj, "profile_banner_url");
             user.profileImageURL = obj["profile_image_url"].ToString();
             user.profileHttpsImageURL = obj["profile_image_url_https"].ToString();
             //TODO: profile_link_color
