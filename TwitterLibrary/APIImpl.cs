@@ -32,6 +32,11 @@ namespace TwitterLibrary
             return list.ToArray();
         }
 
+        private static CursoredList<T> makeCursoredList<T>(JObject array)
+        {
+            return new CursoredList<T>(array["previous_cursor"].ToObject<long>(), array["next_cursor"].ToObject<long>());
+        }
+
         private static string streamToBase64(Stream stream)
         {
             var reader = new BinaryReader(stream);
@@ -495,7 +500,7 @@ namespace TwitterLibrary
             var response = JObject.Parse(await Get("https://api.twitter.com/1.1/statuses/retweets/" + id + ".json", account,
                 makeQuery("count", count.ToString(), "cursor", cursor != -1 ? cursor.ToString() : null)));
 
-            var result = new CursoredList<long>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<long>(response);
             foreach(var _id in response["ids"].ToObject<JArray>())
             {
                 result.Add(_id.ToObject<long>());
@@ -568,7 +573,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<User>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(),
                 TwitterDataFactory.parseUser));
@@ -584,7 +589,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<User>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(),
                 TwitterDataFactory.parseUser));
@@ -600,7 +605,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<User>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(),
                 TwitterDataFactory.parseUser));
@@ -664,7 +669,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<TwitterList>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
                 TwitterDataFactory.parseTwitterList));
@@ -680,7 +685,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<TwitterList>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
                 TwitterDataFactory.parseTwitterList));
@@ -696,7 +701,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<TwitterList>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
                 TwitterDataFactory.parseTwitterList));
@@ -712,7 +717,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<TwitterList>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
                 TwitterDataFactory.parseTwitterList));
@@ -783,7 +788,7 @@ namespace TwitterLibrary
                         "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<User>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
 
@@ -799,7 +804,7 @@ namespace TwitterLibrary
                         "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<User>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
 
@@ -815,7 +820,7 @@ namespace TwitterLibrary
                         "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<User>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
 
@@ -890,7 +895,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<TwitterList>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
                 TwitterDataFactory.parseTwitterList));
@@ -906,7 +911,7 @@ namespace TwitterLibrary
                 "cursor", cursor != -1 ? cursor.ToString() : null
                 )));
 
-            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            var result = makeCursoredList<TwitterList>(response);
 
             result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
                 TwitterDataFactory.parseTwitterList));
