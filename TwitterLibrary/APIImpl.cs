@@ -17,7 +17,7 @@ using System.Net.Http.Headers;
 
 namespace TwitterLibrary
 {
-    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI, StatusAPI, TwitterListAPI
+    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI, StatusAPI, TwitterListAPI, UserAPI
     {
         private static KeyValuePair<string, string>[] makeQuery(params string[] query)
         {
@@ -251,7 +251,7 @@ namespace TwitterLibrary
             result.collections = new List<Collection>();
 
             var results = json["response"]["result"].ToObject<JArray>();
-            foreach(var timeline in results)
+            foreach (var timeline in results)
             {
                 result.collections.Add(TwitterDataFactory.parseCollection(json["objects"]["timelines"][timeline["timeline-id"].ToString()].ToObject<JObject>()));
             }
@@ -291,7 +291,7 @@ namespace TwitterLibrary
         public async Task<Collection> CreateCollection(Account account, string name, string description, string url, Collection.Order? order)
         {
             var json = JObject.Parse(await Post("https://api.twitter.com/1.1/collections/create.json", account,
-                makeQuery("name", name, "description", description, "url", url, "order", order != null ? Collection.OrderToString(order.Value) : null )));
+                makeQuery("name", name, "description", description, "url", url, "order", order != null ? Collection.OrderToString(order.Value) : null)));
 
             return TwitterDataFactory.parseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
         }
@@ -314,7 +314,7 @@ namespace TwitterLibrary
         {
             //TODO: Error handleing
             await Post("https://api.twitter.com/1.1/collections/entries/add.json", account,
-                makeQuery("id", id, "tweet_id", statusId.ToString(), "relative_to", relativeTo != -1 ? relativeTo.ToString() : null, 
+                makeQuery("id", id, "tweet_id", statusId.ToString(), "relative_to", relativeTo != -1 ? relativeTo.ToString() : null,
                 "above", above == false ? above.ToString() : null));
         }
 
@@ -379,7 +379,7 @@ namespace TwitterLibrary
             , account as LibAccount);
 
             byte[] imgdata = new byte[image.Length];
-            image.Read(imgdata, 0, (int) image.Length);
+            image.Read(imgdata, 0, (int)image.Length);
             var imageContent = new ByteArrayContent(imgdata);
 
             imageContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
@@ -441,7 +441,7 @@ namespace TwitterLibrary
         {
             return TwitterDataFactory.parseStatus(JObject.Parse(
                 await Post("https://api.twitter.com/1.1/statuses/update.json", account,
-                makeQuery("status", update.text, 
+                makeQuery("status", update.text,
                 "in_reply_to_status_id", update.inReplyToStatusId != -1 ? update.inReplyToStatusId.ToString() : null,
                 "auto_populate_reply_metadata", update.autoPopulateReplyMetadata ? "true" : null,
                 "exclude_reply_user_ids", update.excludeReplyUserIds != null ? string.Join(",", update.excludeReplyUserIds) : null,
@@ -461,7 +461,7 @@ namespace TwitterLibrary
         public async Task<Status> GetStatuses(Account account, long id)
         {
             return TwitterDataFactory.parseStatus(JObject.Parse(
-                await Get("https://api.twitter.com/1.1/statuses/show.json", account, 
+                await Get("https://api.twitter.com/1.1/statuses/show.json", account,
                 makeQuery("id", id.ToString())
                 )));
         }
@@ -501,7 +501,7 @@ namespace TwitterLibrary
                 makeQuery("count", count.ToString(), "cursor", cursor != -1 ? cursor.ToString() : null)));
 
             var result = makeCursoredList<long>(response);
-            foreach(var _id in response["ids"].ToObject<JArray>())
+            foreach (var _id in response["ids"].ToObject<JArray>())
             {
                 result.Add(_id.ToObject<long>());
             }
@@ -527,8 +527,8 @@ namespace TwitterLibrary
         {
             var response = JArray.Parse(
                 await Get("https://api.twitter.com/1.1/favorites/list.json", account,
-                makeQuery("user_id", userId.ToString(), 
-                "count", count.ToString(), 
+                makeQuery("user_id", userId.ToString(),
+                "count", count.ToString(),
                 "since_id", sinceId != -1 ? sinceId.ToString() : null,
                 "max_id", maxId != -1 ? maxId.ToString() : null)
                 ));
@@ -552,7 +552,7 @@ namespace TwitterLibrary
         public async Task<List<TwitterList>> GetLists(Account account, string screenName, bool reverse = false)
         {
             return TwitterDataFactory.parseArray(JArray.Parse(
-                await Get("https://api.twitter.com/1.1/lists/list.json", account, 
+                await Get("https://api.twitter.com/1.1/lists/list.json", account,
                 makeQuery("screen_name", screenName, "reverse", reverse.ToString()))),
                 TwitterDataFactory.parseTwitterList).ToList();
         }
@@ -831,7 +831,7 @@ namespace TwitterLibrary
         {
             return TwitterDataFactory.parseUser(
                 JObject.Parse(
-                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json",account,
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     makeQuery("user_id", userId.ToString(),
                     "list_id", listId.ToString())
                 )));
@@ -1180,6 +1180,483 @@ namespace TwitterLibrary
         {
             await Post("https://api.twitter.com/1.1/lists/subscribers/destroy.json", account,
                 makeQuery("slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task<CursoredList<long>> GetFollowerIds(Account account, long userId, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/followers/ids.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<long>> GetFollowerIds(Account account, string screenName, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/followers/ids.json", account,
+                makeQuery("screen_name", screenName,
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetFollowers(Account account, long userId, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/followers/list.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<User>(response);
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetFollowers(Account account, string screenName, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/followers/list.json", account,
+                makeQuery("screen_name", screenName,
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<User>(response);
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<long>> GetFriendIds(Account account, long userId, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friends/ids.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<long>> GetFriendIds(Account account, string screenName, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friends/ids.json", account,
+                makeQuery("screen_name", screenName,
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetFriends(Account account, long userId, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friends/list.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<User>(response);
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetFriends(Account account, string screenName, long cursor = -1, long count = 100)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friends/list.json", account,
+                makeQuery("screen_name", screenName,
+                "cursor", cursor != -1 ? cursor.ToString() : null,
+                "count", count.ToString()
+                )));
+
+            var result = makeCursoredList<User>(response);
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<long>> GetPendingRequestToAccount(Account account, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/incoming.json", account,
+                makeQuery("cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<long>> GetPendingRequestFromAccount(Account account, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/outgoing.json", account,
+                makeQuery("cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<List<Friendship>> GetFriendship(Account account, params long[] userId)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/lookup.json", account,
+                makeQuery("user_id", string.Join(",", userId))
+                ))
+                , TwitterDataFactory.parseFriendship).ToList();
+        }
+
+        public async Task<List<Friendship>> GetFriendship(Account account, params string[] screenName)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/lookup.json", account,
+                makeQuery("screen_name", string.Join(",", screenName))
+                ))
+                , TwitterDataFactory.parseFriendship).ToList();
+        }
+
+        public async Task<List<long>> GetNoRetweetListOfAccount(Account account)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/no_retweets/ids.json", account,
+                makeQuery()
+                ));
+
+            var result = new List<long>();
+
+            foreach (var id in response)
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<Relationship> GetRelationship(Account account, long sourceId, long targetId)
+        {
+            return TwitterDataFactory.parseRelationship(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/show.json", account,
+                makeQuery("source_id", sourceId.ToString(), "target_id", targetId.ToString())
+                )));
+        }
+
+        public async Task<Relationship> GetRelationship(Account account, string sourceScreenName, string targetScreenName)
+        {
+            return TwitterDataFactory.parseRelationship(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/friendships/show.json", account,
+                makeQuery("source_screen_name", sourceScreenName, "target_screen_name", targetScreenName)
+                )));
+        }
+
+        public async Task<List<User>> GetUsers(Account account, long[] userIds)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                    await Get("https://api.twitter.com/1.1/users/lookup.json", account,
+                    makeQuery("user_id", string.Join(",", userIds))
+                )), TwitterDataFactory.parseUser).ToList();
+        }
+
+        public async Task<List<User>> GetUsers(Account account, string[] userScreenNames)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                    await Get("https://api.twitter.com/1.1/users/lookup.json", account,
+                    makeQuery("screen_name", string.Join(",", userScreenNames))
+                )), TwitterDataFactory.parseUser).ToList();
+        }
+
+        public async Task<User> GetUser(Account account, long userIds)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/users/show.json", account,
+                makeQuery("user_id", userIds.ToString())
+                )));
+        }
+
+        public async Task<User> GetUser(Account account, string userScreenNames)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/users/show.json", account,
+                makeQuery("screen_name", userScreenNames)
+                )));
+        }
+
+        public async Task<List<User>> SearchUsers(Account account, string query, long page, long count = 20)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                    await Get("https://api.twitter.com/1.1/users/search.json", account,
+                    makeQuery("q", query, "page", page.ToString(), "count", count.ToString())
+                )), TwitterDataFactory.parseUser).ToList();
+        }
+
+        public async Task<User> CreateFriendship(Account account, long userId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/friendships/create.json", account, 
+                    makeQuery("user_id", userId.ToString())
+                )));
+        }
+
+        public async Task<User> CreateFriendship(Account account, string screenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/friendships/create.json", account,
+                    makeQuery("screen_name", screenName)
+                )));
+        }
+
+        public async Task<User> UpdateFriendship(Account account, long userId, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/friendships/update.json", account,
+                    makeQuery("user_id", userId.ToString(),
+                    "device", enableDeviceNotifications != null ? enableDeviceNotifications.Value.ToString() : null,
+                    "retweets", enableRetweet != null ? enableRetweet.Value.ToString() : null)
+                )));
+        }
+
+        public async Task<User> UpdateFriendship(Account account, string screenName, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/friendships/update.json", account,
+                    makeQuery("screen_name", screenName,
+                    "device", enableDeviceNotifications != null ? enableDeviceNotifications.Value.ToString() : null,
+                    "retweets", enableRetweet != null ? enableRetweet.Value.ToString() : null)
+                )));
+        }
+
+        public async Task<User> DestroyFriendship(Account account, long userId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/friendships/destroy.json", account,
+                    makeQuery("user_id", userId.ToString())
+                )));
+        }
+
+        public async Task<User> DestroyFriendship(Account account, string screenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/friendships/destroy.json", account,
+                    makeQuery("screen_name", screenName)
+                )));
+        }
+
+        public async Task<CursoredList<long>> GetBlockIds(Account account, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/blocks/ids.json", account,
+                makeQuery("cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetBlockList(Account account, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/blocks/list.json", account,
+                makeQuery("cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = makeCursoredList<User>(response);
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<long>> GetMuteIds(Account account, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/mutes/ids.json", account,
+                makeQuery("cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = makeCursoredList<long>(response);
+
+            foreach (var id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetMuteUsers(Account account, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/mutes/list.json", account,
+                makeQuery("cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = makeCursoredList<User>(response);
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<User> Block(Account account, long userId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/blocks/create.json", account,
+                    makeQuery("user_id", userId.ToString())
+                )));
+        }
+
+        public async Task<User> Block(Account account, string screenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/blocks/create.json", account,
+                    makeQuery("screen_name", screenName)
+                )));
+        }
+
+        public async Task<User> Unblock(Account account, long userId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/blocks/destroy.json", account,
+                    makeQuery("user_id", userId.ToString())
+                )));
+        }
+
+        public async Task<User> Unblock(Account account, string screenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/blocks/destroy.json", account,
+                    makeQuery("screen_name", screenName)
+                )));
+        }
+
+        public async Task<User> Mute(Account account, long userId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/mutes/users/create.json", account,
+                    makeQuery("user_id", userId.ToString())
+                )));
+        }
+
+        public async Task<User> Mute(Account account, string screenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/mutes/users/create.json", account,
+                    makeQuery("screen_name", screenName)
+                )));
+        }
+
+        public async Task<User> Unmute(Account account, long userId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/mutes/users/destroy.json", account,
+                    makeQuery("user_id", userId.ToString())
+                )));
+        }
+
+        public async Task<User> Unmute(Account account, string screenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/mutes/users/destroy.json", account,
+                    makeQuery("screen_name", screenName)
+                )));
+        }
+
+        public async Task<User> ReportSpam(Account account, long userId, bool performBlock = true)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/users/report_spam.json", account,
+                    makeQuery("user_id", userId.ToString(),
+                    "performBlock", performBlock == false ? "false" : null)
+                )));
+        }
+
+        public async Task<User> ReportSpam(Account account, string screenName, bool performBlock = true)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/users/report_spam.json", account,
+                    makeQuery("screen_name", screenName,
+                    "performBlock", performBlock == false ? "false" : null)
+                )));
         }
     }
 }
