@@ -8,7 +8,7 @@ namespace TwitterInterface.Data
     {
         public long id;
 
-        public string slut;
+        public string slug;
 
         public string name;
         public string fullName;
