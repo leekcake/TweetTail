@@ -314,5 +314,24 @@ namespace TwitterLibrary
 
             return collectionTweet;
         }
+
+        public static TwitterList parseTwitterList(JObject obj)
+        {
+            var twitterList = new TwitterList();
+
+            twitterList.slug = obj["slug"].ToString();
+            twitterList.name = obj["name"].ToString();
+            twitterList.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
+            twitterList.url = obj["url"].ToString();
+            twitterList.subscriberCount = obj["subscriber_count"].ToObject<long>();
+            twitterList.memberCount = obj["member_count"].ToObject<long>();
+            twitterList.mode = obj["mode"].ToString();
+            twitterList.id = obj["id"].ToObject<long>();
+            twitterList.fullName = obj["full_name"].ToString();
+            twitterList.description = obj["description"].ToString();
+            twitterList.user = parseUser(obj["user"].ToObject<JObject>());
+
+            return twitterList;
+        }
     }
 }
