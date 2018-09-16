@@ -10,6 +10,6 @@ namespace TwitterInterface.API
     public interface MediaAPI
     {
         //POST media/upload
-        Task<long> uploadMedia(Account account, Stream image);
+        Task<long> uploadMedia(Account account, string fileName, Stream image);
     }
 }
