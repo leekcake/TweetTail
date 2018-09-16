@@ -9,7 +9,7 @@ namespace TwitterInterface.API.Result
     {
         Collection collection;
         List<Status> tweet;
-        //response - timeline auto merge
+        List<Collection.CollectionTweet> collectionTweets;
 
         int maxPosition;
         int minPosition;
