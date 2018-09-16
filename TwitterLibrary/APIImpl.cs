@@ -17,7 +17,7 @@ using System.Net.Http.Headers;
 
 namespace TwitterLibrary
 {
-    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI
+    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI, StatusAPI
     {
         private static KeyValuePair<string, string>[] makeQuery(params string[] query)
         {
@@ -386,6 +386,162 @@ namespace TwitterLibrary
             var result = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             return result["media_id"].ToObject<long>();
+        }
+
+        public async Task<List<Status>> GetTimeline(Account account, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/home_timeline.json", account,
+                makeQuery("count", count.ToString(), "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null)
+                )
+                );
+
+            return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> GetUserline(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/user_timeline.json", account,
+                makeQuery("user_id", userId.ToString(), "count", count.ToString(), "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null)
+                )
+                );
+
+            return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> GetAccountRetweets(Account account, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/retweets_of_me.json", account,
+                makeQuery("count", count.ToString(), "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null)
+                )
+                );
+
+            return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> GetMentionline(Account account, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/mentions_timeline.json", account,
+                makeQuery("count", count.ToString(), "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null)
+                )
+                );
+
+            return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<Status> CreateStatus(Account account, StatusUpdate update)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/statuses/update.json", account,
+                makeQuery("status", update.text, 
+                "in_reply_to_status_id", update.inReplyToStatusId != -1 ? update.inReplyToStatusId.ToString() : null,
+                "auto_populate_reply_metadata", update.autoPopulateReplyMetadata ? "true" : null,
+                "exclude_reply_user_ids", update.excludeReplyUserIds != null ? string.Join(",", update.excludeReplyUserIds),
+                "attachment_url", update.attachmentURL,
+                "media_ids", update.mediaIDs != null ? string.Join(",", update.mediaIDs) : null,
+                "possibly_sensitive", update.possiblySensitive ? "true" : null
+                ))));
+        }
+
+        public async Task<Status> DestroyStatus(Account account, long id)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/statuses/destroy/" + id + ".json", account, makeQuery())
+                ));
+        }
+
+        public async Task<Status> GetStatuses(Account account, long id)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/show.json", account, 
+                makeQuery("id", id.ToString())
+                )));
+        }
+
+        public async Task<List<Status>> GetStatuses(Account account, long[] ids)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/lookup.json", account,
+                makeQuery("id", string.Join(",", ids))
+                )), TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<Status> RetweetStatus(Account account, long id)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/statuses/retweet/" + id.ToString() + ".json", account, makeQuery())
+                ));
+        }
+
+        public async Task<Status> UnretweetStatus(Account account, long id)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/statuses/unretweet/" + id.ToString() + ".json", account, makeQuery())
+                ));
+        }
+
+        public async Task<List<Status>> GetRetweetedStatus(Account account, long id, long count = 100)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/statuses/retweets/" + id + ".json", account, makeQuery("count", count.ToString()))
+                ), TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<CursoredList<long>> GetRetweeterIds(Account account, long id, long count = 100, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/statuses/retweets/" + id + ".json", account,
+                makeQuery("count", count.ToString(), "cursor", cursor != -1 ? cursor.ToString() : null)));
+
+            var result = new CursoredList<long>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+            foreach(var _id in response["ids"].ToObject<JArray>())
+            {
+                result.Add(_id.ToObject<long>());
+            }
+
+            return result;
+        }
+
+        public async Task<Status> CreateFavorite(Account account, long id)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/favorites/create.json", account, makeQuery("id", id.ToString()))
+                ));
+        }
+
+        public async Task<Status> DestroyFavorite(Account account, long id)
+        {
+            return TwitterDataFactory.parseStatus(JObject.Parse(
+                    await Post("https://api.twitter.com/1.1/favorites/destroy.json", account, makeQuery("id", id.ToString()))
+                ));
+        }
+
+        public async Task<List<Status>> GetFavorites(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/favorites/list.json", account,
+                makeQuery("user_id", userId.ToString(), 
+                "count", count.ToString(), 
+                "since_id", sinceId != -1 ? sinceId.ToString() : null,
+                "max_id", maxId != -1 ? maxId.ToString() : null)
+                ));
+
+            return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> GetFavorites(Account account, string userScreenName, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            var response = JArray.Parse(
+                await Get("https://api.twitter.com/1.1/favorites/list.json", account,
+                makeQuery("screen_name", userScreenName,
+                "count", count.ToString(),
+                "since_id", sinceId != -1 ? sinceId.ToString() : null,
+                "max_id", maxId != -1 ? maxId.ToString() : null)
+                ));
+
+            return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
         }
     }
 }
