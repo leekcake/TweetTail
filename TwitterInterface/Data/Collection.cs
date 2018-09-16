@@ -20,6 +20,20 @@ namespace TwitterInterface.Data
             Newest //tweet_reverse_chron
         }
 
+        public static string OrderToString(Order order)
+        {
+            switch (order)
+            {
+                case Order.AddTime:
+                    return "curation_reverse_chron";
+                case Order.Newest:
+                    return "tweet_reverse_chron";
+                case Order.Oldest:
+                    return "tweet_reverse_chron";
+            }
+            return "";
+        }
+
         public string name;
         public string type;
         public string description;
