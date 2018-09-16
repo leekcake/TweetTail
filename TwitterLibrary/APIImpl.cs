@@ -13,10 +13,11 @@ using TwitterLibrary.Data;
 using TwitterLibrary.Container;
 using Newtonsoft.Json.Linq;
 using TwitterInterface.API.Result;
+using System.Net.Http.Headers;
 
 namespace TwitterLibrary
 {
-    public class APIImpl : AccountAPI, CollectionAPI
+    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI
     {
         private static KeyValuePair<string, string>[] makeQuery(params string[] query)
         {
@@ -365,6 +366,26 @@ namespace TwitterLibrary
             //TODO: Error handleing
             await handleCurate(Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
             , account as LibAccount), makeCurateJson("remove", id, statusId));
+        }
+
+        public async Task<long> uploadMedia(Account account, string fileName, Stream image)
+        {
+            var message = Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://upload.twitter.com/1.1/media/upload.json"), new KeyValuePair<string, string>[] { }
+            , account as LibAccount);
+
+            byte[] imgdata = new byte[image.Length];
+            image.Read(imgdata, 0, (int) image.Length);
+            var imageContent = new ByteArrayContent(imgdata);
+
+            imageContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+
+            var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(imageContent, "media");
+
+            var response = await httpClient.SendAsync(message);
+            var result = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+            return result["media_id"].ToObject<long>();
         }
     }
 }
