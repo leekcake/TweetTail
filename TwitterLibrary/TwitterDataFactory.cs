@@ -333,5 +333,63 @@ namespace TwitterLibrary
 
             return twitterList;
         }
+
+        public static Friendship parseFriendship(JObject obj)
+        {
+            var friendship = new Friendship();
+
+            friendship.id = obj["id"].ToObject<long>();
+            friendship.screenName = obj["screen_name"].ToString();
+            friendship.name = obj["name"].ToString();
+
+            foreach(var connection in obj["connections"])
+            {
+                switch(connection.ToString())
+                {
+                    case "following":
+                        friendship.isFollowing = true;
+                        break;
+                    case "following_requested":
+                        friendship.isFollowingRequested = true;
+                        break;
+                    case "followed_by":
+                        friendship.isFollowedBy = true;
+                        break;
+                    case "blocking":
+                        friendship.isBlocking = true;
+                        break;
+                    case "muting":
+                        friendship.isMuting = true;
+                        break;
+                }
+            }
+
+            return friendship;
+        }
+
+        public static Relationship parseRelationship(JObject obj)
+        {
+            var relationship = new Relationship();
+
+            var target = obj["target"];
+            relationship.targetId = target["id"].ToObject<long>();
+            relationship.targetScreen = target["screen_name"].ToString();
+
+            var source = obj["source"];
+            relationship.sourceId = source["id"].ToObject<long>();
+            relationship.sourceScreen = source["screen_name"].ToString();
+
+            relationship.isCanDM = source["can_dm"].ToObject<bool>();
+            relationship.isBlocked = source["blocking"].ToObject<bool>();
+            relationship.isMuted = source["muting"].ToObject<bool>();
+            //TODO: all_replies
+            //TODO: want_retweets
+            relationship.isMarkedSpam = source["marked_spam"].ToObject<bool>();
+            relationship.isFollowing = source["following"].ToObject<bool>();
+            relationship.isFollower = source["followed_by"].ToObject<bool>();
+            //TODO:notifications_enabled
+
+            return relationship;
+        }
     }
 }
