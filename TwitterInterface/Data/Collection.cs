@@ -6,6 +6,13 @@ namespace TwitterInterface.Data
 {
     public class Collection
     {
+        public struct CollectionTweet
+        {
+            public string featureContext;
+            public long tweetId;
+            public long tweetSortIndex;
+        }
+
         public enum Order
         {
             AddTime, //curation_reverse_chron
