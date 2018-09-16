@@ -19,7 +19,7 @@ namespace TwitterLibrary
 
         private static string SafeGetString(JObject obj, string key)
         {
-            if (obj.ContainsKey(key))
+            if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
                 return obj[key].ToString();
             }
@@ -31,7 +31,7 @@ namespace TwitterLibrary
 
         private static long SafeGetLong(JObject obj, string key)
         {
-            if (obj.ContainsKey(key))
+            if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
                 return obj[key].ToObject<long>();
             }
@@ -43,7 +43,7 @@ namespace TwitterLibrary
 
         private static bool SafeGetBool(JObject obj, string key)
         {
-            if (obj.ContainsKey(key))
+            if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
                 return obj[key].ToObject<bool>();
             }
@@ -55,9 +55,9 @@ namespace TwitterLibrary
 
         private static Status SafeGetStatus(JObject obj, string key)
         {
-            if (obj.ContainsKey(key))
+            if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
-                return parseStatus(obj["key"].ToObject<JObject>());
+                return parseStatus(obj[key].ToObject<JObject>());
             }
             else
             {
