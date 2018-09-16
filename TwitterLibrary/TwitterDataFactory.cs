@@ -147,11 +147,16 @@ namespace TwitterLibrary
             status.urls = parseArray(entities["urls"].ToObject<JArray>(), parseURL);
             status.userMentions = parseArray(entities["user_mentions"].ToObject<JArray>(), parseUserMention);
             status.symbols = parseArray(entities["symbols"].ToObject<JArray>(), parseSymbol);
-            status.polls = parseArray(entities["polls"].ToObject<JArray>(), parsePolls);
-            status.extendMedias = parseArray(obj["extented_entities"]["media"].ToObject<JArray>(), parseExtendMedia);
-
+            if (entities.ContainsKey("polls"))
+            {
+                status.polls = parseArray(entities["polls"].ToObject<JArray>(), parsePolls);
+            }
+            if (obj.ContainsKey("extented_entities"))
+            {
+                status.extendMedias = parseArray(obj["extented_entities"]["media"].ToObject<JArray>(), parseExtendMedia);
+            }
             status.isFavortedByUser = SafeGetBool(obj, "favorited");
-            status.isRetweetedByUser = obj["retweeted"].ToObject<bool>();
+            status.isRetweetedByUser = SafeGetBool(obj, "retweeted");
             status.possiblySensitive = SafeGetBool(obj, "possibly_sensitive");
 
             return status;
