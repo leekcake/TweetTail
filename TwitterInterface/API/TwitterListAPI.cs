@@ -18,13 +18,13 @@ namespace TwitterInterface.API
         Task<CursoredList<User>> GetMemberOfList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1);
 
         //GET lists/members/show
-        Task<User> GetUserFromList(Account account, long userId, long listId, long count = 20, long cursor = -1);
-        Task<User> GetUserFromList(Account account, long userId, string slug, long ownerId, long count = 20, long cursor = -1);
-        Task<User> GetUserFromList(Account account, long userId, string slug, string ownerScreenName, long count = 20, long cursor = -1);
+        Task<User> GetUserFromList(Account account, long userId, long listId);
+        Task<User> GetUserFromList(Account account, long userId, string slug, long ownerId);
+        Task<User> GetUserFromList(Account account, long userId, string slug, string ownerScreenName);
         //GET lists/members/show
-        Task<User> GetUserFromList(Account account, string screenName, long listId, long count = 20, long cursor = -1);
-        Task<User> GetUserFromList(Account account, string screenName, string slug, long ownerId, long count = 20, long cursor = -1);
-        Task<User> GetUserFromList(Account account, string screenName, string slug, string ownerScreenName, long count = 20, long cursor = -1);
+        Task<User> GetUserFromList(Account account, string screenName, long listId);
+        Task<User> GetUserFromList(Account account, string screenName, string slug, long ownerId);
+        Task<User> GetUserFromList(Account account, string screenName, string slug, string ownerScreenName);
 
         //GET lists/memberships
         Task<CursoredList<TwitterList>> GetMembershipsOfUser(Account account, long userId, long count = 20, long cursor = -1, bool filterToOwnedLists = false);
@@ -50,13 +50,13 @@ namespace TwitterInterface.API
         Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1);
 
         //GET lists/subscribers/show
-        Task<User> GetSubScriberFromList(Account account, long userId, long listId, long count = 20, long cursor = -1);
-        Task<User> GetSubScriberFromList(Account account, long userId, string slug, long ownerId, long count = 20, long cursor = -1);
-        Task<User> GetSubScriberFromList(Account account, long userId, string slug, string ownerScreenName, long count = 20, long cursor = -1);
+        Task<User> GetSubScriberFromList(Account account, long userId, long listId);
+        Task<User> GetSubScriberFromList(Account account, long userId, string slug, long ownerId);
+        Task<User> GetSubScriberFromList(Account account, long userId, string slug, string ownerScreenName);
         //GET lists/subscribers/show
-        Task<User> GetSubScriberFromList(Account account, string screenName, long listId, long count = 20, long cursor = -1);
-        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, long ownerId, long count = 20, long cursor = -1);
-        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, string ownerScreenName, long count = 20, long cursor = -1);
+        Task<User> GetSubScriberFromList(Account account, string screenName, long listId);
+        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, long ownerId);
+        Task<User> GetSubScriberFromList(Account account, string screenName, string slug, string ownerScreenName);
 
         //GET lists/subscriptions
         Task<CursoredList<TwitterList>> GetUserSubscriptions(Account account, long userId, long count = 20, long cursor = -1);
