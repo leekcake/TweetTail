@@ -276,5 +276,43 @@ namespace TwitterLibrary
 
             return savedSearch;
         }
+
+        public static Collection parseCollection(JObject obj)
+        {
+            var collection = new Collection();
+
+            collection.type = obj["collection_type"].ToString();
+            collection.url = obj["collection_url"].ToString();
+            collection.description = obj["description"].ToString();
+            collection.name = obj["name"].ToString();
+            var order = obj["timeline_order"].ToString();
+            if (order == "curation_reverse_chron")
+            {
+                collection.timelineOrder = Collection.Order.AddTime;
+            }
+            else if (order == "tweet_chron")
+            {
+                collection.timelineOrder = Collection.Order.Oldest;
+            }
+            else
+            {
+                collection.timelineOrder = Collection.Order.Newest;
+            }
+            collection.userId = obj["user_id"].ToObject<long>();
+            collection.isPrivate = obj["visibility"].ToString() == "private";
+            
+            return collection;
+        }
+
+        public static Collection.CollectionTweet parseCollectionTweet(JObject obj)
+        {
+            var collectionTweet = new Collection.CollectionTweet();
+            collectionTweet.featureContext = obj["feature_context"].ToString();
+            var tweet = obj["tweet"];
+            collectionTweet.tweetId = tweet["id"].ToObject<long>();
+            collectionTweet.tweetSortIndex = tweet["sort_index"].ToObject<long>();
+
+            return collectionTweet;
+        }
     }
 }
