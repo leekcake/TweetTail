@@ -17,7 +17,7 @@ using System.Net.Http.Headers;
 
 namespace TwitterLibrary
 {
-    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI, StatusAPI
+    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI, StatusAPI, TwitterListAPI
     {
         private static KeyValuePair<string, string>[] makeQuery(params string[] query)
         {
@@ -542,6 +542,639 @@ namespace TwitterLibrary
                 ));
 
             return TwitterDataFactory.parseArray(response, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<TwitterList>> GetLists(Account account, string screenName, bool reverse = false)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/lists/list.json", account, 
+                makeQuery("screen_name", screenName, "reverse", reverse.ToString()))),
+                TwitterDataFactory.parseTwitterList).ToList();
+        }
+
+        public async Task<List<TwitterList>> GetLists(Account account, long userId, bool reverse = false)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/lists/list.json", account,
+                makeQuery("user_id", userId.ToString(), "reverse", reverse.ToString()))),
+                TwitterDataFactory.parseTwitterList).ToList();
+        }
+
+        public async Task<CursoredList<User>> GetMemberOfList(Account account, long listId, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/members.json", account,
+                makeQuery("list_id", listId.ToString(),
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(),
+                TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetMemberOfList(Account account, string slug, long ownerId, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/members.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString(),
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(),
+                TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetMemberOfList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/members.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName,
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(),
+                TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<User> GetUserFromList(Account account, long userId, long listId)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/members/show.json", account,
+                makeQuery("user_id", userId.ToString(), "list_id", listId.ToString())
+                )));
+        }
+
+        public async Task<User> GetUserFromList(Account account, long userId, string slug, long ownerId)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/members/show.json", account,
+                makeQuery("user_id", userId.ToString(), "slug", slug, "owner_id", ownerId.ToString())
+                )));
+        }
+
+        public async Task<User> GetUserFromList(Account account, long userId, string slug, string ownerScreenName)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/members/show.json", account,
+                makeQuery("user_id", userId.ToString(), "slug", slug, "owner_screen_name", ownerScreenName)
+                )));
+        }
+
+        public async Task<User> GetUserFromList(Account account, string screenName, long listId)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/members/show.json", account,
+                makeQuery("screen_name", screenName, "list_id", listId.ToString())
+                )));
+        }
+
+        public async Task<User> GetUserFromList(Account account, string screenName, string slug, long ownerId)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/members/show.json", account,
+                makeQuery("screen_name", screenName, "slug", slug, "owner_id", ownerId.ToString())
+                )));
+        }
+
+        public async Task<User> GetUserFromList(Account account, string screenName, string slug, string ownerScreenName)
+        {
+            return TwitterDataFactory.parseUser(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/members/show.json", account,
+                makeQuery("screen_name", screenName, "slug", slug, "owner_screen_name", ownerScreenName)
+                )));
+        }
+
+        public async Task<CursoredList<TwitterList>> GetMembershipsOfUser(Account account, long userId, long count = 20, long cursor = -1, bool filterToOwnedLists = false)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/memberships.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
+                TwitterDataFactory.parseTwitterList));
+
+            return result;
+        }
+
+        public async Task<CursoredList<TwitterList>> GetMembershipsOfUser(Account account, string screenName, long count = 20, long cursor = -1, bool filterToOwnedLists = false)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/memberships.json", account,
+                makeQuery("screen_name", screenName,
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
+                TwitterDataFactory.parseTwitterList));
+
+            return result;
+        }
+
+        public async Task<CursoredList<TwitterList>> GetOwnershipsOfUser(Account account, long userId, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/ownerships.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
+                TwitterDataFactory.parseTwitterList));
+
+            return result;
+        }
+
+        public async Task<CursoredList<TwitterList>> GetOwnershipsOfUser(Account account, string screenName, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/ownerships.json", account,
+                makeQuery("screen_name", screenName,
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
+                TwitterDataFactory.parseTwitterList));
+
+            return result;
+        }
+
+        public async Task<TwitterList> GetList(Account account, long listId)
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/show.json", account,
+                makeQuery("list_id", listId.ToString())
+                )));
+        }
+
+        public async Task<TwitterList> GetList(Account account, string slug, long ownerId)
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/show.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString())
+                )));
+        }
+
+        public async Task<TwitterList> GetList(Account account, string slug, string ownerScreenName)
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/show.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName)
+                )));
+        }
+
+        public async Task<List<Status>> GetListline(Account account, long listId, long sinceId, long maxId)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/lists/statuses.json", account,
+                makeQuery("list_id", listId.ToString(),
+                "since_id", sinceId.ToString(), "max_id", maxId.ToString()
+                ))),
+                TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> GetListline(Account account, string slug, long ownerId, long sinceId, long maxId)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/lists/statuses.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString(),
+                "since_id", sinceId.ToString(), "max_id", maxId.ToString()
+                ))),
+                TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> GetListline(Account account, string slug, string ownerScreenName, long sinceId, long maxId)
+        {
+            return TwitterDataFactory.parseArray(JArray.Parse(
+                await Get("https://api.twitter.com/1.1/lists/statuses.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName,
+                "since_id", sinceId.ToString(), "max_id", maxId.ToString()
+                ))),
+                TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<CursoredList<User>> GetSubScribersFromList(Account account, long listId, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/subscribers.json", account,
+                makeQuery("list_id", listId.ToString(),
+                        "count", count != 20 ? count.ToString() : null,
+                        "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, long ownerId, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/subscribers.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString(),
+                        "count", count != 20 ? count.ToString() : null,
+                        "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/lists/subscribers.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName,
+                        "count", count != 20 ? count.ToString() : null,
+                        "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<User>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["users"].ToObject<JArray>(), TwitterDataFactory.parseUser));
+
+            return result;
+        }
+
+        public async Task<User> GetSubScriberFromList(Account account, long userId, long listId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json",account,
+                    makeQuery("user_id", userId.ToString(),
+                    "list_id", listId.ToString())
+                )));
+        }
+
+        public async Task<User> GetSubScriberFromList(Account account, long userId, string slug, long ownerId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
+                    makeQuery("user_id", userId.ToString(),
+                    "slug", slug, "owner_id", ownerId.ToString())
+                )));
+        }
+
+        public async Task<User> GetSubScriberFromList(Account account, long userId, string slug, string ownerScreenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
+                    makeQuery("user_id", userId.ToString(),
+                    "slug", slug, "owner_screen_name", ownerScreenName)
+                )));
+        }
+
+        public async Task<User> GetSubScriberFromList(Account account, string screenName, long listId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
+                    makeQuery("screen_name", screenName,
+                    "list_id", listId.ToString())
+                )));
+        }
+
+        public async Task<User> GetSubScriberFromList(Account account, string screenName, string slug, long ownerId)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
+                    makeQuery("screen_name", screenName,
+                    "slug", slug, "owner_id", ownerId.ToString())
+                )));
+        }
+
+        public async Task<User> GetSubScriberFromList(Account account, string screenName, string slug, string ownerScreenName)
+        {
+            return TwitterDataFactory.parseUser(
+                JObject.Parse(
+                    await Get("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
+                    makeQuery("screen_name", screenName,
+                    "slug", slug, "owner_screen_name", ownerScreenName)
+                )));
+        }
+
+        public async Task<CursoredList<TwitterList>> GetUserSubscriptions(Account account, long userId, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/subscriptions.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
+                TwitterDataFactory.parseTwitterList));
+
+            return result;
+        }
+
+        public async Task<CursoredList<TwitterList>> GetUserSubscriptions(Account account, string screenName, long count = 20, long cursor = -1)
+        {
+            var response = JObject.Parse(await Get("https://api.twitter.com/1.1/lists/subscriptions.json", account,
+                makeQuery("screen_name", screenName,
+                "count", count != 20 ? count.ToString() : null,
+                "cursor", cursor != -1 ? cursor.ToString() : null
+                )));
+
+            var result = new CursoredList<TwitterList>(response["previous_cursor"].ToObject<long>(), response["next_cursor"].ToObject<long>());
+
+            result.AddRange(TwitterDataFactory.parseArray(response["lists"].ToObject<JArray>(),
+                TwitterDataFactory.parseTwitterList));
+
+            return result;
+        }
+
+        public async Task<TwitterList> CreateList(Account account, string name, string mode = "public", string description = "")
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/create.json", account,
+                makeQuery("name", name, "mode", mode, "description", description)
+                )));
+        }
+
+        public async Task<TwitterList> UpdateList(Account account, long listId, string name, string mode = "public", string description = "")
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/update.json", account,
+                makeQuery("list_id", listId.ToString(),
+                    "name", name, "mode", mode, "description", description)
+                )));
+        }
+
+        public async Task<TwitterList> UpdateList(Account account, string slug, long ownerId, string name, string mode = "public", string description = "")
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/update.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString(),
+                    "name", name, "mode", mode, "description", description)
+                )));
+        }
+
+        public async Task<TwitterList> UpdateList(Account account, string slug, string ownerScreenName, string name, string mode = "public", string description = "")
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/update.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName,
+                    "name", name, "mode", mode, "description", description)
+                )));
+        }
+
+        public async Task<TwitterList> DestroyList(Account account, long listId)
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/destroy.json", account,
+                makeQuery("list_id", listId.ToString())
+                )));
+        }
+
+        public async Task<TwitterList> DestroyList(Account account, string slug, long ownerId)
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/destroy.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString())
+                )));
+        }
+
+        public async Task<TwitterList> DestroyList(Account account, string slug, string ownerScreenName)
+        {
+            return TwitterDataFactory.parseTwitterList(JObject.Parse(
+                await Post("https://api.twitter.com/1.1/lists/destroy.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName)
+                )));
+        }
+
+        public async Task AddMemberToUser(Account account, long userId, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "list_id", listId.ToString()));
+        }
+
+        public async Task AddMemberToUser(Account account, long userId, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task AddMemberToUser(Account account, long userId, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task AddMemberToUser(Account account, string screenName, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create.json", account,
+                makeQuery("screen_name", screenName,
+                "list_id", listId.ToString()));
+        }
+
+        public async Task AddMemberToUser(Account account, string screenName, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create.json", account,
+                makeQuery("screen_name", screenName,
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task AddMemberToUser(Account account, string screenName, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create.json", account,
+               makeQuery("screen_name", screenName,
+               "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task AddMembersToUser(Account account, long[] userId, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("user_id", string.Join(",", userId),
+                "list_id", listId.ToString()));
+        }
+
+        public async Task AddMembersToUser(Account account, long[] userId, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("user_id", string.Join(",", userId),
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task AddMembersToUser(Account account, long[] userId, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("user_id", string.Join(",", userId),
+                "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task AddMembersToUser(Account account, string[] screenName, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("screen_name", string.Join(",", screenName),
+                "list_id", listId.ToString()));
+        }
+
+        public async Task AddMembersToUser(Account account, string[] screenName, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("screen_name", string.Join(",", screenName),
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task AddMembersToUser(Account account, string[] screenName, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("screen_name", string.Join(",", screenName),
+                "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task RemoveMemberToUser(Account account, long userId, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/destroy.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "list_id", listId.ToString()));
+        }
+
+        public async Task RemoveMemberToUser(Account account, long userId, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/destroy.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task RemoveMemberToUser(Account account, long userId, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/destroy.json", account,
+                makeQuery("user_id", userId.ToString(),
+                "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task RemoveMemberToUser(Account account, string screenName, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/destroy.json", account,
+                makeQuery("screen_name", screenName,
+                "list_id", listId.ToString()));
+        }
+
+        public async Task RemoveMemberToUser(Account account, string screenName, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/destroy.json", account,
+                makeQuery("screen_name", screenName,
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task RemoveMemberToUser(Account account, string screenName, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/destroy.json", account,
+               makeQuery("screen_name", screenName,
+               "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task RemoveMembersToUser(Account account, long[] userId, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("user_id", string.Join(",", userId),
+                "list_id", listId.ToString()));
+        }
+
+        public async Task RemoveMembersToUser(Account account, long[] userId, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("user_id", string.Join(",", userId),
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task RemoveMembersToUser(Account account, long[] userId, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("user_id", string.Join(",", userId),
+                "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task RemoveMembersToUser(Account account, string[] screenName, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("screen_name", string.Join(",", screenName),
+                "list_id", listId.ToString()));
+        }
+
+        public async Task RemoveMembersToUser(Account account, string[] screenName, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("screen_name", string.Join(",", screenName),
+                "slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task RemoveMembersToUser(Account account, string[] screenName, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/members/create_all.json", account,
+                makeQuery("screen_name", string.Join(",", screenName),
+                "slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task SubscribeAccountToList(Account account, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/subscribers/create.json", account,
+                makeQuery("list_id", listId.ToString()));
+        }
+
+        public async Task SubscribeAccountToList(Account account, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/subscribers/create.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task SubscribeAccountToList(Account account, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/subscribers/create.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName));
+        }
+
+        public async Task UnsubscribeAccountToList(Account account, long listId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/subscribers/destroy.json", account,
+                makeQuery("list_id", listId.ToString()));
+        }
+
+        public async Task UnsubscribeAccountToList(Account account, string slug, long ownerId)
+        {
+            await Post("https://api.twitter.com/1.1/lists/subscribers/destroy.json", account,
+                makeQuery("slug", slug, "owner_id", ownerId.ToString()));
+        }
+
+        public async Task UnsubscribeAccountToList(Account account, string slug, string ownerScreenName)
+        {
+            await Post("https://api.twitter.com/1.1/lists/subscribers/destroy.json", account,
+                makeQuery("slug", slug, "owner_screen_name", ownerScreenName));
         }
     }
 }
