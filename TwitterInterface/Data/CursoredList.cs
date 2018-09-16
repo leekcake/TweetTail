@@ -6,6 +6,12 @@ namespace TwitterInterface.Data
 {
     public class CursoredList<T> : List<T>
     {
+        public CursoredList(long previousCursor, long nextCursor)
+        {
+            this.previousCursor = previousCursor;
+            this.nextCursor = nextCursor;
+        }
+
         long previousCursor;
         long nextCursor;
     }
