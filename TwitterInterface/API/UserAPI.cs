@@ -30,8 +30,8 @@ namespace TwitterInterface.API
         Task<CursoredList<long>> GetPendingRequestFromAccount(Account account, long cursor = -1);
 
         //GET friendships/lookup
-        Task<Friendship> GetFriendship(Account account, long userId);
-        Task<Friendship> GetFriendship(Account account, string screenName);
+        Task<List<Friendship>> GetFriendship(Account account, params long[] userId);
+        Task<List<Friendship>> GetFriendship(Account account, params string[] screenName);
 
         //GET friendships/no_retweets/ids
         Task<List<long>> GetNoRetweetListOfAccount(Account account);
