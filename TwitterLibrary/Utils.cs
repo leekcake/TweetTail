@@ -178,6 +178,7 @@ namespace TwitterLibrary
             //Add signature to Oauth parameters
             authorization.Add("oauth_signature", HMACSHA1Encode(signatureBase.ToString(), Encoding.UTF8.GetBytes(signatureKey.ToString())));
             authorization.OrderBy(pair => pair.Key);
+            queryDict.OrderBy(pair => pair.Key);
 
             //Register Oauth parameters to Authorization Header
             var authorizationValue = new StringBuilder();
@@ -195,7 +196,14 @@ namespace TwitterLibrary
             //Add other parameters
             if (queryDict.Count != 0)
             {
-                message.RequestUri = new Uri(uri.ToString() + "?" + ToWebString(queryDict) );
+                if (method == HttpMethod.Post)
+                {
+                    message.Content = new StringContent(ToWebString(queryDict), Encoding.UTF8, "application/x-www-form-urlencoded");
+                }
+                else
+                {
+                    message.RequestUri = new Uri(uri.ToString() + "?" + ToWebString(queryDict));
+                }
             }
             return message;
         }
