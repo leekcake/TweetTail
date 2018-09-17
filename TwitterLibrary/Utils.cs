@@ -10,6 +10,7 @@ using System.IO;
 using TwitterInterface.Data;
 using TwitterLibrary.Data;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace TwitterLibrary
 {
@@ -17,7 +18,13 @@ namespace TwitterLibrary
     {
         public static void VerifyTwitterResponse(HttpResponseMessage responseMessage)
         {
-            //TODO: Verify
+            if(!responseMessage.IsSuccessStatusCode)
+            {
+                var json = responseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                
+                //TODO: Wrapping with Custom Exception
+                throw new IOException(JObject.Parse(json).ToString());
+            }
         }
 
         public static readonly Random random = new Random();
