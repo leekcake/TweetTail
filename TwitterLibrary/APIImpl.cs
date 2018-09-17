@@ -17,7 +17,7 @@ using System.Net.Http.Headers;
 
 namespace TwitterLibrary
 {
-    public class APIImpl : AccountAPI, CollectionAPI, MediaAPI, StatusAPI, TwitterListAPI, UserAPI
+    public class APIImpl : API
     {
         private static KeyValuePair<string, string>[] makeQuery(params string[] query)
         {
