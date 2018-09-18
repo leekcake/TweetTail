@@ -4,6 +4,7 @@ using TwitterInterface.Data;
 using TwitterLibrary;
 using System.IO;
 using System.Runtime.ExceptionServices;
+using Newtonsoft.Json.Linq;
 
 namespace TwitterLibraryTester
 {
@@ -68,9 +69,7 @@ namespace TwitterLibraryTester
             {
                 if (AskConsole("Use exist account?"))
                 {
-                    var read = new FileStream("Account.bin", FileMode.Open);
-                    account = api.LoadAccount(read);
-                    read.Close();
+                    account = api.LoadAccount( JObject.Parse( File.ReadAllText("Account.bin")) );
                     return;
                 }
             }
@@ -85,9 +84,7 @@ namespace TwitterLibraryTester
 
             account = await token.login(line);
 
-            var stream = new FileStream("Account.bin", FileMode.Create);
-            account.Save(stream);
-            stream.Close();
+            File.WriteAllText("Account.bin", account.Save().ToString());
 
             Console.WriteLine("Login Test OK");
         }

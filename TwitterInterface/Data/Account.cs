@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace TwitterInterface.Data
 {
@@ -12,11 +13,13 @@ namespace TwitterInterface.Data
     {
         public long id;
 
-        public virtual void Save(Stream stream)
+        public virtual JObject Save()
         {
-            var writer = new BinaryWriter(stream);
-            writer.Write(1); //Version Code
-            writer.Write(id);
+            var result = new JObject();
+
+            result["id"] = id;
+
+            return result;
         }
     }
 }

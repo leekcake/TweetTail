@@ -164,9 +164,9 @@ namespace TwitterLibrary
                 ), TwitterDataFactory.parseSavedSearch).ToList();
         }
 
-        public Account LoadAccount(Stream stream)
+        public Account LoadAccount(JObject data)
         {
-            return LibAccount.Load(stream);
+            return LibAccount.Load(data);
         }
 
         public async Task RemoveProfileBanner(Account account)

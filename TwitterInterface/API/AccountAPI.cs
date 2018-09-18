@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace TwitterInterface.API
 {
     public interface AccountAPI
     {
-        Account LoadAccount(Stream stream);
+        Account LoadAccount(JObject data);
 
         //POST oauth/request_token
         //POST oauth/access_token

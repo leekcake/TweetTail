@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,36 +11,24 @@ namespace TwitterLibrary.Data
     {
         public Token consumer, oauth;
 
-        public override void Save(Stream stream)
+        public override JObject Save()
         {
-            var writer = new BinaryWriter(stream);
+            var result = base.Save();
+            result["consumer_key"] = consumer.key;
+            result["consumer_secret"] = consumer.secret;
 
-            writer.Write(1); //Version Code
-            writer.Write(id);
+            result["oauth_key"] = oauth.key;
+            result["oauth_secret"] = oauth.secret;
 
-            writer.Write(consumer.key);
-            writer.Write(consumer.secret);
-
-            writer.Write(oauth.key);
-            writer.Write(oauth.secret);
+            return result;
         }
 
-        public static LibAccount Load(Stream stream)
+        public static LibAccount Load(JObject data)
         {
-            var reader = new BinaryReader(stream);
-
-            var version = reader.ReadInt32();
-
-            var id = reader.ReadInt64();
-            var consumerKey = reader.ReadString();
-            var consumerSecret = reader.ReadString();
-            var oauthKey = reader.ReadString();
-            var oauthSecret = reader.ReadString();
-
             var result = new LibAccount();
-            result.id = id;
-            result.consumer = new Token(consumerKey, consumerSecret);
-            result.oauth = new Token(oauthKey, oauthSecret);
+            result.id = data["id"].ToObject<long>();
+            result.consumer = new Token(data["consumer_key"].ToString(), data["consumer_secret"].ToString());
+            result.oauth = new Token(data["oauth_key"].ToString(), data["oauth_secret"].ToString());
 
             return result;
         }
