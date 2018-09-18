@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using TwitterInterface.API;
 using Library.Manager;
 
@@ -20,6 +21,9 @@ namespace Library
             twitter = api;
             this.saveDir = saveDir;
             this.cacheDir = cacheDir;
+
+            Directory.CreateDirectory(saveDir);
+            Directory.CreateDirectory(cacheDir);
 
             account = new AccountManager(this);
             media = new MediaManager(this);
