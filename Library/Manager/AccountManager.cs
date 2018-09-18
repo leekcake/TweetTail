@@ -19,7 +19,7 @@ namespace Library.Manager
             load();
         }
 
-        internal List<AccountGroup> accountGroups;
+        internal List<AccountGroup> accountGroups = new List<AccountGroup>();
         public IReadOnlyCollection<AccountGroup> readOnlyAccountGroups => accountGroups.AsReadOnly();
 
         public void addAccount(Account account)
