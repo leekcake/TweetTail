@@ -12,6 +12,17 @@ namespace Library
 
         public string saveDir, cacheDir;
 
+        public AccountManager account;
         public MediaManager media;
+
+        public TweetTail(API api, string saveDir, string cacheDir)
+        {
+            twitter = api;
+            this.saveDir = saveDir;
+            this.cacheDir = cacheDir;
+
+            account = new AccountManager(this);
+            media = new MediaManager(this);
+        }
     }
 }
