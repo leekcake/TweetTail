@@ -15,5 +15,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Library.csproj" />
+    <ProjectReference Include="..\..\TwitterLibrary\TwitterLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Login\LoginView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

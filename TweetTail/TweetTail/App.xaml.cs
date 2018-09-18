@@ -1,17 +1,29 @@
 ﻿using System;
+using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Library;
+using TweetTail.Login;
+using TwitterLibrary;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace TweetTail
 {
     public partial class App : Application
     {
+        public static Library.TweetTail tail;
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            var localData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+            tail = new Library.TweetTail(new APIImpl(), 
+                Path.Combine(localData, "save"),
+                Path.Combine(localData, "cache"));
+
+            MainPage = new LoginView();
         }
 
         protected override void OnStart()

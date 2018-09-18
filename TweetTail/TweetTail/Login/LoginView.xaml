@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TweetTail.Login.LoginView">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="트위터에 로그인 합니다">
+            </Label>
+            <Button x:Name="btnLoginTry" Clicked="btnLoginTry_Clicked" Text="로그인 시도하기" />
+            <Label Text="만들어진 로그인 링크에서 생긴 핀을 입력하세요" />
+            <Editor x:Name="editPin"/>
+            <Button x:Name="btnLoginComplete" Clicked="btnLoginComplete_Clicked" Text="로그인 완료하기" />
+            <Label x:Name="lblStatus" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
