@@ -86,6 +86,7 @@ namespace Library.Container.Media
                 return tasks[id].task;
             }
             var task = new ImageTask(this, uri, id);
+            tasks[id] = task;
             return task.task;
         }
 
