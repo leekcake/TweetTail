@@ -76,8 +76,8 @@ namespace Library.Container.Media
             }
         }
 
-        private ConcurrentDictionary<long, ImageTask> tasks;
-        private ConcurrentDictionary<long, WeakReference<ImageSource>> cache;
+        private ConcurrentDictionary<long, ImageTask> tasks = new ConcurrentDictionary<long, ImageTask>();
+        private ConcurrentDictionary<long, WeakReference<ImageSource>> cache = new ConcurrentDictionary<long, WeakReference<ImageSource>>();
 
         internal Task<ImageSource> request(string uri, long id)
         {
