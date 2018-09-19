@@ -34,11 +34,11 @@ namespace Library.Container.Media
                 task = new Task<ImageSource>(() =>
                 {
                     //Check memory cache
-                    if(owner.cache.ContainsKey(id))
+                    if (owner.cache.ContainsKey(id))
                     {
                         ImageSource cacheData;
                         owner.cache[id].TryGetTarget(out cacheData);
-                        if(cacheData != null)
+                        if (cacheData != null)
                         {
                             return cacheData;
                         }
@@ -46,7 +46,7 @@ namespace Library.Container.Media
 
                     //Check disk cache
                     var cachePath = Path.Combine(owner.cacheDir, id + ".bin");
-                    if (File.Exists( cachePath ))
+                    if (File.Exists(cachePath))
                     {
                         return ImageSource.FromFile(cachePath);
                     }
@@ -56,22 +56,36 @@ namespace Library.Container.Media
                     message.Method = HttpMethod.Get;
                     message.RequestUri = new Uri(uri);
 
-                    var response = owner.owner.client.SendAsync(message, token.Token).GetAwaiter().GetResult();
-                    var data = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
-
-                    //Save cache in background
-                    new Task(() =>
+                    try
                     {
-                        File.WriteAllBytes(cachePath, data);
-                    }).Start();
+                        var response = owner.owner.client.SendAsync(message, token.Token).GetAwaiter().GetResult();
+                        var data = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
 
-                    var cache = ImageSource.FromStream(() => { return new MemoryStream(data); });
-                    owner.cache[id] = new WeakReference<ImageSource>(cache);
+                        //Save cache in background
+                        new Task(() =>
+                        {
+                            File.WriteAllBytes(cachePath, data);
+                        }).Start();
 
-                    ImageTask task;
-                    owner.tasks.TryRemove(id, out task);
+                        var cache = ImageSource.FromStream(() => { return new MemoryStream(data); });
+                        owner.cache[id] = new WeakReference<ImageSource>(cache);
 
-                    return cache;
+                        ImageTask task;
+                        owner.tasks.TryRemove(id, out task);
+
+                        return cache;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        System.Diagnostics.Debug.WriteLine(nre.StackTrace);
+                        return null;
+                    }
+                    catch (TaskCanceledException tce)
+                    {
+                        System.Diagnostics.Debug.WriteLine(tce.StackTrace);
+                        return null;
+                    }
+
                 });
                 task.Start();
             }
@@ -82,7 +96,7 @@ namespace Library.Container.Media
 
         internal Task<ImageSource> request(string uri, long id)
         {
-            if(tasks.ContainsKey(id))
+            if (tasks.ContainsKey(id))
             {
                 return tasks[id].task;
             }
@@ -94,7 +108,7 @@ namespace Library.Container.Media
         internal void release(long id)
         {
             //if operation in progress
-            if(tasks.ContainsKey(id))
+            if (tasks.ContainsKey(id))
             {
                 //Cancel
                 tasks[id].token.Cancel();
