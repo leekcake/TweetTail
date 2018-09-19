@@ -151,9 +151,9 @@ namespace TwitterLibrary
             {
                 status.polls = parseArray(entities["polls"].ToObject<JArray>(), parsePolls);
             }
-            if (obj.ContainsKey("extented_entities"))
+            if (obj.ContainsKey("extended_entities"))
             {
-                status.extendMedias = parseArray(obj["extented_entities"]["media"].ToObject<JArray>(), parseExtendMedia);
+                status.extendMedias = parseArray(obj["extended_entities"]["media"].ToObject<JArray>(), parseExtendMedia);
             }
             status.isFavortedByUser = SafeGetBool(obj, "favorited");
             status.isRetweetedByUser = SafeGetBool(obj, "retweeted");
