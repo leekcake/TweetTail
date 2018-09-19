@@ -21,6 +21,7 @@ namespace Library.Container.Media
         {
             this.owner = owner;
             cacheDir = Path.Combine(owner.cacheDir, type);
+            Directory.CreateDirectory(cacheDir);
         }
 
         private class ImageTask
