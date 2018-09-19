@@ -35,7 +35,12 @@ namespace Library.Container.Media
                     //Check memory cache
                     if(owner.cache.ContainsKey(id))
                     {
-                        return owner.cache[id];
+                        ImageSource cacheData;
+                        owner.cache[id].TryGetTarget(out cacheData);
+                        if(cacheData != null)
+                        {
+                            return cacheData;
+                        }
                     }
 
                     //Check disk cache
@@ -60,7 +65,11 @@ namespace Library.Container.Media
                     }).Start();
 
                     var cache = ImageSource.FromStream(() => { return new MemoryStream(data); });
-                    owner.cache[id] = cache;
+                    owner.cache[id] = new WeakReference<ImageSource>(cache);
+
+                    ImageTask task;
+                    owner.tasks.TryRemove(id, out task);
+
                     return cache;
                 });
                 task.Start();
@@ -68,7 +77,7 @@ namespace Library.Container.Media
         }
 
         private ConcurrentDictionary<long, ImageTask> tasks;
-        private ConcurrentDictionary<long, ImageSource> cache;
+        private ConcurrentDictionary<long, WeakReference<ImageSource>> cache;
 
         internal Task<ImageSource> request(string uri, long id)
         {
@@ -85,14 +94,8 @@ namespace Library.Container.Media
             //if operation in progress
             if(tasks.ContainsKey(id))
             {
+                //Cancel
                 tasks[id].token.Cancel();
-            }
-            //if operation is completed
-            else if(cache.ContainsKey(id))
-            {
-                //release cache
-                ImageSource dat;
-                cache.TryRemove(id, out dat);
             }
         }
     }
