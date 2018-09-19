@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using Library.Container.Account;
@@ -20,7 +21,7 @@ namespace Library.Manager
         }
 
         internal List<AccountGroup> accountGroups = new List<AccountGroup>();
-        public IReadOnlyCollection<AccountGroup> readOnlyAccountGroups => accountGroups.AsReadOnly();
+        public ReadOnlyCollection<AccountGroup> readOnlyAccountGroups => accountGroups.AsReadOnly();
 
         public void addAccount(Account account)
         {
