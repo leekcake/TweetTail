@@ -38,6 +38,8 @@ namespace Library.Container.Media
                     {
                         ImageSource cacheData;
                         owner.cache[id].TryGetTarget(out cacheData);
+                        ImageTask task;
+                        owner.tasks.TryRemove(id, out task);
                         if (cacheData != null)
                         {
                             return cacheData;
@@ -48,7 +50,14 @@ namespace Library.Container.Media
                     var cachePath = Path.Combine(owner.cacheDir, id + ".bin");
                     if (File.Exists(cachePath))
                     {
-                        return ImageSource.FromFile(cachePath);
+                        var data = File.ReadAllBytes(cachePath);
+
+                        var cache = ImageSource.FromStream(() => { return new MemoryStream(data); });
+                        owner.cache[id] = new WeakReference<ImageSource>(cache);
+
+                        ImageTask task;
+                        owner.tasks.TryRemove(id, out task);
+                        return cache;
                     }
 
                     //Download it
