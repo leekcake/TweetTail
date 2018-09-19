@@ -18,7 +18,7 @@ namespace Library.Container.Media
         {
         }
 
-        private Task<ImageSource> request(Status status, int inx)
+        public Task<ImageSource> request(Status status, int inx)
         {
             var media = status.extendMedias[inx];
             return request(media.mediaURLHttps + tailOfURL, media.id);
