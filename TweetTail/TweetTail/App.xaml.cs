@@ -18,12 +18,19 @@ namespace TweetTail
             InitializeComponent();
 
             var localData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
+            
             tail = new Library.TweetTail(new APIImpl(), 
                 Path.Combine(localData, "save"),
                 Path.Combine(localData, "cache"));
 
-            MainPage = new LoginView();
+            if (tail.account.readOnlyAccountGroups.Count != 0)
+            {
+                MainPage = new Status.StatusPage();
+            }
+            else
+            {
+                MainPage = new LoginView();
+            }
         }
 
         protected override void OnStart()

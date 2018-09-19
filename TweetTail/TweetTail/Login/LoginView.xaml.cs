@@ -39,8 +39,7 @@ namespace TweetTail.Login
                         return;
                     }
                 }
-                //TODO: Transfer user to...
-                lblStatus.Text = "TODO: Transfer user";
+                Application.Current.MainPage = new Status.StatusPage();
             }
             catch (Exception ex)
             {
