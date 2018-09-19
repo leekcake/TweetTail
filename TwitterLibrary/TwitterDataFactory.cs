@@ -253,7 +253,7 @@ namespace TwitterLibrary
                 info.aspectRatio = parseIndices( infoObj["aspect_ratio"].ToObject<JArray>() );
                 info.duration = infoObj["duration_millis"].ToObject<int>();
 
-                var variantArray = obj["variants"].ToObject<JArray>();
+                var variantArray = infoObj["variants"].ToObject<JArray>();
                 info.variants = parseArray(variantArray, parseVideoVariant);
             }
 
@@ -264,7 +264,7 @@ namespace TwitterLibrary
         {
             var variant = new VideoVariant();
             variant.url = obj["url"].ToString();
-            variant.bitrate = obj["bitrate"].ToObject<int>();
+            variant.bitrate = (int) SafeGetLong(obj, "bitrate");
             variant.contentType = obj["content_type"].ToString();
 
             return variant;
