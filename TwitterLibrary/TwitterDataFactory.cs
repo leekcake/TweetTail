@@ -53,11 +53,11 @@ namespace TwitterLibrary
             }
         }
 
-        private static Status SafeGetStatus(JObject obj, string key)
+        private static Status SafeGetStatus(JObject obj, string key, long issuer)
         {
             if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
-                return parseStatus(obj[key].ToObject<JObject>());
+                return parseStatus(obj[key].ToObject<JObject>(), issuer);
             }
             else
             {
@@ -66,6 +66,7 @@ namespace TwitterLibrary
         }
 
         public delegate T ParseObject<T>(JObject obj);
+        public delegate T ParseObjectWithIssuer<T>(JObject obj, long issuer);
         public static T[] parseArray<T>(JArray array, ParseObject<T> parse)
         {
             var result = new T[array.Count];
@@ -78,9 +79,22 @@ namespace TwitterLibrary
             return result;
         }
 
-        public static User parseUser(JObject obj)
+        public static T[] parseArray<T>(JArray array, long issuer, ParseObjectWithIssuer<T> parse)
+        {
+            var result = new T[array.Count];
+
+            for (int i = 0; i < array.Count; i++)
+            {
+                result[i] = parse(array[i].ToObject<JObject>(), issuer);
+            }
+
+            return result;
+        }
+
+        public static User parseUser(JObject obj, long issuer)
         {
             var user = new User();
+            user.issuer = new long[] { issuer };
 
             user.id = obj["id"].ToObject<long>();
             user.nickName = obj["name"].ToString();
@@ -120,10 +134,11 @@ namespace TwitterLibrary
             return user;
         }
 
-        public static Status parseStatus(JObject obj)
+        public static Status parseStatus(JObject obj, long issuer)
         {
             var status = new Status();
 
+            status.issuer = new long[] { issuer };
             status.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
             status.id = obj["id"].ToObject<long>();
             status.text = obj["text"].ToString();
@@ -132,13 +147,13 @@ namespace TwitterLibrary
             status.replyToStatusId = SafeGetLong(obj, "in_reply_to_status_id");
             status.replyToUserId = SafeGetLong(obj, "in_reply_to_user_id");
             status.replyToScreenName = SafeGetString(obj, "in_reply_to_screen_name");
-            status.creater = parseUser(obj["user"].ToObject<JObject>());
+            status.creater = parseUser(obj["user"].ToObject<JObject>(), issuer);
             //TODO: coordinates
             //TODO: place
             status.quotedStatusId = SafeGetLong(obj, "quoted_status_id");
             status.isQuote = obj["is_quote_status"].ToObject<bool>();
-            status.quotedStatus = SafeGetStatus(obj, "quoted_status");
-            status.retweetedStatus = SafeGetStatus(obj, "retweeted_status");
+            status.quotedStatus = SafeGetStatus(obj, "quoted_status", issuer);
+            status.retweetedStatus = SafeGetStatus(obj, "retweeted_status", issuer);
             status.retweetCount = obj["retweet_count"].ToObject<int>();
             status.favoriteCount = obj["favorite_count"].ToObject<int>();
             var entities = obj["entities"].ToObject<JObject>();
@@ -320,7 +335,7 @@ namespace TwitterLibrary
             return collectionTweet;
         }
 
-        public static TwitterList parseTwitterList(JObject obj)
+        public static TwitterList parseTwitterList(JObject obj, long issuer)
         {
             var twitterList = new TwitterList();
 
@@ -334,7 +349,7 @@ namespace TwitterLibrary
             twitterList.id = obj["id"].ToObject<long>();
             twitterList.fullName = obj["full_name"].ToString();
             twitterList.description = obj["description"].ToString();
-            twitterList.user = parseUser(obj["user"].ToObject<JObject>());
+            twitterList.user = parseUser(obj["user"].ToObject<JObject>(), issuer);
 
             return twitterList;
         }
