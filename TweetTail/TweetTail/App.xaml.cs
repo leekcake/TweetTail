@@ -20,8 +20,7 @@ namespace TweetTail
             var localData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             
             tail = new Library.TweetTail(new APIImpl(), 
-                Path.Combine(localData, "save"),
-                Path.Combine(localData, "cache"));
+                Path.Combine(localData, "save"));
 
             if (tail.account.readOnlyAccountGroups.Count != 0)
             {

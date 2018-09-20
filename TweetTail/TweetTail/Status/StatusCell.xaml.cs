@@ -14,8 +14,6 @@ namespace TweetTail.Status
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class StatusCell : ViewCell
 	{
-        private DataStatus beforeStatus;
-
         private Image getMediaView(int inx)
         {
             switch(inx)
@@ -49,54 +47,10 @@ namespace TweetTail.Status
             }
         }
 
-        protected void Clear()
-        {
-            if(beforeStatus == null)
-            {
-                return;
-            }
-
-            var display = getDisplayStatus(beforeStatus);
-            imgProfile.Source = null;
-            App.tail.media.profile.release(display.creater);
-            if(display.extendMedias != null)
-            {
-                App.tail.media.mediaThumb.release(display);
-                for(int i = 0; i < 4; i++)
-                {
-                    getMediaView(i).Source = null;
-                }
-            }
-
-            beforeStatus = null;
-        }
-
         protected async Task UpdateImage()
         {
-            var display = getDisplayStatus(beforeStatus);
-
-            var profileTask = App.tail.media.profile.request(display.creater);
-            Task<ImageSource>[] mediaTasks;
-
-            if(display.extendMedias != null)
-            {
-                mediaTasks = new Task<ImageSource>[display.extendMedias.Length];
-                for(int i = 0; i < mediaTasks.Length; i++)
-                {
-                    mediaTasks[i] = App.tail.media.mediaThumb.request(display, i);
-                }
-            }
-            else
-            {
-                mediaTasks = new Task<ImageSource>[] { };
-            }
-
-            imgProfile.Source = await profileTask;
-
-            for(int i = 0; i < mediaTasks.Length; i++)
-            {
-                getMediaView(i).Source = await mediaTasks[i];
-            }
+            var display = getDisplayStatus( BindingContext as DataStatus );
+            //TODO: Show image
         }
 
         protected async Task Update()
@@ -107,12 +61,6 @@ namespace TweetTail.Status
                 return;
             }
             var status = BindingContext as DataStatus;
-            if(beforeStatus == status)
-            {
-                return;
-            }
-            Clear();
-            beforeStatus = status;
             var display = getDisplayStatus(status);
 
             if(display != status)
@@ -146,10 +94,10 @@ namespace TweetTail.Status
             await UpdateImage();
         }
 
-        protected override void OnBindingContextChanged()
+        protected override async void OnBindingContextChanged()
         {
+            await Update();
             base.OnBindingContextChanged();
-            Update();
         }
     }
 }

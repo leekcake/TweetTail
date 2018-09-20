@@ -11,22 +11,18 @@ namespace Library
     {
         public API twitter;
 
-        public string saveDir, cacheDir;
+        public string saveDir;
 
         public AccountManager account;
-        public MediaManager media;
 
-        public TweetTail(API api, string saveDir, string cacheDir)
+        public TweetTail(API api, string saveDir)
         {
             twitter = api;
             this.saveDir = saveDir;
-            this.cacheDir = cacheDir;
 
             Directory.CreateDirectory(saveDir);
-            Directory.CreateDirectory(cacheDir);
 
             account = new AccountManager(this);
-            media = new MediaManager(this);
         }
     }
 }
