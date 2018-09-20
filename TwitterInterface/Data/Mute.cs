@@ -28,7 +28,7 @@ namespace TwitterInterface.Data
             public long id;
         }
 
-        public class keywordTarget : Target
+        public class KeywordTarget : Target
         {
             public string keyword;
             public string replace;
