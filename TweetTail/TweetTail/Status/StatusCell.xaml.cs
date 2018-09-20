@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FFImageLoading.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace TweetTail.Status
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class StatusCell : ViewCell
 	{
-        private Image getMediaView(int inx)
+        private CachedImage getMediaView(int inx)
         {
             switch(inx)
             {
@@ -47,13 +48,28 @@ namespace TweetTail.Status
             }
         }
 
-        protected async Task UpdateImage()
+        protected void UpdateImage()
         {
             var display = getDisplayStatus( BindingContext as DataStatus );
-            //TODO: Show image
+
+            imgProfile.Source = null;
+            for(int i = 0; i < 4; i++)
+            {
+                getMediaView(i).Source = null;
+            }
+
+            imgProfile.Source = display.creater.profileHttpsImageURL;
+
+            if (display.extendMedias != null)
+            {
+                for (int i = 0; i < display.extendMedias.Length; i++)
+                {
+                    getMediaView(i).Source = display.extendMedias[i].mediaURLHttps;
+                }
+            }
         }
 
-        protected async Task Update()
+        protected void Update()
         {
             if (BindingContext is DataStatus) { }
             else
@@ -91,12 +107,12 @@ namespace TweetTail.Status
             {
                 viewMedias.IsVisible = false;
             }
-            await UpdateImage();
+            UpdateImage();
         }
 
-        protected override async void OnBindingContextChanged()
+        protected override void OnBindingContextChanged()
         {
-            await Update();
+            Update();
             base.OnBindingContextChanged();
         }
     }

@@ -2,6 +2,7 @@
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
           xmlns:local="clr-namespace:TweetTail.Res;assembly=TweetTail"
+          xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="TweetTail.Status.StatusCell">
     <ViewCell.View>
         <StackLayout Margin="4">
@@ -10,10 +11,10 @@
                 <Label x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Image x:Name="imgProfile" Source="{local:ImageResource TweetTail.Res.sample_icon.png}"
+                <ffimageloading:CachedImage x:Name="imgProfile" Source="{local:ImageResource TweetTail.Res.sample_icon.png}"
                        VerticalOptions="Start"
                        WidthRequest="48"
-                       HeightRequest="48"></Image>
+                       HeightRequest="48"></ffimageloading:CachedImage>
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label x:Name="lblName" Text="파란전기 @leekcake_smile"></Label>
@@ -24,10 +25,10 @@
                     
                     <Label x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
                     <StackLayout x:Name="viewMedias" IsVisible="False" Orientation="Horizontal">
-                        <Image x:Name="imgMedia1" WidthRequest="48" HeightRequest="48"></Image>
-                        <Image x:Name="imgMedia2" WidthRequest="48" HeightRequest="48"></Image>
-                        <Image x:Name="imgMedia3" WidthRequest="48" HeightRequest="48"></Image>
-                        <Image x:Name="imgMedia4" WidthRequest="48" HeightRequest="48"></Image>
+                        <ffimageloading:CachedImage x:Name="imgMedia1" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgMedia2" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgMedia3" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgMedia4" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
                     </StackLayout>
                     <Label x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
                     <StackLayout Orientation="Horizontal">
