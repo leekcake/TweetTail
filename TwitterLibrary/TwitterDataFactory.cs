@@ -5,10 +5,11 @@ using TwitterInterface.Data;
 using TwitterInterface.Data.Entity;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using TwitterLibrary.Container;
 
 namespace TwitterLibrary
 {
-    class TwitterDataFactory
+    public class TwitterDataFactory
     {
         public const string TwitterDateTemplate = "ddd MMM dd HH:mm:ss +ffff yyyy";
 
@@ -65,30 +66,41 @@ namespace TwitterLibrary
             }
         }
 
+        public static FilterStore<Status> statusFilter = new FilterStore<Status>();
+        public static FilterStore<User> userFilter = new FilterStore<User>();
+
         public delegate T ParseObject<T>(JObject obj);
         public delegate T ParseObjectWithIssuer<T>(JObject obj, long issuer);
         public static T[] parseArray<T>(JArray array, ParseObject<T> parse)
         {
-            var result = new T[array.Count];
+            var result = new List<T>(array.Count);
 
             for (int i = 0; i < array.Count; i++)
             {
-                result[i] = parse(array[i].ToObject<JObject>());
+                var data = parse(array[i].ToObject<JObject>());
+                if(data != null)
+                {
+                    result.Add(data);
+                }
             }
 
-            return result;
+            return result.ToArray();
         }
 
         public static T[] parseArray<T>(JArray array, long issuer, ParseObjectWithIssuer<T> parse)
         {
-            var result = new T[array.Count];
+            var result = new List<T>(array.Count);
 
             for (int i = 0; i < array.Count; i++)
             {
-                result[i] = parse(array[i].ToObject<JObject>(), issuer);
+                var data = parse(array[i].ToObject<JObject>(), issuer);
+                if (data != null)
+                {
+                    result.Add(data);
+                }
             }
 
-            return result;
+            return result.ToArray();
         }
 
         public static User parseUser(JObject obj, long issuer)
@@ -131,7 +143,7 @@ namespace TwitterLibrary
             //TODO: withheld_in_countries
             //TODO: withheld_scope
 
-            return user;
+            return userFilter.ApplyFilter(user);
         }
 
         public static Status parseStatus(JObject obj, long issuer)
@@ -173,8 +185,8 @@ namespace TwitterLibrary
             status.isFavortedByUser = SafeGetBool(obj, "favorited");
             status.isRetweetedByUser = SafeGetBool(obj, "retweeted");
             status.possiblySensitive = SafeGetBool(obj, "possibly_sensitive");
-
-            return status;
+            
+            return statusFilter.ApplyFilter( status );
         }
 
         public static Indices parseIndices(JArray obj)
