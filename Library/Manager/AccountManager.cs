@@ -22,12 +22,28 @@ namespace Library.Manager
 
         internal List<AccountGroup> accountGroups = new List<AccountGroup>();
         public ReadOnlyCollection<AccountGroup> readOnlyAccountGroups => accountGroups.AsReadOnly();
+        public AccountGroup SelectedAccountGroup => accountGroups.Find((data) => { return data.id == selectedAccountId; });
+
+        private long selectedAccountId;
+        public long SelectedAccountId {
+            get {
+                return selectedAccountId;
+            }
+            set {
+                selectedAccountId = value;
+                save();
+            }
+        }
 
         public void addAccount(Account account)
         {
             var group = accountGroups.Find((data) => { return data.id == account.id; });
             if(group == null)
             {
+                if(accountGroups.Count == 0)
+                {
+                    selectedAccountId = account.id;
+                }
                 group = new AccountGroup(owner, account.id);
                 accountGroups.Add(group);
             }
@@ -51,6 +67,17 @@ namespace Library.Manager
             if(group.accounts.Count == 0)
             {
                 accountGroups.RemoveAll((data) => data.id == group.id);
+                if(account.id == selectedAccountId)
+                {
+                    if(accountGroups.Count == 0)
+                    {
+                        selectedAccountId = -1;
+                    }
+                    else
+                    {
+                        selectedAccountId = accountGroups[0].id;
+                    }
+                }
             }
 
             save();
@@ -64,9 +91,12 @@ namespace Library.Manager
                 return;
             }
 
-            var data = JArray.Parse(File.ReadAllText(savePath));
+            var data = JObject.Parse(File.ReadAllText(savePath));
 
-            foreach(var accountGroup in data)
+            selectedAccountId = data["selectedAccountId"].ToObject<long>();
+            var accounts = data["accounts"];
+
+            foreach(var accountGroup in accounts)
             {
                 accountGroups.Add(new AccountGroup(owner, accountGroup.ToObject<JObject>()));
             }
@@ -74,11 +104,15 @@ namespace Library.Manager
 
         private void save()
         {
-            var data = new JArray();
+            var data = new JObject();
+            data["selectedAccountId"] = SelectedAccountId;
+
+            var accounts = new JArray();
             foreach(var accountGroup in accountGroups)
             {
-                data.Add(accountGroup.save());
+                accounts.Add(accountGroup.save());
             }
+            data["accounts"] = accounts;
 
             File.WriteAllText(savePath, data.ToString());
         }
