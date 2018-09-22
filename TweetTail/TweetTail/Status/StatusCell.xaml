@@ -7,20 +7,20 @@
     <ViewCell.View>
         <StackLayout Margin="4">
             <StackLayout x:Name="viewHeader" Orientation="Horizontal" >
-                <Image Source="{local:ImageResource TweetTail.Res.ic_repeat_black_48dp.png}" WidthRequest="16" HeightRequest="16" />
+                <ffimageloading:CachedImage x:Name="imgHeader" WidthRequest="16" HeightRequest="16" />
                 <Label x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <ffimageloading:CachedImage x:Name="imgProfile" Source="{local:ImageResource TweetTail.Res.sample_icon.png}"
+                <ffimageloading:CachedImage x:Name="imgProfile" Source="TweetTail.Res.sample_icon.png"
                        VerticalOptions="Start"
                        WidthRequest="48"
                        HeightRequest="48"></ffimageloading:CachedImage>
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label x:Name="lblName" Text="파란전기 @leekcake_smile"></Label>
-                        <Image x:Name="imgLock" WidthRequest="16" HeightRequest="16"  Source="{local:ImageResource TweetTail.Res.ic_lock_black_24dp.png}">
+                        <ffimageloading:CachedImage x:Name="imgLock" WidthRequest="16" HeightRequest="16"  Source="TweetTail.Res.ic_lock_black_24dp.png">
                             
-                        </Image>
+                        </ffimageloading:CachedImage>
                     </StackLayout>
                     
                     <Label x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
@@ -32,11 +32,11 @@
                     </StackLayout>
                     <Label x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
                     <StackLayout Orientation="Horizontal">
-                        <Image x:Name="imgReply" Source="{local:ImageResource TweetTail.Res.ic_reply_black_48dp.png}" WidthRequest="24" HeightRequest="24"></Image>
-                        <Image x:Name="imgRetweet" Source="{local:ImageResource TweetTail.Res.ic_repeat_black_48dp.png}" WidthRequest="24" HeightRequest="24"></Image>
-                        <Image x:Name="imgFavorite" Source="{local:ImageResource TweetTail.Res.ic_grade_black_48dp.png}" WidthRequest="24" HeightRequest="24"></Image>
-                        <Image x:Name="imgDelete" Source="{local:ImageResource TweetTail.Res.ic_delete_black_24dp.png}" WidthRequest="24" HeightRequest="24"></Image>
-                        <Image x:Name="imgMore" Source="{local:ImageResource TweetTail.Res.ic_more_horiz_black_48dp.png}" WidthRequest="24" HeightRequest="24"></Image>
+                        <ffimageloading:CachedImage x:Name="imgReply" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgRetweet" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgFavorite" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgDelete" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgMore" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

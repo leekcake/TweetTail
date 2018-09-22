@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -34,6 +34,12 @@ namespace TweetTail.Status
 		public StatusCell ()
 		{
 			InitializeComponent ();
+            imgHeader.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
+            imgReply.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_reply_black_48dp.png", Assembly.GetExecutingAssembly());
+            imgRetweet.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
+            imgFavorite.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_grade_black_48dp.png", Assembly.GetExecutingAssembly());
+            imgDelete.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_delete_black_24dp.png", Assembly.GetExecutingAssembly());
+            imgMore.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_more_horiz_black_48dp.png", Assembly.GetExecutingAssembly());
 		}
 
         private DataStatus getDisplayStatus(DataStatus status)
