@@ -15,6 +15,12 @@ namespace TweetTail.Status
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class StatusCell : ViewCell
 	{
+        private DataStatus status {
+            get {
+                return BindingContext as DataStatus;
+            }
+        }
+
         private CachedImage getMediaView(int inx)
         {
             switch(inx)
@@ -34,13 +40,61 @@ namespace TweetTail.Status
 		public StatusCell ()
 		{
 			InitializeComponent ();
+
             imgHeader.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
             imgReply.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_reply_black_48dp.png", Assembly.GetExecutingAssembly());
             imgRetweet.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
             imgFavorite.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_grade_black_48dp.png", Assembly.GetExecutingAssembly());
             imgDelete.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_delete_black_24dp.png", Assembly.GetExecutingAssembly());
             imgMore.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_more_horiz_black_48dp.png", Assembly.GetExecutingAssembly());
-		}
+
+            imgReply.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    Application.Current.MainPage.DisplayAlert("TODO", "Reply Button", "OK");
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgRetweet.GestureRecognizers.Add(new TapGestureRecognizer
+             {
+                 Command = new Command(() =>
+                 {
+                     //TODO: Select account when multiple issuer
+                     App.tail.twitter.RetweetStatus( App.tail.account.getAccountGroup( status.issuer[0] ).accountForWrite, status.id);
+                 }),
+                 NumberOfTapsRequired = 1
+             });
+
+            imgFavorite.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    //TODO: Select account when multiple issuer
+                    App.tail.twitter.CreateFavorite(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgDelete.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    (Parent as StatusListView).Items.Remove(BindingContext as DataStatus);
+                }),
+                NumberOfTapsRequired = 1
+            });
+
+            imgMore.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    Application.Current.MainPage.DisplayAlert("TODO", "More Button", "OK");
+                }),
+                NumberOfTapsRequired = 1
+            });
+        }
 
         private DataStatus getDisplayStatus(DataStatus status)
         {
