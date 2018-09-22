@@ -7,7 +7,7 @@ namespace TwitterLibrary.Container
     public class FilterStore<T>
     {
         public delegate T Filter(T data);
-        private static List<Filter> filters;
+        private static List<Filter> filters = new List<Filter>();
         public void RegisterFilter(Filter filter)
         {
             filters.Add(filter);
