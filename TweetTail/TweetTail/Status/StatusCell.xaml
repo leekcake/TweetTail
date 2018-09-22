@@ -18,7 +18,7 @@
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label x:Name="lblName" Text="파란전기 @leekcake_smile"></Label>
-                        <ffimageloading:CachedImage x:Name="imgLock" WidthRequest="16" HeightRequest="16"  Source="TweetTail.Res.ic_lock_black_24dp.png">
+                        <ffimageloading:CachedImage x:Name="imgLock" WidthRequest="16" HeightRequest="16">
                             
                         </ffimageloading:CachedImage>
                     </StackLayout>
