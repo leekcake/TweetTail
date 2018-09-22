@@ -14,9 +14,9 @@ using FFImageLoading.Transformations;
 
 namespace TweetTail.Status
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StatusCell : ViewCell
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class StatusCell : ViewCell
+    {
         private static TintTransformation retweetTransformation = new TintTransformation("#009900");
         private static TintTransformation favoriteTransformation = new TintTransformation("#FF0000");
 
@@ -34,7 +34,7 @@ namespace TweetTail.Status
 
         private CachedImage getMediaView(int inx)
         {
-            switch(inx)
+            switch (inx)
             {
                 case 0:
                     return imgMedia1;
@@ -47,10 +47,10 @@ namespace TweetTail.Status
             }
             throw new IndexOutOfRangeException();
         }
-        
-		public StatusCell ()
-		{
-			InitializeComponent ();
+
+        public StatusCell()
+        {
+            InitializeComponent();
 
             imgHeader.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
             imgReply.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_reply_black_48dp.png", Assembly.GetExecutingAssembly());
@@ -69,23 +69,24 @@ namespace TweetTail.Status
             });
 
             imgRetweet.GestureRecognizers.Add(new TapGestureRecognizer
-             {
-                 Command = new Command(async () =>
-                 {
+            {
+                Command = new Command(async () =>
+                {
                      //TODO: Select account when multiple issuer
                      try
-                     {
-                         await App.tail.twitter.RetweetStatus(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
-                         status.isRetweetedByUser = true;
-                         UpdateButton();
-                     } catch(Exception e)
-                     {
-                         
-                     }
-                     
-                 }),
-                 NumberOfTapsRequired = 1
-             });
+                    {
+                        await App.tail.twitter.RetweetStatus(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                        getDisplayStatus(status).isRetweetedByUser = true;
+                        UpdateButton();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                }),
+                NumberOfTapsRequired = 1
+            });
 
             imgFavorite.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -95,7 +96,7 @@ namespace TweetTail.Status
                     try
                     {
                         await App.tail.twitter.CreateFavorite(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
-                        status.isFavortedByUser = true;
+                        getDisplayStatus(status).isFavortedByUser = true;
                         UpdateButton();
                     }
                     catch (Exception e)
@@ -125,14 +126,14 @@ namespace TweetTail.Status
                 NumberOfTapsRequired = 1
             });
 
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 int inx = i; //Value Copy
                 getMediaView(i).GestureRecognizers.Add(new TapGestureRecognizer
                 {
                     Command = new Command(() =>
                     {
-                        App.Navigation.PushAsync(new MediaPage( getDisplayStatus(status), inx));
+                        App.Navigation.PushAsync(new MediaPage(getDisplayStatus(status), inx));
                     }),
                     NumberOfTapsRequired = 1
                 });
@@ -141,7 +142,7 @@ namespace TweetTail.Status
 
         private DataStatus getDisplayStatus(DataStatus status)
         {
-            if(status.retweetedStatus != null)
+            if (status.retweetedStatus != null)
             {
                 return status.retweetedStatus;
             }
@@ -156,7 +157,7 @@ namespace TweetTail.Status
             var display = getDisplayStatus(status);
 
             imgProfile.Source = null;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 getMediaView(i).Source = null;
             }
@@ -201,7 +202,7 @@ namespace TweetTail.Status
             var status = BindingContext as DataStatus;
             var display = getDisplayStatus(status);
 
-            if(display != status)
+            if (display != status)
             {
                 viewHeader.IsVisible = true;
                 lblHeader.Text = string.Format("{0} 님이 리트윗 하셨습니다", status.creater.nickName);
@@ -215,13 +216,13 @@ namespace TweetTail.Status
             lblCreatedAt.Text = display.createdAt.ToString();
             lblName.Text = string.Format("{0} @{1}", display.creater.nickName, display.creater.screenName);
             lblText.Text = display.text;
-            
+
             imgProfile.Source = null;
             for (int i = 0; i < 4; i++)
             {
                 getMediaView(i).Source = null;
             }
-            if(display.extendMedias != null)
+            if (display.extendMedias != null)
             {
                 viewMedias.IsVisible = true;
             }
