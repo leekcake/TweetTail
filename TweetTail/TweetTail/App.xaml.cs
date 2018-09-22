@@ -24,7 +24,7 @@ namespace TweetTail
 
             if (tail.account.readOnlyAccountGroups.Count != 0)
             {
-                MainPage = new Status.StatusPage();
+                MainPage = new Status.TimelinePage();
             }
             else
             {
