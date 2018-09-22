@@ -13,6 +13,12 @@ namespace TweetTail
     {
         public static Library.TweetTail tail;
 
+        public static INavigation Navigation {
+            get {
+                return (Current.MainPage as NavigationPage).Navigation;
+            }
+        }
+
         public App()
         {
             InitializeComponent();
@@ -21,14 +27,14 @@ namespace TweetTail
             
             tail = new Library.TweetTail(new APIImpl(), 
                 Path.Combine(localData, "save"));
-
+            
             if (tail.account.readOnlyAccountGroups.Count != 0)
             {
-                MainPage = new Status.TimelinePage();
+                MainPage = new NavigationPage( new Status.TimelinePage() );
             }
             else
             {
-                MainPage = new LoginView();
+                MainPage = new NavigationPage( new LoginView() );
             }
         }
 

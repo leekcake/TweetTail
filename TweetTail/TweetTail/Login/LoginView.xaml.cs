@@ -39,7 +39,8 @@ namespace TweetTail.Login
                         return;
                     }
                 }
-                Application.Current.MainPage = new Status.TimelinePage();
+                App.Navigation.PushAsync(new Status.TimelinePage());
+                App.Navigation.RemovePage(this);
             }
             catch (Exception ex)
             {

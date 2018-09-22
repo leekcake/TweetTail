@@ -17,6 +17,9 @@ namespace TweetTail.Status
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class StatusCell : ViewCell
 	{
+        private static TintTransformation retweetTransformation = new TintTransformation("#009900");
+        private static TintTransformation favoriteTransformation = new TintTransformation("#FF0000");
+
         private DataStatus status {
             get {
                 return BindingContext as DataStatus;
@@ -121,6 +124,19 @@ namespace TweetTail.Status
                 }),
                 NumberOfTapsRequired = 1
             });
+
+            for(int i = 0; i < 4; i++)
+            {
+                int inx = i; //Value Copy
+                getMediaView(i).GestureRecognizers.Add(new TapGestureRecognizer
+                {
+                    Command = new Command(() =>
+                    {
+                        App.Navigation.PushAsync(new MediaPage( getDisplayStatus(status), inx));
+                    }),
+                    NumberOfTapsRequired = 1
+                });
+            }
         }
 
         private DataStatus getDisplayStatus(DataStatus status)
@@ -163,13 +179,13 @@ namespace TweetTail.Status
             imgRetweet.Transformations.Clear();
             if (display.isRetweetedByUser)
             {
-                imgRetweet.Transformations.Add(new TintTransformation("#009900"));
+                imgRetweet.Transformations.Add(retweetTransformation);
             }
 
             imgFavorite.Transformations.Clear();
             if (display.isFavortedByUser)
             {
-                imgFavorite.Transformations.Add(new TintTransformation("#FF0000"));
+                imgFavorite.Transformations.Add(favoriteTransformation);
             }
             imgRetweet.ReloadImage();
             imgFavorite.ReloadImage();
