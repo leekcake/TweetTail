@@ -21,6 +21,7 @@ namespace Library.Container.Account
         public AccountGroup(TweetTail owner, long id)
         {
             this.owner = owner;
+            this.id = id;
         }
 
         public AccountGroup(TweetTail owner, JObject data)
