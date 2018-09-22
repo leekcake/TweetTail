@@ -22,6 +22,7 @@ namespace TweetTail.Status
             ItemTemplate = new DataTemplate(typeof(StatusCell));
             Items = new ObservableCollection<DataStatus>();
             ItemsSource = Items;
+            SelectionMode = ListViewSelectionMode.None;
 
             IsPullToRefreshEnabled = true;
             RefreshCommand = new Command(Refresh);
