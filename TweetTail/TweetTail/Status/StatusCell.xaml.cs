@@ -1,6 +1,7 @@
 ﻿using FFImageLoading.Forms;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using DataStatus = TwitterInterface.Data.Status;
+using FFImageLoading.Transformations;
 
 namespace TweetTail.Status
 {
@@ -18,6 +20,12 @@ namespace TweetTail.Status
         private DataStatus status {
             get {
                 return BindingContext as DataStatus;
+            }
+        }
+
+        private ObservableCollection<DataStatus> statuses {
+            get {
+                return (Parent as StatusListView).Items;
             }
         }
 
@@ -43,8 +51,8 @@ namespace TweetTail.Status
 
             imgHeader.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
             imgReply.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_reply_black_48dp.png", Assembly.GetExecutingAssembly());
-            imgRetweet.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
-            imgFavorite.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_grade_black_48dp.png", Assembly.GetExecutingAssembly());
+            imgRetweet.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_white_48dp.png", Assembly.GetExecutingAssembly());
+            imgFavorite.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_grade_white_48dp.png", Assembly.GetExecutingAssembly());
             imgDelete.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_delete_black_24dp.png", Assembly.GetExecutingAssembly());
             imgMore.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_more_horiz_black_48dp.png", Assembly.GetExecutingAssembly());
 
@@ -59,20 +67,39 @@ namespace TweetTail.Status
 
             imgRetweet.GestureRecognizers.Add(new TapGestureRecognizer
              {
-                 Command = new Command(() =>
+                 Command = new Command(async () =>
                  {
                      //TODO: Select account when multiple issuer
-                     App.tail.twitter.RetweetStatus( App.tail.account.getAccountGroup( status.issuer[0] ).accountForWrite, status.id);
+                     try
+                     {
+                         await App.tail.twitter.RetweetStatus(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                         status.isRetweetedByUser = true;
+                         UpdateButton();
+                     } catch(Exception e)
+                     {
+                         
+                     }
+                     
                  }),
                  NumberOfTapsRequired = 1
              });
 
             imgFavorite.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() =>
+                Command = new Command(async () =>
                 {
                     //TODO: Select account when multiple issuer
-                    App.tail.twitter.CreateFavorite(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                    try
+                    {
+                        await App.tail.twitter.CreateFavorite(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                        status.isFavortedByUser = true;
+                        UpdateButton();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -81,7 +108,7 @@ namespace TweetTail.Status
             {
                 Command = new Command(() =>
                 {
-                    (Parent as StatusListView).Items.Remove(BindingContext as DataStatus);
+                    statuses.Remove(status);
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -110,7 +137,7 @@ namespace TweetTail.Status
 
         protected void UpdateImage()
         {
-            var display = getDisplayStatus( BindingContext as DataStatus );
+            var display = getDisplayStatus(status);
 
             imgProfile.Source = null;
             for(int i = 0; i < 4; i++)
@@ -127,6 +154,25 @@ namespace TweetTail.Status
                     getMediaView(i).Source = display.extendMedias[i].mediaURLHttps;
                 }
             }
+        }
+
+        protected void UpdateButton()
+        {
+            var display = getDisplayStatus(status);
+
+            imgRetweet.Transformations.Clear();
+            if (display.isRetweetedByUser)
+            {
+                imgRetweet.Transformations.Add(new TintTransformation("#009900"));
+            }
+
+            imgFavorite.Transformations.Clear();
+            if (display.isFavortedByUser)
+            {
+                imgFavorite.Transformations.Add(new TintTransformation("#FF0000"));
+            }
+            imgRetweet.ReloadImage();
+            imgFavorite.ReloadImage();
         }
 
         protected void Update()
@@ -168,6 +214,7 @@ namespace TweetTail.Status
                 viewMedias.IsVisible = false;
             }
             UpdateImage();
+            UpdateButton();
         }
 
         protected override void OnBindingContextChanged()
