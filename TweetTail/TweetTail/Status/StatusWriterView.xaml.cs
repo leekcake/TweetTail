@@ -22,31 +22,58 @@ namespace TweetTail.Status
             InitializeComponent();
         }
 
+        private void SetInputStatus(bool enable)
+        {
+            btnAddImage.IsEnabled = enable;
+            btnTweet.IsEnabled = enable;
+            editText.IsEnabled = enable;
+        }
+
         private async void btnTweet_Clicked(object sender, EventArgs e)
         {
-            if (editText.Text.Trim() == "")
+            if (editText.Text.Trim() == "" && mediaFiles.Count == 0)
             {
-                //TODO: Notify
+                await Application.Current.MainPage.DisplayAlert("트윗 실패", "트윗은 하나 이상의 미디어 혹은 글자를 포함해야 합니다", "확인");
                 return;
             }
+
+            SetInputStatus(false);
 
             var update = new StatusUpdate();
 
             update.text = editText.Text;
 
-            if (mediaFiles.Count != 0)
+            try
             {
-                long[] mediaIDs = new long[mediaFiles.Count];
-                for (int i = 0; i < mediaIDs.Length; i++)
+                if (mediaFiles.Count != 0)
                 {
-                    mediaIDs[i] = await App.tail.twitter.uploadMedia(App.tail.account.SelectedAccountGroup.accountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
+                    long[] mediaIDs = new long[mediaFiles.Count];
+                    for (int i = 0; i < mediaIDs.Length; i++)
+                    {
+                        mediaIDs[i] = await App.tail.twitter.uploadMedia(App.tail.account.SelectedAccountGroup.accountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
+                    }
+                    update.mediaIDs = mediaIDs;
                 }
-                update.mediaIDs = mediaIDs;
+
+                await App.tail.twitter.CreateStatus(App.tail.account.SelectedAccountGroup.accountForWrite, update);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("트윗 실패", ex.Message, "확인");
+                SetInputStatus(true);
+                return;
+            }
+            SetInputStatus(true);
+
+            if (BindingContext != null && BindingContext is Page)
+            {
+                App.Navigation.RemovePage(BindingContext as Page);
+                return;
             }
 
-            await App.tail.twitter.CreateStatus(App.tail.account.SelectedAccountGroup.accountForWrite, update);
-
-            //TODO: Close Parent if Need
+            mediaFiles.Clear();
+            slSelectedImages.Children.Clear();
+            editText.Text = "";
         }
 
         private async void btnAddImage_Clicked(object sender, EventArgs e)

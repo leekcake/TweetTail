@@ -30,7 +30,10 @@ namespace TweetTail.Status
 
         private void fabTweet_Clicked(object sender, EventArgs e)
         {
-            App.Navigation.PushAsync(new ContentPage() { Content = new StatusWriterView(), Title = "트윗작성" });
+            var page = new ContentPage();
+            page.Content = new StatusWriterView() { BindingContext = page };
+            page.Title = "트윗작성";
+            App.Navigation.PushAsync(page);
         }
     }
 }
