@@ -80,6 +80,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="SuaveControls.FloatingActionButton" Version="2018.1.5" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.3.840" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.3.840" />
     <PackageReference Include="Xamarin.Forms" Version="3.2.0.839982" />
@@ -104,6 +105,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Status\StatusCell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Status\StatusWriterView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Status\TimelinePage.xaml">
