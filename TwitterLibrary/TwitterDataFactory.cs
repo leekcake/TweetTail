@@ -282,6 +282,8 @@ namespace TwitterLibrary
 
                 var variantArray = infoObj["variants"].ToObject<JArray>();
                 info.variants = parseArray(variantArray, parseVideoVariant);
+
+                extendMedia.video = info;
             }
 
             return extendMedia;
