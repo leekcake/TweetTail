@@ -104,8 +104,28 @@ namespace TweetTail.Status
 
             imgDelete.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() =>
+                Command = new Command(async () =>
                 {
+                    var group = App.tail.account.getAccountGroup(status.creater.id);
+                    if (group != null)
+                    {
+                        if( await Application.Current.MainPage.DisplayAlert("제거 확인", "이 트윗이 제거됩니다, 진행합니까?", "네", "아니오") )
+                        {
+                            try
+                            {
+                                await App.tail.twitter.DestroyStatus(group.accountForWrite, status.id);
+                            }
+                            catch (Exception e)
+                            {
+                                await Application.Current.MainPage.DisplayAlert("오류", e.Message, "확인");
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
                     statuses.Remove(status);
                 }),
                 NumberOfTapsRequired = 1
@@ -184,6 +204,16 @@ namespace TweetTail.Status
             }
             imgRetweet.ReloadImage();
             imgFavorite.ReloadImage();
+
+            var group = App.tail.account.getAccountGroup( status.creater.id );
+            if(group != null)
+            {
+                imgDelete.Source = "ic_delete_black_24dp";
+            }
+            else
+            {
+                imgDelete.Source = "ic_visibility_off_black_24dp";
+            }
         }
 
         protected void Update()

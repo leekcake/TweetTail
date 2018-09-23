@@ -231,4 +231,13 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_lock_black_24dp%403x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_visibility_off_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_visibility_off_black_24dp%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_visibility_off_black_24dp%403x.png" />
+  </ItemGroup>
 </Project>

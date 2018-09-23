@@ -138,6 +138,7 @@
     <Content Include="ic_repeat_black_24dp.png" />
     <Content Include="ic_repeat_white_24dp.png" />
     <Content Include="ic_reply_black_24dp.png" />
+    <Content Include="ic_visibility_off_black_24dp.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
