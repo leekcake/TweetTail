@@ -240,4 +240,13 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_visibility_off_black_24dp%403x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_account_box_black_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_account_box_black_48dp%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_account_box_black_48dp%403x.png" />
+  </ItemGroup>
 </Project>

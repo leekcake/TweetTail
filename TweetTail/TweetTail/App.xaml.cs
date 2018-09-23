@@ -5,6 +5,7 @@ using Xamarin.Forms.Xaml;
 using Library;
 using TweetTail.Login;
 using TwitterLibrary;
+using TweetTail.Menu;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace TweetTail
@@ -15,9 +16,11 @@ namespace TweetTail
 
         public static INavigation Navigation {
             get {
-                return (Current.MainPage as NavigationPage).Navigation;
+                return (Current as App).NavigationPage.Navigation;
             }
         }
+
+        public NavigationPage NavigationPage { get; private set; }
 
         public App()
         {
@@ -30,12 +33,18 @@ namespace TweetTail
             
             if (tail.account.readOnlyAccountGroups.Count != 0)
             {
-                MainPage = new NavigationPage( new Status.TimelinePage() );
+                NavigationPage = new NavigationPage( new SingleTailPage() );
             }
             else
             {
-                MainPage = new NavigationPage( new LoginView() );
+                NavigationPage = new NavigationPage( new LoginView() );
             }
+
+            var rootPage = new RootPage();
+            rootPage.Master = new MenuPage();
+            rootPage.Detail = NavigationPage;
+
+            MainPage = rootPage;
         }
 
         protected override void OnStart()
