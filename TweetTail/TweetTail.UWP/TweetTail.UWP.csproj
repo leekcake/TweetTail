@@ -130,6 +130,14 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="ic_create_black_48dp.png" />
+    <Content Include="ic_delete_black_24dp.png" />
+    <Content Include="ic_grade_white_24dp.png" />
+    <Content Include="ic_lock_black_24dp.png" />
+    <Content Include="ic_more_horiz_black_24dp.png" />
+    <Content Include="ic_repeat_black_24dp.png" />
+    <Content Include="ic_repeat_white_24dp.png" />
+    <Content Include="ic_reply_black_24dp.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>

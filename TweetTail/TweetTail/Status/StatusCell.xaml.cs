@@ -52,13 +52,6 @@ namespace TweetTail.Status
         {
             InitializeComponent();
 
-            imgHeader.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_black_48dp.png", Assembly.GetExecutingAssembly());
-            imgReply.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_reply_black_48dp.png", Assembly.GetExecutingAssembly());
-            imgRetweet.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_repeat_white_48dp.png", Assembly.GetExecutingAssembly());
-            imgFavorite.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_grade_white_48dp.png", Assembly.GetExecutingAssembly());
-            imgDelete.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_delete_black_24dp.png", Assembly.GetExecutingAssembly());
-            imgMore.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_more_horiz_black_48dp.png", Assembly.GetExecutingAssembly());
-            imgLock.Source = new EmbeddedResourceImageSource("TweetTail.Res.ic_lock_black_24dp.png", Assembly.GetExecutingAssembly());
 
             imgReply.GestureRecognizers.Add(new TapGestureRecognizer
             {

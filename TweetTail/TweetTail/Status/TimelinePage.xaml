@@ -15,9 +15,11 @@
                                 AbsoluteLayout.LayoutBounds="0,0,1,1"
                                AbsoluteLayout.LayoutFlags="All">
             </status:StatusListView>
+
             <controls:FloatingActionButton x:Name="fabTweet"
                                            AbsoluteLayout.LayoutFlags="PositionProportional"
                                            Margin="8"
+                                           Image="ic_create_black_48dp"
                                        AbsoluteLayout.LayoutBounds=".0,1,100,100"
                                        ButtonColor="#03A9F4"
                                        Clicked="fabTweet_Clicked"/>

@@ -45,41 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Res\ic_account_box_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_account_circle_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_chevron_left_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_chevron_right_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_compare_arrows_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_create_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_delete_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_grade_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_grade_white_48dp.png" />
-    <EmbeddedResource Include="Res\ic_home_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_info_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_list_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_lock_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_lock_open_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_more_horiz_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_notifications_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_person_add_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_photo_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_question_answer_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_receipt_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_repeat_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_repeat_white_48dp.png" />
-    <EmbeddedResource Include="Res\ic_reply_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_search_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_settings_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_sms_black_48dp.png" />
-    <EmbeddedResource Include="Res\ic_sync_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_sync_disabled_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_sync_problem_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_timeline_black_24dp.png" />
-    <EmbeddedResource Include="Res\ic_visibility_off_black_24dp.png" />
-    <EmbeddedResource Include="Res\sample_icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="SuaveControls.FloatingActionButton" Version="2018.1.5" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.3.840" />
