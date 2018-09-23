@@ -387,7 +387,12 @@ namespace TwitterLibrary
             var multipartContent = new MultipartFormDataContent();
             multipartContent.Add(imageContent, "media");
 
+            message.Content = multipartContent;
+
             var response = await httpClient.SendAsync(message);
+
+            Utils.VerifyTwitterResponse(response);
+
             var result = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             return result["media_id"].ToObject<long>();

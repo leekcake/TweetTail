@@ -5,8 +5,16 @@
              x:Class="TweetTail.Status.StatusWriterView">
     <ContentView.Content>
         <StackLayout>
-            <Editor x:Name="editText" HorizontalOptions="FillAndExpand" ></Editor>
-            <Button x:Name="btnTweet" Text="트윗하기" HorizontalOptions="End" Clicked="btnTweet_Clicked" ></Button>
+            <Editor x:Name="editText" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
+            <ScrollView Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+                <StackLayout x:Name="slSelectedImages" Orientation="Horizontal">
+                    
+                </StackLayout>
+            </ScrollView>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="btnAddImage" Text="이미지" HorizontalOptions="Start" Clicked="btnAddImage_Clicked" ></Button>
+                <Button x:Name="btnTweet" Text="트윗하기" HorizontalOptions="End" Clicked="btnTweet_Clicked" ></Button>
+            </StackLayout>
         </StackLayout>
     </ContentView.Content>
 </ContentView>
