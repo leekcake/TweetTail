@@ -29,6 +29,7 @@ namespace TwitterLibrary
                     list.Add(new KeyValuePair<string, string>(query[i], query[i + 1]));
                 }
             }
+            list.Add(new KeyValuePair<string, string>("tweet_mode", "extended"));
             return list.ToArray();
         }
 

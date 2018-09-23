@@ -153,7 +153,11 @@ namespace TwitterLibrary
             status.issuer = new long[] { issuer };
             status.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
             status.id = obj["id"].ToObject<long>();
-            status.text = obj["text"].ToString();
+            status.text = SafeGetString(obj, "full_text");
+            if (status.text == null)
+            {
+                status.text = obj["text"].ToString();
+            }
             status.source = obj["source"].ToString();
             status.truncated = obj["truncated"].ToObject<bool>();
             status.replyToStatusId = SafeGetLong(obj, "in_reply_to_status_id");
