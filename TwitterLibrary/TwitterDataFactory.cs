@@ -459,6 +459,11 @@ namespace TwitterLibrary
 
         private static Notification parseNotification(JObject obj, long issuer, Notification notification, Type source, Type target, Type targetObject)
         {
+            notification.action = obj["action"].ToString();
+            notification.maxPosition = obj["max_position"].ToObject<long>();
+            notification.minPosition = obj["min_position"].ToObject<long>();
+            notification.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
+
             notification.sources = parseNotification(obj["sources"].ToObject<JArray>(), source, issuer);
             notification.targets = parseNotification(obj["targets"].ToObject<JArray>(), target, issuer);
             notification.targetObjects = parseNotification(obj["target_objects"].ToObject<JArray>(), targetObject, issuer);
