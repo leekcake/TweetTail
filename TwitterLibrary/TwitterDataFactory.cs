@@ -447,11 +447,11 @@ namespace TwitterLibrary
                 case "favorited_retweet":
                     return parseNotification(obj, issuer, new Notification.FavoritedRetweet(), typeof(User), typeof(Status), typeof(User));
                 case "mention":
-                    return parseNotification(obj, issuer, new Notification.Mention(), typeof(User), typeof(User), typeof(User));
+                    return parseNotification(obj, issuer, new Notification.Mention(), typeof(User), typeof(User), typeof(Status));
                 case "reply":
-                    return parseNotification(obj, issuer, new Notification.RetweetedMention(), typeof(User), typeof(Status), typeof(Status));
+                    return parseNotification(obj, issuer, new Notification.Reply(), typeof(User), typeof(Status), typeof(Status));
                 case "follow":
-                    return parseNotification(obj, issuer, new Notification.RetweetedMention(), typeof(User), typeof(User), null);
+                    return parseNotification(obj, issuer, new Notification.Follow(), typeof(User), typeof(User), null);
             }
             //TODO: Check Unknown Type?
             return null;
