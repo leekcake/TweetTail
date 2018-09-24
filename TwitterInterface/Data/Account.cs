@@ -12,6 +12,7 @@ namespace TwitterInterface.Data
     public class Account
     {
         public long id;
+        public User user;
 
         public virtual JObject Save()
         {
