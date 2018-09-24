@@ -440,7 +440,7 @@ namespace TwitterLibrary
                     return parseNotification(obj, issuer, new Notification.RetweetedMention(), typeof(User), typeof(Status), typeof(User));
                 case "retweeted_retweet":
                     return parseNotification(obj, issuer, new Notification.RetweetedRetweet(), typeof(User), typeof(Status), typeof(User));
-                case "favorited":
+                case "favorite":
                     return parseNotification(obj, issuer, new Notification.Favorited(), typeof(User), typeof(Status), null);
                 case "favorited_mention":
                     return parseNotification(obj, issuer, new Notification.FavoritedMention(), typeof(User), typeof(Status), typeof(User));
