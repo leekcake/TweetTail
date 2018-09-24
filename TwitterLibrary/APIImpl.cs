@@ -1664,5 +1664,21 @@ namespace TwitterLibrary
                     "performBlock", performBlock == false ? "false" : null)
                 )), account.id);
         }
+
+        public async Task<List<Notification>> GetNotifications(Account account, int count = 40, long sinceId = -1, long maxId = -1)
+        {
+            return TwitterDataFactory.parseArray(
+                JArray.Parse(
+                    await Get("https://api.twitter.com/1.1/activity/about_me.json", account, 
+                    makeQuery("count", count.ToString(),
+                            "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null,
+                            "include_user_entities", "1",
+                            "model_version", "7",
+                            "send_error_codes", "1",
+                            "skip_aggregation", "true")
+                    )
+                    ),
+                account.id, TwitterDataFactory.parseNotification).ToList();
+        }
     }
 }

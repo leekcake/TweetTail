@@ -48,5 +48,9 @@ namespace TwitterInterface.API
         Task<SavedSearch> CreateSavedSearch(Account account, string query);
         //POST saved_searches/destroy/:id
         Task<SavedSearch> DestroySavedSearch(Account account, long id);
+
+        //HIDDEN API
+        //GET activity/about_me
+        Task<List<Notification>> GetNotifications(Account account, int count = 40, long sinceId =- 1, long maxId = -1);
     }
 }

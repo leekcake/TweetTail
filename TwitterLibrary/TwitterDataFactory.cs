@@ -429,5 +429,58 @@ namespace TwitterLibrary
 
             return relationship;
         }
+
+        public static Notification parseNotification(JObject obj, long issuer)
+        {
+            switch( obj["action"].ToString() )
+            {
+                case "retweet":
+                    return parseNotification(obj, issuer, new Notification.Retweet(), typeof(User), typeof(Status), typeof(Status));
+                case "retweeted_mention":
+                    return parseNotification(obj, issuer, new Notification.RetweetedMention(), typeof(User), typeof(Status), typeof(User));
+                case "retweeted_retweet":
+                    return parseNotification(obj, issuer, new Notification.RetweetedRetweet(), typeof(User), typeof(Status), typeof(User));
+                case "favorited":
+                    return parseNotification(obj, issuer, new Notification.Favorited(), typeof(User), typeof(Status), null);
+                case "favorited_mention":
+                    return parseNotification(obj, issuer, new Notification.FavoritedMention(), typeof(User), typeof(Status), typeof(User));
+                case "favorited_retweet":
+                    return parseNotification(obj, issuer, new Notification.FavoritedRetweet(), typeof(User), typeof(Status), typeof(User));
+                case "mention":
+                    return parseNotification(obj, issuer, new Notification.Mention(), typeof(User), typeof(User), typeof(User));
+                case "reply":
+                    return parseNotification(obj, issuer, new Notification.RetweetedMention(), typeof(User), typeof(Status), typeof(Status));
+                case "follow":
+                    return parseNotification(obj, issuer, new Notification.RetweetedMention(), typeof(User), typeof(User), null);
+            }
+            //TODO: Check Unknown Type?
+            return null;
+        }
+
+        private static Notification parseNotification(JObject obj, long issuer, Notification notification, Type source, Type target, Type targetObject)
+        {
+            notification.sources = parseNotification(obj["sources"].ToObject<JArray>(), source, issuer);
+            notification.targets = parseNotification(obj["targets"].ToObject<JArray>(), target, issuer);
+            notification.targetObjects = parseNotification(obj["target_objects"].ToObject<JArray>(), targetObject, issuer);
+            return notification;          
+        }
+
+        private static object[] parseNotification(JArray array, Type type, long issuer)
+        {
+            if (type == null) return null;
+
+            if(type == typeof(Status))
+            {
+                return parseArray(array, issuer, parseStatus);
+            }
+            else if(type == typeof(User))
+            {
+                return parseArray(array, issuer, parseUser);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+        }
     }
 }
