@@ -5,32 +5,33 @@
              x:Class="TweetTail.Status.StatusView">
   <ContentView.Content>
         <StackLayout Margin="4">
-            <StackLayout x:Name="viewHeader" Orientation="Horizontal" >
-                <ffimageloading:CachedImage Source="ic_repeat_black_24dp" WidthRequest="16" HeightRequest="16" />
-                <Label x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
+            <StackLayout x:Name="viewHeader" x:FieldModifier="Public" Orientation="Horizontal" >
+                <ffimageloading:CachedImage  x:Name="imgHeader" x:FieldModifier="Public" Source="ic_repeat_black_24dp" WidthRequest="16" HeightRequest="16" />
+                <Label  x:FieldModifier="Public" x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <ffimageloading:CachedImage x:Name="imgProfile"
+                                             x:FieldModifier="Public"
                        VerticalOptions="Start"
                        WidthRequest="48"
                        HeightRequest="48"></ffimageloading:CachedImage>
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Label x:Name="lblName" Text="파란전기 @leekcake_smile"></Label>
-                        <ffimageloading:CachedImage x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
+                        <Label x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
+                        <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
 
                         </ffimageloading:CachedImage>
                     </StackLayout>
 
-                    <Label x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
-                    <StackLayout x:Name="viewMedias" IsVisible="False" Orientation="Horizontal">
+                    <Label x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
+                    <StackLayout x:Name="viewMedias" x:FieldModifier="Public" IsVisible="False" Orientation="Horizontal">
                         <ffimageloading:CachedImage x:Name="imgMedia1" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
                         <ffimageloading:CachedImage x:Name="imgMedia2" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
                         <ffimageloading:CachedImage x:Name="imgMedia3" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
                         <ffimageloading:CachedImage x:Name="imgMedia4" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
                     </StackLayout>
                     <Label x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
-                    <StackLayout Orientation="Horizontal">
+                    <StackLayout x:Name="viewButtons" x:FieldModifier="Public" Orientation="Horizontal">
                         <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_black_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
                         <ffimageloading:CachedImage x:Name="imgRetweet" Source="ic_repeat_white_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
                         <ffimageloading:CachedImage x:Name="imgFavorite" Source="ic_grade_white_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
