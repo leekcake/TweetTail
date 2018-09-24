@@ -22,6 +22,9 @@ namespace TweetTail.Notification
             Items = new ObservableCollection<DataNotification>();
             ItemsSource = Items;
             SelectionMode = ListViewSelectionMode.None;
+
+            IsPullToRefreshEnabled = true;
+            RefreshCommand = new Command(Refresh);
         }
 
         public async void Refresh()
