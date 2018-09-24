@@ -25,7 +25,7 @@ namespace TweetTail.Status
 
         public Task<List<DataStatus>> TimelineGetter(long sinceId, long maxId)
         {
-            return App.tail.twitter.GetTimeline(App.tail.account.readOnlyAccountGroups[0].accountForRead, 200, sinceId, maxId);
+            return App.tail.twitter.GetTimeline(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);
         }
 
         private void fabTweet_Clicked(object sender, EventArgs e)
