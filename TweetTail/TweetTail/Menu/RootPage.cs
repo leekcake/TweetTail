@@ -10,6 +10,13 @@ namespace TweetTail.Menu
         public RootPage()
         {
             MasterBehavior = MasterBehavior.Popover;
+
+            IsPresentedChanged += RootPage_IsPresentedChanged;
+        }
+
+        private void RootPage_IsPresentedChanged(object sender, EventArgs e)
+        {
+            (Master as MenuPage).UpdateUser();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Library.Container.Account;
 using Newtonsoft.Json.Linq;
 using TwitterInterface.Data;
@@ -18,6 +19,7 @@ namespace Library.Manager
             this.owner = owner;
             savePath = Path.Combine(owner.saveDir, "accounts.json");
             load();
+            VerifyAccounts();
         }
 
         internal List<AccountGroup> accountGroups = new List<AccountGroup>();
@@ -81,6 +83,25 @@ namespace Library.Manager
             }
 
             save();
+        }
+
+        private async Task VerifyAccounts()
+        {
+            foreach(var group in accountGroups)
+            {
+                try
+                {
+                    var user = await owner.twitter.VerifyCredentials(group.accountForRead);
+                    foreach (var account in group.accounts)
+                    {
+                        account.user = user;
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message + " " + e.StackTrace);
+                }
+            }
         }
 
         private void load()

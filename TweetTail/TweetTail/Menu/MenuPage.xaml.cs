@@ -36,6 +36,10 @@ namespace TweetTail.Menu
 
             Items = new ObservableCollection<Item>();
 
+
+            Items.Add(new Item());
+            UpdateUser();
+
             Items.Add(new Item()
             {
                 Title = "계정 전환",
@@ -45,5 +49,27 @@ namespace TweetTail.Menu
 
             listView.ItemsSource = Items;
         }
-	}
+
+        public void UpdateUser()
+        {
+            var item = Items[0];
+            try
+            {
+                var user = App.tail.account.SelectedAccountGroup.accountForRead.user;
+                item.Title = user.nickName + " @" + user.screenName;
+                item.Description = user.description;
+                item.Icon = user.profileHttpsImageURL;
+            }
+            catch(NullReferenceException nre)
+            {
+                item.Title = "알 수 없음";
+                item.Description = "메인 유저 계정을 사용할 수 없습니다";
+                item.Icon = "ic_delete_black_24dp.png";
+            }
+
+            //Notify to Refresh
+            Items[0] = item;
+        }
+        
+    }
 }
