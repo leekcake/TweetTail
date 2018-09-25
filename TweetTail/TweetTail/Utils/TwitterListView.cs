@@ -12,7 +12,7 @@ namespace TweetTail.Utils
     {
         public abstract long GetID(Data data);
 
-        private long sinceIndex, maxIndex;
+        private long sinceIndex = -1, maxIndex = -1;
         public ObservableCollection<Data> Items { get; set; }
 
         private Func<long, long, Task<List<Data>>> sinceMaxGetter;
