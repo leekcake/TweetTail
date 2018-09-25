@@ -19,7 +19,7 @@ namespace TweetTail.Status
         {
             InitializeComponent();
 
-            StatusListView.statusGetter = TimelineGetter;
+            StatusListView.SinceMaxGetter = TimelineGetter;
             StatusListView.Refresh();
         }
 

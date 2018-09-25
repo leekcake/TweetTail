@@ -18,7 +18,7 @@ namespace TweetTail.Notification
 		{
 			InitializeComponent ();
 
-            notificationListView.notificationGetter = NotificationGetter;
+            notificationListView.SinceMaxGetter = NotificationGetter;
             notificationListView.Refresh();
         }
 
