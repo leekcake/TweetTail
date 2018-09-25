@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:status="clr-namespace:TweetTail.Status"
              Title="타임라인"
-             xmlns:local="clr-namespace:TweetTail.Res"
              xmlns:controls="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
              x:Class="TweetTail.Status.TimelinePage">
     <ContentPage.Content>
