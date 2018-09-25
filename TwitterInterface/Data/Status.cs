@@ -8,7 +8,7 @@ namespace TwitterInterface.Data
     public class Status
     {
         //이 트윗정보를 얻기 위해 사용된 계정 아이디
-        public long[] issuer;
+        public List<long> issuer;
 
         public long id;
 

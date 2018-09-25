@@ -10,7 +10,7 @@ namespace TwitterInterface.Data
     public class User
     {
         //이 유저정보를 얻기 위해 사용된 계정 아이디
-        public long[] issuer;
+        public List<long> issuer;
 
         public long id;
         public string nickName;

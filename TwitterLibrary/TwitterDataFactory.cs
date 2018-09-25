@@ -106,7 +106,7 @@ namespace TwitterLibrary
         public static User parseUser(JObject obj, long issuer)
         {
             var user = new User();
-            user.issuer = new long[] { issuer };
+            user.issuer = new List<long> { issuer };
 
             user.id = obj["id"].ToObject<long>();
             user.nickName = obj["name"].ToString();
@@ -150,7 +150,7 @@ namespace TwitterLibrary
         {
             var status = new Status();
 
-            status.issuer = new long[] { issuer };
+            status.issuer = new List<long> { issuer };
             status.createdAt = parseTwitterDateTime(obj["created_at"].ToString());
             status.id = obj["id"].ToObject<long>();
             status.text = SafeGetString(obj, "full_text");
