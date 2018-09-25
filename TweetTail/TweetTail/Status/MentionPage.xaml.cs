@@ -22,8 +22,7 @@ namespace TweetTail.Status
 
         public void Reload()
         {
-            StatusListView.Items.Clear();
-            StatusListView.Refresh();
+            StatusListView.Reload();
         }
 
         private Task<List<TwitterInterface.Data.Status>> MentionGetter(long sinceId, long maxId)

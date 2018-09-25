@@ -54,8 +54,25 @@ namespace TweetTail.Utils
             if (Footer == null)
             {
                 Footer = "불러오는중...";
+                ItemAppearing += TwitterListView_ItemAppearing;
             }
-            ItemAppearing += TwitterListView_ItemAppearing;
+        }
+
+        public void Reload()
+        {
+            isNoMoreData = false;
+            if(Footer is string)
+            {
+                if((string) Footer == "더이상 자료가 없습니다")
+                {
+                    Footer = "불러오는중...";
+                }
+            }
+
+            sinceIndex = -1;
+            maxIndex = -1;
+            Items.Clear();
+            Refresh();
         }
 
         private void TwitterListView_ItemAppearing(object sender, ItemVisibilityEventArgs e)
@@ -125,6 +142,10 @@ namespace TweetTail.Utils
                     var datas = await sinceMaxGetter(sinceIndex, -1);
                     if (datas.Count == 0)
                     {
+                        if(Items.Count == 0)
+                        {
+                            Footer = "이 목록이 비어있는것 같습니다!";
+                        }
                         EndRefresh();
                         return;
                     }
@@ -153,6 +174,10 @@ namespace TweetTail.Utils
                     var datas = await cursoredGetter(-1);
                     if (datas.Count == 0)
                     {
+                        if (Items.Count == 0)
+                        {
+                            Footer = "이 목록이 비어있는것 같습니다!";
+                        }
                         EndRefresh();
                         return;
                     }

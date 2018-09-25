@@ -24,8 +24,7 @@ namespace TweetTail.Notification
 
         public void Reload()
         {
-            notificationListView.Items.Clear();
-            notificationListView.Refresh();
+            notificationListView.Reload();
         }
 
         public Task<List<DataNotification>> NotificationGetter(long sinceId, long maxId)

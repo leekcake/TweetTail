@@ -25,8 +25,7 @@ namespace TweetTail.Status
 
         public void Reload()
         {
-            StatusListView.Items.Clear();
-            StatusListView.Refresh();
+            StatusListView.Reload();
         }
 
         public Task<List<DataStatus>> TimelineGetter(long sinceId, long maxId)
