@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TweetTail.Account;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,6 +26,8 @@ namespace TweetTail.Menu
             public string Icon {
                 get; set;
             }
+
+            public Action action;
         }
         public ObservableCollection<Item> Items { get; set; }
 
@@ -37,7 +39,12 @@ namespace TweetTail.Menu
             Items = new ObservableCollection<Item>();
 
 
-            Items.Add(new Item());
+            Items.Add(new Item() {
+                action = new Action(() =>
+                {
+                    App.Navigation.PushAsync(new AccountPage());
+                })
+            });
             UpdateUser();
 
             Items.Add(new Item()
@@ -48,6 +55,18 @@ namespace TweetTail.Menu
             });
 
             listView.ItemsSource = Items;
+            listView.ItemTapped += ListView_ItemTapped;
+        }
+
+        private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            var item = e.Item as Item;
+            if(item.action != null)
+            {
+                item.action.Invoke();
+            }
+
+            (Parent as MasterDetailPage).IsPresented = false;
         }
 
         public void UpdateUser()

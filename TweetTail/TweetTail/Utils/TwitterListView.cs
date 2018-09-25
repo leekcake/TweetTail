@@ -51,7 +51,10 @@ namespace TweetTail.Utils
             ItemsSource = Items;
             SelectionMode = ListViewSelectionMode.None;
 
-            Footer = "불러오는중...";
+            if (Footer == null)
+            {
+                Footer = "불러오는중...";
+            }
             ItemAppearing += TwitterListView_ItemAppearing;
         }
 
