@@ -30,6 +30,7 @@ namespace TweetTail.User
             var user = BindingContext as DataUser;
 
             imgProfile.Source = user.profileHttpsImageURL;
+            imgLock.IsVisible = user.isProtected;
             lblName.Text = user.nickName + " @" + user.screenName;
             lblText.Text = user.description;
         }
