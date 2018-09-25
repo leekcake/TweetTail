@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using DataAccount = TwitterInterface.Data.Account;
+
 namespace TweetTail.Account
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
@@ -19,7 +21,13 @@ namespace TweetTail.Account
 
         protected override void OnBindingContextChanged()
         {
-            userView.BindingContext = BindingContext;
+            if (BindingContext is DataAccount) { }
+            else
+            {
+                return;
+            }
+
+            userView.BindingContext = (BindingContext as DataAccount).user;
             userView.Update();
 
             base.OnBindingContextChanged();
