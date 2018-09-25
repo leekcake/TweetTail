@@ -73,7 +73,7 @@ namespace TweetTail.Utils
             {
                 if (sinceMaxGetter != null)
                 {
-                    var datas = await sinceMaxGetter(-1, maxIndex);
+                    var datas = await sinceMaxGetter(-1, maxIndex - 1);
                     if (datas.Count == 0)
                     {
                         isLoading = false;
@@ -126,12 +126,24 @@ namespace TweetTail.Utils
                         return;
                     }
 
+                    Data topItem;
+                    if(Items.Count != 0)
+                    {
+                        topItem = Items[0];
+                    }
+                    else
+                    {
+                        topItem = datas[0];
+                    }
+
                     sinceIndex = GetID(datas[0]);
                     maxIndex = GetID(datas[datas.Count - 1]);
                     for (int i = datas.Count - 1; i >= 0; i--)
                     {
                         Items.Insert(0, datas[i]);
                     }
+                    
+                    ScrollTo(topItem, ScrollToPosition.End, false);
                 }
                 else if(cursoredGetter != null)
                 {
