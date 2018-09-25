@@ -34,7 +34,7 @@ namespace TweetTail.Notification
                 
                 statusView.lblHeader.Text = follow.Performer.nickName + " 님이 팔로우 하셨습니다.";
 
-                statusView.imgHeader.Source = follow.Performer.profileHttpsImageURL;
+                statusView.imgProfile.Source = follow.Performer.profileHttpsImageURL;
                 statusView.lblName.Text = follow.Performer.nickName + " @" + follow.Performer.screenName;
                 statusView.lblText.Text = follow.Performer.description;
 
