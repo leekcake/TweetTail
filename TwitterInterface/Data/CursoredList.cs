@@ -12,7 +12,7 @@ namespace TwitterInterface.Data
             this.nextCursor = nextCursor;
         }
 
-        long previousCursor;
-        long nextCursor;
+        public long previousCursor;
+        public long nextCursor;
     }
 }
