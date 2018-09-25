@@ -23,6 +23,12 @@ namespace TweetTail.Status
             StatusListView.Refresh();
         }
 
+        public void Reload()
+        {
+            StatusListView.Items.Clear();
+            StatusListView.Refresh();
+        }
+
         public Task<List<DataStatus>> TimelineGetter(long sinceId, long maxId)
         {
             return App.tail.twitter.GetTimeline(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);

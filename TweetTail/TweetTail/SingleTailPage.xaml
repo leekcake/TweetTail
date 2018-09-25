@@ -5,7 +5,7 @@
             xmlns:notification="clr-namespace:TweetTail.Notification"
             x:Class="TweetTail.SingleTailPage">
   <!--Pages can be added as references or inline-->
-  <status:TimelinePage Title="타임라인" />
-  <status:MentionPage Title="멘션" />
-  <notification:NotificationPage Title="알림" />
+  <status:TimelinePage x:Name="timelinePage" Title="타임라인" />
+  <status:MentionPage x:Name="mentionPage" Title="멘션" />
+  <notification:NotificationPage x:Name="notificationPage" Title="알림" />
 </TabbedPage>

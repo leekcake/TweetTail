@@ -39,7 +39,11 @@ namespace TweetTail.Login
                         return;
                     }
                 }
-                App.Navigation.PushAsync(new Status.TimelinePage());
+
+                if (App.Navigation.NavigationStack[0] == this)
+                {
+                    App.Navigation.PushAsync(new Status.TimelinePage());
+                }
                 App.Navigation.RemovePage(this);
             }
             catch (Exception ex)

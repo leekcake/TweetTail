@@ -20,6 +20,12 @@ namespace TweetTail.Status
             StatusListView.Refresh();
         }
 
+        public void Reload()
+        {
+            StatusListView.Items.Clear();
+            StatusListView.Refresh();
+        }
+
         private Task<List<TwitterInterface.Data.Status>> MentionGetter(long sinceId, long maxId)
         {
             return App.tail.twitter.GetMentionline(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);

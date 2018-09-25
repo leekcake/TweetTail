@@ -22,6 +22,12 @@ namespace TweetTail.Notification
             notificationListView.Refresh();
         }
 
+        public void Reload()
+        {
+            notificationListView.Items.Clear();
+            notificationListView.Refresh();
+        }
+
         public Task<List<DataNotification>> NotificationGetter(long sinceId, long maxId)
         {
             return App.tail.twitter.GetNotifications(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);

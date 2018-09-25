@@ -16,5 +16,12 @@ namespace TweetTail
         {
             InitializeComponent();
         }
+
+        public void Reload()
+        {
+            timelinePage.Reload();
+            mentionPage.Reload();
+            notificationPage.Reload();
+        }
     }
 }

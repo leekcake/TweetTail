@@ -5,7 +5,8 @@
              x:Class="TweetTail.Account.AccountPage">
     <ContentPage.Content>
         <StackLayout>
-            <account:AccountListView x:Name="accountListView">
+            <account:AccountListView x:Name="accountListView"
+                                     SelectionMode="None">
                 <account:AccountListView.Footer>
                     <StackLayout MinimumWidthRequest="32">
                         <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Text="새 계정 추가하기"></Label>
