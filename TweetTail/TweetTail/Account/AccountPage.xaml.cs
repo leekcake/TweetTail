@@ -40,14 +40,7 @@ namespace TweetTail.Account
             if(item.id != App.tail.account.SelectedAccountId)
             {
                 App.tail.account.SelectedAccountId = item.id;
-                foreach(var page in App.Navigation.NavigationStack)
-                {
-                    if(page is SingleTailPage)
-                    {
-                        (page as SingleTailPage).Reload();
-                        break;
-                    }
-                }
+                SingleTailPage.ReloadInNavigationStack();
                 App.Navigation.RemovePage(this);
             }
         }

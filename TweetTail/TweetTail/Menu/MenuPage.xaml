@@ -4,7 +4,8 @@
              x:Class="TweetTail.Menu.MenuPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="현재 사용중인 계정모드: 싱글"
+            <Label x:Name="lblBlendStatus"
+                Text="잉여 병합계정 사용중"
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand" />
             <ListView x:Name="listView"

@@ -46,7 +46,7 @@ namespace TweetTail.Menu
                     App.Navigation.PushAsync(new AccountPage());
                 })
             });
-            UpdateUser();
+            Update();
 
             Items.Add(new Item()
             {
@@ -74,7 +74,7 @@ namespace TweetTail.Menu
             (Parent as MasterDetailPage).IsPresented = false;
         }
 
-        public void UpdateUser()
+        public void Update()
         {
             var item = Items[0];
             try
@@ -93,6 +93,17 @@ namespace TweetTail.Menu
 
             //Notify to Refresh
             Items[0] = item;
+
+            var name = App.tail.blend.SelectedBlendName;
+            if(name == null || name == "")
+            {
+                lblBlendStatus.IsVisible = false;
+            }
+            else
+            {
+                lblBlendStatus.IsVisible = true;
+                lblBlendStatus.Text = name + " 병합 계정을 사용하고 있습니다.";
+            }
         }
         
     }

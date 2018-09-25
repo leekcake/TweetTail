@@ -17,6 +17,18 @@ namespace TweetTail
             InitializeComponent();
         }
 
+        public static void ReloadInNavigationStack()
+        {
+            foreach (var page in App.Navigation.NavigationStack)
+            {
+                if (page is SingleTailPage)
+                {
+                    (page as SingleTailPage).Reload();
+                    break;
+                }
+            }
+        }
+
         public void Reload()
         {
             timelinePage.Reload();

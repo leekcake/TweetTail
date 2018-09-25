@@ -16,7 +16,7 @@ namespace TweetTail.Menu
 
         private void RootPage_IsPresentedChanged(object sender, EventArgs e)
         {
-            (Master as MenuPage).UpdateUser();
+            (Master as MenuPage).Update();
         }
     }
 }

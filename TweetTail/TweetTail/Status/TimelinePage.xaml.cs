@@ -30,6 +30,10 @@ namespace TweetTail.Status
 
         public Task<List<DataStatus>> TimelineGetter(long sinceId, long maxId)
         {
+            if( App.tail.blend.SelectedBlendedAccount != null )
+            {
+                return App.tail.blend.SelectedBlendedAccount.getTimeline(200, sinceId, maxId);
+            }
             return App.tail.twitter.GetTimeline(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);
         }
 

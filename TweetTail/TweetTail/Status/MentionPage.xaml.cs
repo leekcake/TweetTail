@@ -27,6 +27,10 @@ namespace TweetTail.Status
 
         private Task<List<TwitterInterface.Data.Status>> MentionGetter(long sinceId, long maxId)
         {
+            if(App.tail.blend.SelectedBlendedAccount != null)
+            {
+                return App.tail.blend.SelectedBlendedAccount.getMentionline(200, sinceId, maxId);
+            }
             return App.tail.twitter.GetMentionline(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);
         }
     }
