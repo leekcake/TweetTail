@@ -14,6 +14,7 @@ namespace Library
         public string saveDir;
 
         public AccountManager account;
+        public BlendManager blend;
 
         public TweetTail(API api, string saveDir)
         {
@@ -23,6 +24,7 @@ namespace Library
             Directory.CreateDirectory(saveDir);
 
             account = new AccountManager(this);
+            blend = new BlendManager(this);
         }
     }
 }

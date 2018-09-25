@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TweetTail.Blend.BlendListPage">
+    <ContentPage.Content>
+        <ListView x:Name="blendListView">
+            <ListView.Header>
+                <Label x:Name="lblHeader" Text="계정병합 사용중지"></Label>
+            </ListView.Header>
+            <ListView.Footer>
+                <Label x:Name="lblFooter" Text="계정병합 추가하기"></Label>
+            </ListView.Footer>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>
