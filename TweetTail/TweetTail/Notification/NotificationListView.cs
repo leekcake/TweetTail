@@ -12,9 +12,6 @@ namespace TweetTail.Notification
 {
     public class NotificationListView : TwitterListView<DataNotification, NotificationCell>
     {
-        public override long GetID(DataNotification data)
-        {
-            return data.maxPosition;
-        }
+
     }
 }

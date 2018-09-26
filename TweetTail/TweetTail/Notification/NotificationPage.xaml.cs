@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Fetch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,22 +19,20 @@ namespace TweetTail.Notification
 		{
 			InitializeComponent ();
 
-            notificationListView.SinceMaxGetter = NotificationGetter;
-            notificationListView.Refresh();
+            Reload();
         }
 
         public void Reload()
         {
-            notificationListView.Reload();
+            if (App.tail.blend.SelectedBlendedAccount != null)
+            {
+                notificationListView.Fetchable = new BlendAccountFetch<DataNotification>.Notifications(App.tail.blend.SelectedBlendedAccount);
+            }
+            else
+            {
+                notificationListView.Fetchable = new AccountFetch.Notifications(App.tail, App.tail.account.SelectedAccountGroup.accountForRead);
+            }
         }
 
-        public Task<List<DataNotification>> NotificationGetter(long sinceId, long maxId)
-        {
-            if(App.tail.blend.SelectedBlendedAccount != null)
-            {
-                return App.tail.blend.SelectedBlendedAccount.getNotifications(40, sinceId, maxId);
-            }
-            return App.tail.twitter.GetNotifications(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);
-        }
     }
 }

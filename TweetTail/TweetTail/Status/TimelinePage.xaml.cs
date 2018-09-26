@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Fetch;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,22 +20,19 @@ namespace TweetTail.Status
         {
             InitializeComponent();
 
-            StatusListView.SinceMaxGetter = TimelineGetter;
-            StatusListView.Refresh();
+            Reload();
         }
 
         public void Reload()
         {
-            StatusListView.Reload();
-        }
-
-        public Task<List<DataStatus>> TimelineGetter(long sinceId, long maxId)
-        {
-            if( App.tail.blend.SelectedBlendedAccount != null )
+            if (App.tail.blend.SelectedBlendedAccount != null)
             {
-                return App.tail.blend.SelectedBlendedAccount.getTimeline(200, sinceId, maxId);
+                StatusListView.Fetchable = new BlendAccountFetch<DataStatus>.Timeline( App.tail.blend.SelectedBlendedAccount );
             }
-            return App.tail.twitter.GetTimeline(App.tail.account.SelectedAccountGroup.accountForRead, 200, sinceId, maxId);
+            else
+            {
+                StatusListView.Fetchable = new AccountFetch.Timeline(App.tail, App.tail.account.SelectedAccountGroup.accountForRead);
+            }
         }
 
         private void fabTweet_Clicked(object sender, EventArgs e)

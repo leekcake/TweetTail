@@ -10,7 +10,7 @@ namespace Library.Container.Blend
 {
     public class BlendedAccount
     {
-        private TweetTail tail;
+        internal TweetTail tail;
 
         public long[] ids;
         public string name;
@@ -43,7 +43,7 @@ namespace Library.Container.Blend
             return result;
         }
 
-        private List<Status> blendStatus(List<Status>[] statuses)
+        public static List<Status> blendStatus(List<Status>[] statuses)
         {
             var dict = new Dictionary<long, Status>();
             var list = new List<Status>();
@@ -71,7 +71,7 @@ namespace Library.Container.Blend
             return list;
         }
 
-        private List<Notification> blendNotification(List<Notification>[] notifications)
+        public static List<Notification> blendNotification(List<Notification>[] notifications)
         {
             var list = new List<Notification>();
             foreach(var notificationList in notifications)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Fetch;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -10,31 +11,26 @@ namespace TweetTail.Utils
 {
     public abstract class TwitterListView<Data, Cell> : ListView where Cell : ViewCell
     {
-        public abstract long GetID(Data data);
-
-        private long sinceIndex = -1, maxIndex = -1;
-        public ObservableCollection<Data> Items { get; set; }
-
-        private Func<long, long, Task<List<Data>>> sinceMaxGetter;
-        public Func<long, long, Task<List<Data>>> SinceMaxGetter {
+        private Fetchable<Data> fetchable;
+        public Fetchable<Data> Fetchable {
             get {
-                return sinceMaxGetter;
+                return fetchable;
             }
             set {
-                sinceMaxGetter = value;
-
+                fetchable = value;
                 if (value != null)
                 {
-                    IsPullToRefreshEnabled = true;
-                    RefreshCommand = new Command(Refresh);
+                    IsPullToRefreshEnabled = value.IsSupportRefresh;
                 }
                 else
                 {
                     IsPullToRefreshEnabled = false;
                 }
+                Reload();
             }
         }
-        public Func<long, Task<CursoredList<Data>>> cursoredGetter = null;
+
+        public ObservableCollection<Data> Items { get; set; }
 
         private bool isLoading;
         private bool isNoMoreData;
@@ -50,6 +46,7 @@ namespace TweetTail.Utils
             Items = new ObservableCollection<Data>();
             ItemsSource = Items;
             SelectionMode = ListViewSelectionMode.None;
+            RefreshCommand = new Command(Refresh);
 
             if (Footer == null)
             {
@@ -69,10 +66,8 @@ namespace TweetTail.Utils
                 }
             }
 
-            sinceIndex = -1;
-            maxIndex = -1;
             Items.Clear();
-            Refresh();
+            BeginRefresh();
         }
 
         private void TwitterListView_ItemAppearing(object sender, ItemVisibilityEventArgs e)
@@ -91,37 +86,17 @@ namespace TweetTail.Utils
         {
             try
             {
-                if (sinceMaxGetter != null)
+                if (fetchable != null)
                 {
-                    var datas = await sinceMaxGetter(-1, maxIndex - 1);
+                    var datas = await fetchable.FetchOld();
                     if (datas.Count == 0)
                     {
                         isLoading = false;
                         FlagNoMoreData();
                         return;
                     }
-
-                    sinceIndex = GetID(datas[0]);
-                    maxIndex = GetID(datas[datas.Count - 1]);
+                    
                     foreach(var data in datas)
-                    {
-                        Items.Add(data);
-                    }
-                }
-                else if(cursoredGetter != null)
-                {
-                    var datas = await cursoredGetter(maxIndex);
-
-                    if (datas.Count == 0)
-                    {
-                        isLoading = false;
-                        FlagNoMoreData();
-                        return;
-                    }
-
-                    maxIndex = datas.nextCursor;
-
-                    foreach (var data in datas)
                     {
                         Items.Add(data);
                     }
@@ -137,9 +112,9 @@ namespace TweetTail.Utils
         {
             try
             {
-                if (sinceMaxGetter != null)
+                if (fetchable != null)
                 {
-                    var datas = await sinceMaxGetter(sinceIndex, -1);
+                    var datas = await fetchable.FetchNew();
                     if (datas.Count == 0)
                     {
                         if(Items.Count == 0)
@@ -159,34 +134,13 @@ namespace TweetTail.Utils
                     {
                         topItem = datas[0];
                     }
-
-                    sinceIndex = GetID(datas[0]);
-                    maxIndex = GetID(datas[datas.Count - 1]);
+                    
                     for (int i = datas.Count - 1; i >= 0; i--)
                     {
                         Items.Insert(0, datas[i]);
                     }
                     
                     ScrollTo(topItem, ScrollToPosition.End, false);
-                }
-                else if(cursoredGetter != null)
-                {
-                    var datas = await cursoredGetter(-1);
-                    if (datas.Count == 0)
-                    {
-                        if (Items.Count == 0)
-                        {
-                            Footer = "이 목록이 비어있는것 같습니다!";
-                        }
-                        EndRefresh();
-                        return;
-                    }
-
-                    maxIndex = datas.nextCursor;
-                    for (int i = datas.Count - 1; i >= 0; i--)
-                    {
-                        Items.Insert(0, datas[i]);
-                    }
                 }
 
                 EndRefresh();

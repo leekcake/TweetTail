@@ -13,9 +13,6 @@ namespace TweetTail.Status
 {
     public class StatusListView : TwitterListView<DataStatus, StatusCell>
     {
-        public override long GetID(DataStatus data)
-        {
-            return data.id;
-        }
+
     }
 }

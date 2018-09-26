@@ -9,9 +9,6 @@ namespace TweetTail.Account
 {
     public class AccountListView : TwitterListView<DataAccount, AccountCell>
     {
-        public override long GetID(DataAccount data)
-        {
-            return data.id;
-        }
+
     }
 }
