@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TweetTail.User;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -63,6 +63,14 @@ namespace TweetTail.Status
         {
             InitializeComponent();
 
+            imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    App.Navigation.PushAsync(new UserDetailPage(getDisplayStatus(status).creater, App.tail.account.getAccountGroup(status.issuer[0]).accountForRead ));
+                }),
+                NumberOfTapsRequired = 1
+            });
 
             imgReply.GestureRecognizers.Add(new TapGestureRecognizer
             {
