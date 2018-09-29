@@ -83,6 +83,30 @@ namespace Library.Container.Fetch
             }
         }
 
+        public class Medialine : SinceFetch<Status>
+        {
+            private TweetTail tail;
+            private DataAccount account;
+            private User target;
+
+            public Medialine(TweetTail tail, DataAccount account, User target)
+            {
+                this.tail = tail;
+                this.account = account;
+                this.target = target;
+            }
+
+            protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
+            {
+                return tail.twitter.GetMedialine(account, target.id, 100, sinceId, maxId);
+            }
+
+            protected override long GetID(Status data)
+            {
+                return data.id;
+            }
+        }
+
         public class Favorites : SinceFetch<Status>
         {
             private TweetTail tail;
@@ -150,6 +174,34 @@ namespace Library.Container.Fetch
             }
 
             protected override long GetID(User data)
+            {
+                return data.id;
+            }
+        }
+
+        public class Search : SinceFetch<Status>
+        {
+            private TweetTail tail;
+            private DataAccount account;
+            private string query;
+            private bool isRecent;
+            private string until;
+
+            public Search(TweetTail tail, DataAccount account, string query, bool isRecent, string until = null)
+            {
+                this.tail = tail;
+                this.account = account;
+                this.query = query;
+                this.isRecent = isRecent;
+                this.until = until;
+            }
+
+            protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
+            {
+                return tail.twitter.SearchTweet(account, query, isRecent, 100, until, sinceId, maxId);
+            }
+
+            protected override long GetID(Status data)
             {
                 return data.id;
             }

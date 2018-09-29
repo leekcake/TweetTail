@@ -26,6 +26,8 @@ namespace TweetTail.User
             this.binding = binding;
             this.issuer = issuer;
 
+            Title = binding.nickName + "님의 프로필";
+
             viewIssuer.BindingContext = issuer.user;
             viewIssuer.Update();
 
@@ -49,13 +51,16 @@ namespace TweetTail.User
 
         private void btnMedia_Clicked(object sender, EventArgs e)
         {
-            //TODO: Wait for Medialine API
+            var listview = new StatusListView();
+            listview.Fetchable = new AccountFetch.Medialine(App.tail, issuer, binding);
+            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님의 미디어" });
         }
 
         private void btnMention_Clicked(object sender, EventArgs e)
         {
-            //TODO: Wait for Search API
-
+            var listview = new StatusListView();
+            listview.Fetchable = new AccountFetch.Search(App.tail, issuer, "to:@" + binding.screenName, true);
+            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님에게 가고있는 멘션" });
         }
 
         private void btnFavorite_Clicked(object sender, EventArgs e)
