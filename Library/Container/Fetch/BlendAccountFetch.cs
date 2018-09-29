@@ -31,20 +31,36 @@ namespace Library.Container.Fetch
 
         public async Task<List<Data>> FetchNew()
         {
+            var fetchs = new Task<List<Data>>[fetchables.Length];
+
+            for(int i = 0; i < fetchables.Length; i++)
+            {
+                fetchs[i] = fetchables[i].FetchNew();
+            }
+
             var datas = new List<Data>[fetchables.Length];
+
             for (int i = 0; i < datas.Length; i++)
             {
-                datas[i] = await fetchables[i].FetchNew();
+                datas[i] = await fetchs[i];
             }
+
             return GetBlendedData(datas);
         }
 
         public async Task<List<Data>> FetchOld()
         {
+            var fetchs = new Task<List<Data>>[fetchables.Length];
+
+            for (int i = 0; i < fetchables.Length; i++)
+            {
+                fetchs[i] = fetchables[i].FetchNew();
+            }
+
             var datas = new List<Data>[fetchables.Length];
             for (int i = 0; i < datas.Length; i++)
             {
-                datas[i] = await fetchables[i].FetchOld();
+                datas[i] = await fetchs[i];
             }
             return GetBlendedData(datas);
         }
