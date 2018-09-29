@@ -53,5 +53,11 @@ namespace TwitterInterface.API
         //GET favorites/list
         Task<List<Status>> GetFavorites(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1);
         Task<List<Status>> GetFavorites(Account account, string userScreenName, long count = 200, long sinceId = -1, long maxId = -1);
+
+        //GET statuses/media_timeline
+        Task<List<Status>> GetMedialine(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1);
+
+        //GET search/tweets
+        Task<List<Status>> SearchTweet(Account account, string query, bool isRecent, int count = 100, string until = null, long sinceId = -1, long maxId = -1);
     }
 }

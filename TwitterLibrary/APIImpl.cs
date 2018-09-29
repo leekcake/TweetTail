@@ -1680,5 +1680,29 @@ namespace TwitterLibrary
                     ),
                 account.id, TwitterDataFactory.parseNotification).ToList();
         }
+
+        public async Task<List<Status>> GetMedialine(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
+        {
+            return TwitterDataFactory.parseArray(
+                JArray.Parse(
+                    await Get("https://api.twitter.com/1.1/statuses/media_timeline.json", account,
+                    makeQuery(
+                        "count", count.ToString(),
+                        "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null
+                    )
+                )), account.id, TwitterDataFactory.parseStatus).ToList();
+        }
+
+        public async Task<List<Status>> SearchTweet(Account account, string query, bool isRecent, int count = 100, string until = null, long sinceId = -1, long maxId = -1)
+        {
+            var result = JObject.Parse(
+                await Get("https://api.twitter.com/1.1/search/tweets.json", account,
+                makeQuery("q", query, "result_type", isRecent ? "recent" : "popular", "count", count.ToString(),
+                "until", until,
+                "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null)
+                ));
+
+            return TwitterDataFactory.parseArray(result["statuses"].ToObject<JArray>(), account.id, TwitterDataFactory.parseStatus).ToList(); 
+        }
     }
 }
