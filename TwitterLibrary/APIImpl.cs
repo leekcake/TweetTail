@@ -1687,6 +1687,7 @@ namespace TwitterLibrary
                 JArray.Parse(
                     await Get("https://api.twitter.com/1.1/statuses/media_timeline.json", account,
                     makeQuery(
+                        "user_id", userId.ToString(),
                         "count", count.ToString(),
                         "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null
                     )
