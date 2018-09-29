@@ -105,6 +105,7 @@ namespace TweetTail.Utils
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+                EndRefresh();
             }
         }
 
@@ -148,6 +149,7 @@ namespace TweetTail.Utils
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+                EndRefresh();
             }
         }
     }
