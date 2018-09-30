@@ -85,7 +85,7 @@ namespace TweetTail.Utils
                     {
                         var span = new Span()
                         {
-                            Text = link.replace == null ? text.Substring(link.indices.start, link.indices.end) : link.replace,
+                            Text = link.replace == null ? text.Substring(link.indices.start, link.indices.Length) : link.replace,
                             TextColor = Color.Blue
                         };
                         span.GestureRecognizers.Add(new TapGestureRecognizer()
@@ -96,7 +96,7 @@ namespace TweetTail.Utils
                         result.Spans.Add(span);
                     }
 
-                    pos = hyperLinks[i].indices.end;
+                    pos = link.indices.end;
                 }
 
                 if (pos < text.Length)
