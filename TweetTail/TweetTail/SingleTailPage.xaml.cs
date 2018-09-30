@@ -15,6 +15,15 @@ namespace TweetTail
         public SingleTailPage ()
         {
             InitializeComponent();
+
+            if (App.tail.blend.SelectedBlendedAccount != null)
+            {
+                Title = App.tail.blend.SelectedBlendedAccount.name + " 병합계정";
+            }
+            else
+            {
+                Title = App.tail.account.SelectedAccountGroup.accountForRead.user.nickName + " 계정";
+            }
         }
 
         public static void ReloadInNavigationStack()
