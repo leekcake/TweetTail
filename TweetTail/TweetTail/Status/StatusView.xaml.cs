@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TweetTail.User;
+using TweetTail.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -85,16 +86,21 @@ namespace TweetTail.Status
             {
                 Command = new Command(async () =>
                 {
-                    //TODO: Select account when multiple issuer
                     try
                     {
-                        await App.tail.twitter.RetweetStatus(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                        var selected = await Util.SelectAccount("리트윗할 계정을 선택하세요", status.issuer);
+                        if(selected == null)
+                        {
+                            return;
+                        }
+
+                        await App.tail.twitter.RetweetStatus(selected.accountForWrite, status.id);
                         getDisplayStatus(status).isRetweetedByUser = true;
                         UpdateButton();
                     }
                     catch (Exception e)
                     {
-
+                        Util.HandleException(e);
                     }
 
                 }),
@@ -105,16 +111,21 @@ namespace TweetTail.Status
             {
                 Command = new Command(async () =>
                 {
-                    //TODO: Select account when multiple issuer
                     try
                     {
-                        await App.tail.twitter.CreateFavorite(App.tail.account.getAccountGroup(status.issuer[0]).accountForWrite, status.id);
+                        var selected = await Util.SelectAccount("관심글할 계정을 선택하세요", status.issuer);
+                        if (selected == null)
+                        {
+                            return;
+                        }
+
+                        await App.tail.twitter.CreateFavorite(selected.accountForWrite, status.id);
                         getDisplayStatus(status).isFavortedByUser = true;
                         UpdateButton();
                     }
                     catch (Exception e)
                     {
-
+                        Util.HandleException(e);
                     }
 
                 }),
