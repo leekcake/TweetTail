@@ -31,6 +31,15 @@ namespace TweetTail
 
         public void Reload()
         {
+            if(App.tail.blend.SelectedBlendedAccount != null)
+            {
+                Title = App.tail.blend.SelectedBlendedAccount.name + " 병합계정";
+            }
+            else
+            {
+                Title = App.tail.account.SelectedAccountGroup.accountForRead.user.nickName + " 계정";
+            }
+
             timelinePage.Reload();
             mentionPage.Reload();
             notificationPage.Reload();

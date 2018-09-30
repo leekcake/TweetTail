@@ -33,7 +33,7 @@ namespace TweetTail
             
             if (tail.account.readOnlyAccountGroups.Count != 0)
             {
-                NavigationPage = new NavigationPage( new SingleTailPage() );
+                NavigationPage = new NavigationPage( new LoadingPage() );
             }
             else
             {

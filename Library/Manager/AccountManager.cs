@@ -19,7 +19,6 @@ namespace Library.Manager
             this.owner = owner;
             savePath = Path.Combine(owner.saveDir, "accounts.json");
             load();
-            VerifyAccounts();
         }
 
         internal List<AccountGroup> accountGroups = new List<AccountGroup>();
@@ -85,7 +84,7 @@ namespace Library.Manager
             save();
         }
 
-        private async Task VerifyAccounts()
+        public async Task VerifyAccounts()
         {
             foreach(var group in accountGroups)
             {
