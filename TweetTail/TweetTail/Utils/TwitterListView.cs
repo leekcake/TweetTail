@@ -18,6 +18,7 @@ namespace TweetTail.Utils
             }
             set {
                 fetchable = value;
+                Items.Clear();
                 if (value != null)
                 {
                     IsPullToRefreshEnabled = value.IsSupportRefresh;
