@@ -282,8 +282,8 @@ namespace TwitterLibrary
                 var infoObj = obj["video_info"].ToObject<JObject>();
                 var info = new VideoInformation();
                 info.aspectRatio = parseIndices( infoObj["aspect_ratio"].ToObject<JArray>() );
-                info.duration = infoObj["duration_millis"].ToObject<int>();
-
+                //animated_gif doesn't have duration_millis data
+                info.duration = SafeGetLong(infoObj, "duration_millis");
                 var variantArray = infoObj["variants"].ToObject<JArray>();
                 info.variants = parseArray(variantArray, parseVideoVariant);
 
