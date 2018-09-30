@@ -1,4 +1,6 @@
 ﻿using FFImageLoading.Forms;
+using FFImageLoading.Transformations;
+using FFImageLoading.Work;
 using FormsVideoLibrary;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,38 @@ namespace TweetTail.Status
 {
     public partial class MediaPage : CarouselPage
     {
+        private class MediaView
+        {
+            private MediaPage parent;
+            public CachedImage image = new CachedImage();
+
+            public MediaView(MediaPage parent, ExtendMedia media)
+            {
+                this.parent = parent;
+                image.Source = media.mediaURLHttps;
+
+                var gesture = new PanGestureRecognizer();
+                gesture.PanUpdated += (sender, e) =>
+                {
+                    switch (e.StatusType)
+                    {
+                        case GestureStatus.Running:
+                            image.TranslationX = e.TotalX;
+                            image.TranslationY = e.TotalY;
+                            break;
+                        case GestureStatus.Completed:
+                            if ( Math.Abs(image.TranslationY) > (parent.Height / 8))
+                            {
+                                App.Navigation.RemovePage(parent);
+                            }
+                            image.TranslateTo(0, 0);
+                            break;
+                    }
+                };
+                image.GestureRecognizers.Add(gesture);
+            }
+        };
+
         private DataStatus viewing;
 
         private VideoPlayer videoView;
@@ -29,13 +63,7 @@ namespace TweetTail.Status
                 {
                     Children.Add(new ContentPage()
                     {
-                        Content = new CachedImage()
-                        {
-                            Source = new UriImageSource()
-                            {
-                                Uri = new Uri(media.mediaURLHttps)
-                            }
-                        }
+                        Content = makeCachedImage(media)
                     });
                 }
                 CurrentPage = Children[inx];
@@ -49,6 +77,12 @@ namespace TweetTail.Status
                 });
                 videoView.Source = VideoSource.FromUri(pickVideoVariant(status.extendMedias[0].video.variants).url);
             }
+        }
+
+        private CachedImage makeCachedImage(ExtendMedia media)
+        {
+            var view = new MediaView(this, media);
+            return view.image;
         }
 
         private VideoVariant pickVideoVariant(VideoVariant[] variants)
