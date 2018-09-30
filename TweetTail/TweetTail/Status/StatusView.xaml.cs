@@ -1,5 +1,6 @@
 ﻿using FFImageLoading.Forms;
 using FFImageLoading.Transformations;
+using Library.Container.Account;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,9 +16,9 @@ using DataStatus = TwitterInterface.Data.Status;
 
 namespace TweetTail.Status
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StatusView : ContentView
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class StatusView : ContentView
+    {
         private static TintTransformation retweetTransformation = new TintTransformation("#009900");
         private static TintTransformation favoriteTransformation = new TintTransformation("#FF0000");
 
@@ -29,13 +30,13 @@ namespace TweetTail.Status
 
         public ObservableCollection<DataStatus> statuses {
             get {
-                if(Parent == null)
+                if (Parent == null)
                 {
                     return null;
                 }
-                if(Parent is StatusCell)
+                if (Parent is StatusCell)
                 {
-                    if(Parent.Parent is StatusListView)
+                    if (Parent.Parent is StatusListView)
                     {
                         return (Parent.Parent as StatusListView).Items;
                     }
@@ -68,7 +69,7 @@ namespace TweetTail.Status
             {
                 Command = new Command(() =>
                 {
-                    App.Navigation.PushAsync(new UserDetailPage(getDisplayStatus(status).creater, App.tail.account.getAccountGroup(status.issuer[0]).accountForRead ));
+                    App.Navigation.PushAsync(new UserDetailPage(getDisplayStatus(status).creater, App.tail.account.getAccountGroup(status.issuer[0]).accountForRead));
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -89,7 +90,7 @@ namespace TweetTail.Status
                     try
                     {
                         var selected = await Util.SelectAccount("리트윗할 계정을 선택하세요", status.issuer);
-                        if(selected == null)
+                        if (selected == null)
                         {
                             return;
                         }
@@ -127,7 +128,6 @@ namespace TweetTail.Status
                     {
                         Util.HandleException(e);
                     }
-
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -163,9 +163,52 @@ namespace TweetTail.Status
 
             imgMore.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() =>
+                Command = new Command(async () =>
                 {
-                    Application.Current.MainPage.DisplayAlert("TODO", "More Button", "OK");
+                    try
+                    {
+                        DataStatus target = status;
+                        if (status.retweetedStatus != null)
+                        {
+                            if (!await Application.Current.MainPage.DisplayAlert("리트윗된 트윗", "이 트윗은 다른 유저가 리트윗한 트윗입니다. 어떤 트윗을 사용합니까?" +
+                                "이 트윗을 사용해 다른 계정에서 리트윗/마음을 찍는경우 리트윗한 사람에게까지 알림이 갈 수 있습니다", "이 트윗", "원본트윗"))
+                            {
+                                target = status.retweetedStatus;
+                            }
+                        }
+
+                        string[] moreActionSheet = {
+                            "다른 계정으로 리트윗",
+                            "다른 계정으로 관심글"
+                        };
+                        var selected = await Application.Current.MainPage.DisplayActionSheet("이 트윗으로...", "취소", null, moreActionSheet);
+                        AccountGroup account;
+                        switch(selected)
+                        {
+                            case "다른 계정으로 리트윗":
+                                account = await Util.SelectAccount("리트윗할 계정을 선택하세요");
+                                if (account == null)
+                                {
+                                    return;
+                                }
+
+                                await App.tail.twitter.RetweetStatus(account.accountForWrite, target.id);
+                                break;
+                            case "다른 계정으로 관심글":
+                                account = await Util.SelectAccount("관심글할 계정을 선택하세요");
+                                if (account == null)
+                                {
+                                    return;
+                                }
+
+                                await App.tail.twitter.CreateFavorite(account.accountForWrite, target.id);
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Util.HandleException(e);
+                    }
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -214,7 +257,7 @@ namespace TweetTail.Status
                 {
                     getMediaView(i).Source = display.extendMedias[i].mediaURLHttps;
                 }
-            }            
+            }
         }
 
         protected void UpdateButton()
@@ -235,7 +278,7 @@ namespace TweetTail.Status
             imgRetweet.ReloadImage();
             imgFavorite.ReloadImage();
 
-            if( statuses != null )
+            if (statuses != null)
             {
                 imgDelete.IsVisible = true;
                 var group = App.tail.account.getAccountGroup(status.creater.id);
