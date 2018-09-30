@@ -320,7 +320,7 @@ namespace TweetTail.Status
             imgLock.IsVisible = display.creater.isProtected;
             lblCreatedAt.Text = display.createdAt.ToString();
             lblName.Text = string.Format("{0} @{1}", display.creater.nickName, display.creater.screenName);
-            lblText.Text = display.text;
+            lblText.FormattedText = TwitterFormater.ParseFormattedString(display);
 
             imgProfile.Source = null;
             for (int i = 0; i < 4; i++)
