@@ -29,7 +29,7 @@ namespace TweetTail.Notification
             {
                 var follow = notification as DataNotification.Follow;
                 statusView.viewButtons.IsVisible = false;
-                statusView.viewMedias.IsVisible = false;
+                statusView.gridMedias.IsVisible = false;
                 statusView.viewHeader.IsVisible = true;
                 
                 statusView.lblHeader.Text = follow.Performer.nickName + " 님이 팔로우 하셨습니다.";

@@ -45,25 +45,22 @@ namespace TweetTail.Status
             }
         }
 
+        private List<CachedImage> images;
+
         private CachedImage getMediaView(int inx)
         {
-            switch (inx)
-            {
-                case 0:
-                    return imgMedia1;
-                case 1:
-                    return imgMedia2;
-                case 2:
-                    return imgMedia3;
-                case 3:
-                    return imgMedia4;
-            }
-            throw new IndexOutOfRangeException();
+            return images[inx];
         }
 
         public StatusView()
         {
             InitializeComponent();
+
+            images = new List<CachedImage>();
+            for (int i = 0; i < 4; i++)
+            {
+                images.Add(new CachedImage());
+            }
 
             imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -257,6 +254,45 @@ namespace TweetTail.Status
                 {
                     getMediaView(i).Source = display.extendMedias[i].mediaURLHttps;
                 }
+                
+                gridMedias.RowDefinitions.Clear();
+                gridMedias.ColumnDefinitions.Clear();
+                gridMedias.Children.Clear();
+
+                switch (display.extendMedias.Length)
+                {
+                    case 1:
+                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.Children.Add(getMediaView(0), 0, 0);
+                        break;
+                    case 2:
+                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.Children.Add(getMediaView(0), 0, 0);
+                        gridMedias.Children.Add(getMediaView(1), 0, 1);
+                        break;
+                    case 3:
+                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.Children.Add(getMediaView(0), 0, 0);
+                        gridMedias.Children.Add(getMediaView(1), 0, 1);
+                        gridMedias.Children.Add(getMediaView(2), 1, 0);
+                        break;
+                    case 4:
+                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                        gridMedias.Children.Add(getMediaView(0), 0, 0);
+                        gridMedias.Children.Add(getMediaView(1), 0, 1);
+                        gridMedias.Children.Add(getMediaView(2), 1, 0);
+                        gridMedias.Children.Add(getMediaView(3), 1, 1);
+                        break;
+                }
             }
         }
 
@@ -329,11 +365,11 @@ namespace TweetTail.Status
             }
             if (display.extendMedias != null)
             {
-                viewMedias.IsVisible = true;
+                gridMedias.IsVisible = true;
             }
             else
             {
-                viewMedias.IsVisible = false;
+                gridMedias.IsVisible = false;
             }
 
             viewIssuer.BindingContext = status.issuer;

@@ -25,12 +25,9 @@
                     </StackLayout>
 
                     <Label x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
-                    <StackLayout x:Name="viewMedias" x:FieldModifier="Public" IsVisible="False" Orientation="Horizontal">
-                        <ffimageloading:CachedImage x:Name="imgMedia1" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgMedia2" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgMedia3" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgMedia4" WidthRequest="48" HeightRequest="48"></ffimageloading:CachedImage>
-                    </StackLayout>
+                    <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
+
+                    </Grid>
                     <Label x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
                     <StackLayout x:Name="viewButtons" x:FieldModifier="Public" Orientation="Horizontal">
                         <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_black_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
