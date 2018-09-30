@@ -59,7 +59,10 @@ namespace TweetTail.Status
             images = new List<CachedImage>();
             for (int i = 0; i < 4; i++)
             {
-                images.Add(new CachedImage());
+                var cached = new CachedImage();
+                cached.Aspect = Aspect.AspectFill;
+                cached.WidthRequest = 10000;
+                images.Add(cached);
             }
 
             imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
@@ -252,7 +255,7 @@ namespace TweetTail.Status
             {
                 for (int i = 0; i < display.extendMedias.Length; i++)
                 {
-                    getMediaView(i).Source = display.extendMedias[i].mediaURLHttps;
+                    getMediaView(i).Source = display.extendMedias[i].mediaURLHttps + ":thumb";
                 }
                 
                 gridMedias.RowDefinitions.Clear();
