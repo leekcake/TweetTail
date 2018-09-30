@@ -140,8 +140,11 @@ namespace TweetTail.Utils
                     {
                         Items.Insert(0, datas[i]);
                     }
-                    
-                    ScrollTo(topItem, ScrollToPosition.End, false);
+
+                    //갑자기 아래로 내려가 있으면 이상하기 때문에 유저 경험을 위해 추가되기 전에 맨 위에 있었을 아이템을 맨 위로 팍 올린뒤
+                    //스크롤을 자연스럽게 내려줌
+                    ScrollTo(topItem, ScrollToPosition.Start, false);
+                    ScrollTo(topItem, ScrollToPosition.End, true);
                 }
 
                 EndRefresh();
