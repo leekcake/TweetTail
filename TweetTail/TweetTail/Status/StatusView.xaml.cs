@@ -281,6 +281,9 @@ namespace TweetTail.Status
             {
                 viewMedias.IsVisible = false;
             }
+
+            viewIssuer.BindingContext = status.issuer;
+            viewIssuer.Update();
             UpdateImage();
             UpdateButton();
         }
