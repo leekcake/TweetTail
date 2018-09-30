@@ -357,7 +357,7 @@ namespace TweetTail.Status
             }
 
             imgLock.IsVisible = display.creater.isProtected;
-            lblCreatedAt.Text = display.createdAt.ToString();
+            lblCreatedAt.Text = display.createdAt.ToLocalTime().ToString();
             lblName.Text = string.Format("{0} @{1}", display.creater.nickName, display.creater.screenName);
             lblText.FormattedText = TwitterFormater.ParseFormattedString(display);
 
