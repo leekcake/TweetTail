@@ -274,7 +274,7 @@ namespace TweetTail.Status
                         gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                         gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                         gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        gridMedias.Children.Add(getMediaView(1), 0, 1);
+                        gridMedias.Children.Add(getMediaView(1), 1, 0);
                         break;
                     case 3:
                         gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -282,8 +282,8 @@ namespace TweetTail.Status
                         gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                         gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                         gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        gridMedias.Children.Add(getMediaView(1), 0, 1);
-                        gridMedias.Children.Add(getMediaView(2), 1, 0);
+                        gridMedias.Children.Add(getMediaView(1), 1, 0);
+                        gridMedias.Children.Add(getMediaView(2), 0, 1);
                         break;
                     case 4:
                         gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
@@ -291,8 +291,8 @@ namespace TweetTail.Status
                         gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                         gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                         gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        gridMedias.Children.Add(getMediaView(1), 0, 1);
-                        gridMedias.Children.Add(getMediaView(2), 1, 0);
+                        gridMedias.Children.Add(getMediaView(1), 1, 0);
+                        gridMedias.Children.Add(getMediaView(2), 0, 1);
                         gridMedias.Children.Add(getMediaView(3), 1, 1);
                         break;
                 }
