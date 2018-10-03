@@ -67,6 +67,7 @@ namespace TwitterLibrary.Data
         {
             var result = new TDAccount();
 
+            result.id = data["id"].ToObject<long>();
             result.csrfToken = data["csrfToken"].ToString();
             result.twitterSession = data["twitterSession"].ToString();
             result.authToken = data["authToken"].ToString();
