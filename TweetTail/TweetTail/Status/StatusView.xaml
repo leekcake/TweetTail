@@ -30,11 +30,11 @@
                     </Grid>
                     <Label x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
                     <StackLayout x:Name="viewButtons" x:FieldModifier="Public" Orientation="Horizontal">
-                        <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_black_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgRetweet" Source="ic_repeat_white_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgFavorite" Source="ic_grade_white_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgDelete" Source="ic_delete_black_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgMore" Source="ic_more_horiz_black_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgRetweet" Source="ic_repeat_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgFavorite" Source="ic_grade_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgDelete" Source="ic_delete_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="imgMore" Source="ic_more_horiz_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
                         <account:IssuerView x:Name="viewIssuer" HorizontalOptions="End"></account:IssuerView>
                     </StackLayout>
                 </StackLayout>

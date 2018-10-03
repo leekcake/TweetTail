@@ -33,6 +33,7 @@ namespace TweetTail.Notification
                 statusView.viewHeader.IsVisible = true;
 
                 statusView.BindingContext = follow.Performer;
+                statusView.imgHeader.Source = "ic_person_add_light_green_500_24dp";
                 statusView.lblHeader.Text = follow.Performer.nickName + " 님이 팔로우 하셨습니다.";
 
                 statusView.imgProfile.Source = follow.Performer.profileHttpsImageURL;
@@ -44,37 +45,37 @@ namespace TweetTail.Notification
             if(notification is DataNotification.Retweet)
             {
                 var data = notification as DataNotification.Retweet;
-                DisplayNotification(data.RetweetTargetTweet, null,
+                DisplayNotification(data.RetweetTargetTweet, "ic_repeat_green_300_24dp",
                     data.Performer.nickName + " 님이 리트윗 하였습니다");
             }
             else if(notification is DataNotification.RetweetedMention)
             {
                 var data = notification as DataNotification.RetweetedMention;
-                DisplayNotification(data.RetweetedTweet, null,
+                DisplayNotification(data.RetweetedTweet, "ic_repeat_green_300_24dp",
                     data.Performer.nickName + " 님이 내가 멘션된 트윗을 리트윗 하였습니다");
             }
             else if(notification is DataNotification.RetweetedRetweet)
             {
                 var data = notification as DataNotification.RetweetedRetweet;
-                DisplayNotification(data.RetweetedTweet, null,
+                DisplayNotification(data.RetweetedTweet, "ic_repeat_green_300_24dp",
                     data.Performer.nickName + " 님이 내가 리트윗한 트윗을 리트윗 하였습니다");
             }
             else if(notification is DataNotification.Favorited)
             {
                 var data = notification as DataNotification.Favorited;
-                DisplayNotification(data.FavoritedTweet, null,
+                DisplayNotification(data.FavoritedTweet, "ic_grade_yellow_light_24dp",
                     data.Performer.nickName + " 님이 마음에 들어합니다");
             }
             else if (notification is DataNotification.FavoritedMention)
             {
                 var data = notification as DataNotification.FavoritedMention;
-                DisplayNotification(data.RetweetedTweet, null,
+                DisplayNotification(data.RetweetedTweet, "ic_grade_yellow_light_24dp",
                     data.Performer.nickName + " 님이 내가 멘션된 트윗을 좋아합니다");
             }
             else if (notification is DataNotification.FavoritedRetweet)
             {
                 var data = notification as DataNotification.FavoritedRetweet;
-                DisplayNotification(data.FavoritedTweet, null,
+                DisplayNotification(data.FavoritedTweet, "ic_grade_yellow_light_24dp",
                     data.Performer.nickName + " 님이 내가 리트윗 한 트윗을 마음에 들어합니다");
             }
             statusView.viewButtons.IsVisible = true;

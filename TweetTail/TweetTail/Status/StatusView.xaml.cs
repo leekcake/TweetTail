@@ -20,9 +20,6 @@ namespace TweetTail.Status
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StatusView : ContentView
     {
-        private static TintTransformation retweetTransformation = new TintTransformation("#009900");
-        private static TintTransformation favoriteTransformation = new TintTransformation("#FF0000");
-
         private DataStatus status {
             get {
                 return BindingContext as DataStatus;
@@ -310,20 +307,24 @@ namespace TweetTail.Status
         protected void UpdateButton()
         {
             var display = getDisplayStatus(status);
-
-            imgRetweet.Transformations.Clear();
+            
             if (display.isRetweetedByUser)
             {
-                imgRetweet.Transformations.Add(retweetTransformation);
+                imgRetweet.Source = "ic_repeat_green_300_24dp";
             }
-
-            imgFavorite.Transformations.Clear();
+            else
+            {
+                imgRetweet.Source = "ic_repeat_grey_500_24dp";
+            }
+            
             if (display.isFavortedByUser)
             {
-                imgFavorite.Transformations.Add(favoriteTransformation);
+                imgFavorite.Source = "ic_grade_yellow_light_24dp";
             }
-            imgRetweet.ReloadImage();
-            imgFavorite.ReloadImage();
+            else
+            {
+                imgFavorite.Source = "ic_grade_grey_500_24dp";
+            }
 
             if (statuses != null)
             {
@@ -331,11 +332,11 @@ namespace TweetTail.Status
                 var group = App.tail.account.getAccountGroup(status.creater.id);
                 if (group != null)
                 {
-                    imgDelete.Source = "ic_delete_black_24dp";
+                    imgDelete.Source = "ic_delete_grey_500_24dp";
                 }
                 else
                 {
-                    imgDelete.Source = "ic_visibility_off_black_24dp";
+                    imgDelete.Source = "ic_visibility_off_grey_500_24dp";
                 }
             }
             else

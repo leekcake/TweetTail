@@ -135,13 +135,25 @@
     <Content Include="ic_account_box_black_48dp.png" />
     <Content Include="ic_create_black_48dp.png" />
     <Content Include="ic_delete_black_24dp.png" />
+    <Content Include="ic_delete_grey_500_24dp.png" />
+    <Content Include="ic_forum_grey_500_48dp.png" />
+    <Content Include="ic_grade_grey_500_24dp.png" />
     <Content Include="ic_grade_white_24dp.png" />
+    <Content Include="ic_grade_yellow_light_24dp.png" />
     <Content Include="ic_lock_black_24dp.png" />
     <Content Include="ic_more_horiz_black_24dp.png" />
+    <Content Include="ic_more_horiz_grey_500_24dp.png" />
+    <Content Include="ic_notifications_grey_500_48dp.png" />
+    <Content Include="ic_person_add_light_green_500_24dp.png" />
     <Content Include="ic_repeat_black_24dp.png" />
+    <Content Include="ic_repeat_green_300_24dp.png" />
+    <Content Include="ic_repeat_grey_500_24dp.png" />
     <Content Include="ic_repeat_white_24dp.png" />
     <Content Include="ic_reply_black_24dp.png" />
+    <Content Include="ic_reply_grey_500_24dp.png" />
+    <Content Include="ic_timeline_green_300_48dp.png" />
     <Content Include="ic_visibility_off_black_24dp.png" />
+    <Content Include="ic_visibility_off_grey_500_24dp.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
