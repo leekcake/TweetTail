@@ -12,6 +12,7 @@ using TweetTail.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using DataUser = TwitterInterface.Data.User;
 using DataStatus = TwitterInterface.Data.Status;
 
 namespace TweetTail.Status
@@ -69,6 +70,13 @@ namespace TweetTail.Status
             {
                 Command = new Command(() =>
                 {
+                    //NotificationCell reuse
+                    if(BindingContext is DataUser)
+                    {
+                        var user = BindingContext as DataUser;
+                        App.Navigation.PushAsync(new UserDetailPage(user, App.tail.account.getAccountGroup(user.issuer[0]).accountForRead));
+                        return;
+                    }
                     App.Navigation.PushAsync(new UserDetailPage(getDisplayStatus(status).creater, App.tail.account.getAccountGroup(status.issuer[0]).accountForRead));
                 }),
                 NumberOfTapsRequired = 1

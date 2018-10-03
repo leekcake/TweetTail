@@ -31,7 +31,8 @@ namespace TweetTail.Notification
                 statusView.viewButtons.IsVisible = false;
                 statusView.gridMedias.IsVisible = false;
                 statusView.viewHeader.IsVisible = true;
-                
+
+                statusView.BindingContext = follow.Performer;
                 statusView.lblHeader.Text = follow.Performer.nickName + " 님이 팔로우 하셨습니다.";
 
                 statusView.imgProfile.Source = follow.Performer.profileHttpsImageURL;
