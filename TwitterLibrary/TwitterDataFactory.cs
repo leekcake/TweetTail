@@ -409,6 +409,8 @@ namespace TwitterLibrary
         {
             var relationship = new Relationship();
 
+            obj = obj["relationship"].ToObject<JObject>();
+
             var target = obj["target"];
             relationship.targetId = target["id"].ToObject<long>();
             relationship.targetScreen = target["screen_name"].ToString();
