@@ -37,7 +37,7 @@ namespace TweetTail.Status
 
         private void fabTweet_Clicked(object sender, EventArgs e)
         {
-            var page = new ContentPage();
+            var page = new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"] };
             page.Content = new StatusWriterView() { BindingContext = page };
             page.Title = "트윗작성";
             App.Navigation.PushAsync(page);
