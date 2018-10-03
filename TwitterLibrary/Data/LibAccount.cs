@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using TwitterInterface.Data;
 
@@ -31,6 +32,11 @@ namespace TwitterLibrary.Data
             result.oauth = new Token(data["oauth_key"].ToString(), data["oauth_secret"].ToString());
 
             return result;
+        }
+
+        public override HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query)
+        {
+            return Utils.generateHttpRequest(method, uri, query, this);
         }
     }
 }

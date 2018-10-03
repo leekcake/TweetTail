@@ -94,9 +94,9 @@ namespace TwitterLibrary
            return await response.Content.ReadAsStringAsync();
         }
 
-        public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, LibAccount account)
+        public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Account account)
         {
-            return await readStringFromRequestMessage(client, generateHttpRequest(method, uri, query, account));
+            return await readStringFromRequestMessage(client, account.GenerateRequest(method, uri, query));
         }
 
         public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
@@ -104,13 +104,13 @@ namespace TwitterLibrary
             return await readStringFromRequestMessage(client, generateHttpRequest(method, uri, query, consumerToken, oauthToken));
         }
 
-        public static HttpRequestMessage generateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, LibAccount account)
+        public static HttpRequestMessage generateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Account account)
         {
-            return generateHttpRequest(method, uri, query, account.consumer, account.oauth);
+            return account.GenerateRequest(method, uri, query);
         }
 
         /// <summary>
-        /// Generate HttpRequestMessage with authentication
+        /// Generate HttpRequestMessage with authentication(OAuth 1)
         /// </summary>
         /// <param name="method"></param>
         /// <param name="uri"></param>

@@ -52,7 +52,7 @@ namespace TwitterLibrary
 
         internal async Task<string> Get(string uri, Account account, KeyValuePair<string, string>[] query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query, account as LibAccount);
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query, account);
         }
 
         internal async Task<string> Get(string uri, Token consumer, Token? oauth, KeyValuePair<string, string>[] query)
@@ -62,7 +62,7 @@ namespace TwitterLibrary
 
         internal async Task<string> Post(string uri, Account account, KeyValuePair<string, string>[] query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query, account as LibAccount);
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query, account);
         }
 
         internal async Task<string> Post(string uri, Token consumer, Token? oauth, KeyValuePair<string, string>[] query)
