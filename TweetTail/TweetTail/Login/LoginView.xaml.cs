@@ -42,7 +42,7 @@ namespace TweetTail.Login
 
                 if (App.Navigation.NavigationStack[0] == this)
                 {
-                    App.Navigation.PushAsync(new Status.TimelinePage());
+                    App.Navigation.PushAsync(new SingleTailPage());
                 }
                 App.Navigation.RemovePage(this);
             }
