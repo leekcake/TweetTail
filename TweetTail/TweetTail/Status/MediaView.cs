@@ -56,7 +56,7 @@ namespace TweetTail.Status
         public MediaPage(DataStatus status, int inx = 0)
         {
             viewing = status;
-            
+            Style = (Style) Application.Current.Resources["backgroundStyle"];
 
             if (status.extendMedias[0].type == "photo")
             {
