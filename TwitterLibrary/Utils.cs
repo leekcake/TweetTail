@@ -14,8 +14,38 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitterLibrary
 {
-    class Utils
+    public class Utils
     {
+        public static Dictionary<string, string> parseCookiesFromJavascript(string cookie)
+        {
+            cookie.Replace("\"", "");
+            var result = new Dictionary<string, string>();
+
+            int inx = 0;
+            while(inx != -1)
+            {
+                inx = parseCookieFromJavascript(cookie, inx, result);
+            }
+
+            return result;
+        }
+
+        private static int parseCookieFromJavascript(string cookie, int inx, Dictionary<string, string> result)
+        {
+            int last = -1;
+            try
+            {
+                last = cookie.IndexOf(';', inx);
+            }
+            catch{ }
+            var value = cookie.Substring(inx, last == -1 ? cookie.Length - inx : last - inx);
+            var split = value.Split('=');
+
+            result[split[0]] = result[split[1]];
+
+            return last + 1;
+        }
+
         public static void VerifyTwitterResponse(HttpResponseMessage responseMessage)
         {
             if(!responseMessage.IsSuccessStatusCode)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using TwitterInterface.Container;
 using TwitterInterface.Data;
@@ -15,6 +16,8 @@ namespace TwitterInterface.API
         //POST oauth/request_token
         //POST oauth/access_token
         Task<LoginToken> GetLoginTokenAsync(Token consumerToken);
+        
+        Task<Account> GetAccountFromTweetdeckCookie(CookieCollection cookieData);
 
         //GET account/settings
         Task<AccountSetting> GetAccountSetting(Account account);

@@ -15,6 +15,7 @@ namespace TwitterLibrary.Data
         public override JObject Save()
         {
             var result = base.Save();
+            result["type"] = "Lib";
             result["consumer_key"] = consumer.key;
             result["consumer_secret"] = consumer.secret;
 

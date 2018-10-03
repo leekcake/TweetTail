@@ -14,6 +14,7 @@ using TwitterLibrary.Container;
 using Newtonsoft.Json.Linq;
 using TwitterInterface.API.Result;
 using System.Net.Http.Headers;
+using System.Net;
 
 namespace TwitterLibrary
 {
@@ -143,6 +144,15 @@ namespace TwitterLibrary
             return new LoginTokenImpl(this, consumerToken, token);
         }
 
+        public async Task<Account> GetAccountFromTweetdeckCookie(CookieCollection cookieData)
+        {
+            var account = new TDAccount();
+            account.InitwithCookie(cookieData);
+            account.user = await VerifyCredentials(account);
+
+            return account;
+        }
+
         public async Task<SavedSearch> GetSavedSearchById(Account account, long id)
         {
             return TwitterDataFactory.parseSavedSearch(
@@ -167,6 +177,17 @@ namespace TwitterLibrary
 
         public Account LoadAccount(JObject data)
         {
+            try
+            {
+                if (data["type"].ToString() == "TD")
+                {
+                    return TDAccount.Load(data);
+                }
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message + " " + e.StackTrace);
+            }
             return LibAccount.Load(data);
         }
 

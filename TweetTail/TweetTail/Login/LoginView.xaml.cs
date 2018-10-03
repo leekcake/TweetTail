@@ -69,5 +69,11 @@ namespace TweetTail.Login
             }
             Device.OpenUri(new Uri(token.loginURL));
         }
+
+        private void btnLoginTD_Clicked(object sender, EventArgs e)
+        {
+            App.Navigation.PushAsync(new TDLoginPage());
+            App.Navigation.RemovePage(this);
+        }
     }
 }
