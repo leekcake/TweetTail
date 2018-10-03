@@ -36,6 +36,8 @@ namespace TwitterLibrary.Container
             account.oauth = new Token(data["oauth_token"], data["oauth_token_secret"]);
             account.id = long.Parse(data["user_id"]);
 
+            account.user = await owner.VerifyCredentials(account);
+
             return account;
         }
     }
