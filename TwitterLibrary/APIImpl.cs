@@ -149,6 +149,7 @@ namespace TwitterLibrary
             var account = new TDAccount();
             account.InitwithCookie(cookieData);
             account.user = await VerifyCredentials(account);
+            account.id = account.user.id;
 
             return account;
         }
