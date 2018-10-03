@@ -10,6 +10,8 @@ using Xamarin.Forms.Xaml;
 
 using DataUser = TwitterInterface.Data.User;
 using DataAccount = TwitterInterface.Data.Account;
+using TwitterInterface.Data;
+using TweetTail.Utils;
 
 namespace TweetTail.User
 {
@@ -18,6 +20,7 @@ namespace TweetTail.User
 	{
         private DataUser binding;
         private DataAccount issuer;
+        private Relationship relationship;
 
         private void SetTextHideEmpty(Label label, string text)
         {
@@ -28,6 +31,69 @@ namespace TweetTail.User
             else
             {
                 label.Text = text;
+            }
+        }
+
+        private void SetRelationshipButtons(bool enable)
+        {
+            lblRelationshipStatus.IsVisible = !enable;
+            btnFollow.IsEnabled = enable;
+            btnBlock.IsEnabled = enable;
+            btnMute.IsEnabled = enable;
+            btnInternalMute.IsEnabled = enable;
+        }
+
+        private async void updateRelationship()
+        {
+            try
+            {
+                SetRelationshipButtons(false);
+
+                //My account
+                if(issuer.id == binding.id)
+                {
+                    SetRelationshipButtons(true);
+                    viewRelationship.IsVisible = false;
+                    viewFollowMe.IsVisible = false;
+                    return;
+                }
+                viewRelationship.IsVisible = true;
+
+                relationship = await App.tail.twitter.GetRelationship(issuer, issuer.id, binding.id);
+
+                if (relationship.isFollowing)
+                {
+                    btnFollow.Text = "언팔로우";
+                }
+                else
+                {
+                    btnFollow.Text = "팔로우";
+                }
+
+                if (relationship.isBlocked)
+                {
+                    btnBlock.Text = "언블락";
+                }
+                else
+                {
+                    btnBlock.Text = "블락";
+                }
+
+                if (relationship.isMuted)
+                {
+                    btnMute.Text = "언뮤트";
+                }
+                else
+                {
+                    btnMute.Text = "뮤트";
+                }
+
+                viewFollowMe.IsVisible = relationship.isFollower;
+                SetRelationshipButtons(true);
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine( e.Message + " " + e.StackTrace );
             }
         }
 
@@ -52,7 +118,29 @@ namespace TweetTail.User
             lblNickname.Text = binding.nickName;
             lblScreenName.Text = binding.screenName;
             lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
-		}
+
+            updateRelationship();
+
+            viewIssuerGroup.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(async () =>
+                {
+                    try
+                    {
+                        var account = await Util.SelectAccount("전환할 계정을 선택하세요");
+                        this.issuer = account.accountForRead;
+
+                        viewIssuer.BindingContext = this.issuer.user;
+                        viewIssuer.Update();
+                        updateRelationship();
+                    }
+                    catch(Exception e)
+                    {
+                        Util.HandleException(e);
+                    }
+                })
+            });
+        }
 
         private void btnTweet_Clicked(object sender, EventArgs e)
         {
@@ -94,6 +182,84 @@ namespace TweetTail.User
             var listview = new UserListView();
             listview.Fetchable = new AccountFetch.Followings(App.tail, issuer, binding);
             App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 팔로잉" });
+        }
+
+        private async void btnFollow_Clicked(object sender, EventArgs e)
+        {
+            SetRelationshipButtons(false);
+            try
+            {
+                if(relationship.isFollowing)
+                {
+                    await App.tail.twitter.DestroyFriendship(issuer, binding.id);
+                }
+                else
+                {
+                    await App.tail.twitter.CreateFriendship(issuer, binding.id);
+                }
+                updateRelationship();
+            }
+            catch(Exception ex)
+            {
+                Util.HandleException(ex);
+            }
+            SetRelationshipButtons(true);
+        }
+
+        private async void btnBlock_Clicked(object sender, EventArgs e)
+        {
+            SetRelationshipButtons(false);
+            try
+            {
+                if (relationship.isBlocked)
+                {
+                    await App.tail.twitter.Unblock(issuer, binding.id);
+                }
+                else
+                {
+                    await App.tail.twitter.Block(issuer, binding.id);
+                }
+                updateRelationship();
+            }
+            catch (Exception ex)
+            {
+                Util.HandleException(ex);
+            }
+            SetRelationshipButtons(true);
+        }
+
+        private async void btnMute_Clicked(object sender, EventArgs e)
+        {
+            SetRelationshipButtons(false);
+            try
+            {
+                if (relationship.isMuted)
+                {
+                    await App.tail.twitter.Unmute(issuer, binding.id);
+                }
+                else
+                {
+                    await App.tail.twitter.Mute(issuer, binding.id);
+                }
+                updateRelationship();
+            }
+            catch (Exception ex)
+            {
+                Util.HandleException(ex);
+            }
+            SetRelationshipButtons(true);
+        }
+
+        private void btnInternalMute_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Util.HandleException(ex);
+            }
         }
     }
 }
