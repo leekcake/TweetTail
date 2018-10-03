@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Style="{DynamicResource backgroundStyle}" 
              x:Class="TweetTail.Menu.MenuPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="lblBlendStatus"
+            <Label Style="{DynamicResource labelStyle}" x:Name="lblBlendStatus"
                 Text="잉여 병합계정 사용중"
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand" />

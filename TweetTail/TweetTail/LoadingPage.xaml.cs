@@ -22,8 +22,15 @@ namespace TweetTail
         {
             await App.tail.account.VerifyAccounts();
 
-            App.Navigation.PushAsync(new SingleTailPage());
-            App.Navigation.RemovePage(this);
+            try
+            {
+                await App.Navigation.PushAsync(new SingleTailPage());
+                App.Navigation.RemovePage(this);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message + " " + e.StackTrace);
+            }
         }
 	}
 }

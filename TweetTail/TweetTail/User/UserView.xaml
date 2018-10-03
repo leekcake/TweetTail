@@ -12,12 +12,12 @@
                        HeightRequest="48"></ffimageloading:CachedImage>
             <StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Label x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
+                    <Label Style="{DynamicResource labelStyle}" x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
                     <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
 
                     </ffimageloading:CachedImage>
                 </StackLayout>
-                <Label x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
+                <Label Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

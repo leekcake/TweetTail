@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:status="clr-namespace:TweetTail.Status"
             xmlns:notification="clr-namespace:TweetTail.Notification"
+            BarBackgroundColor="{DynamicResource backgroundColor}"
+            BarTextColor="{DynamicResource textColor}"
             x:Class="TweetTail.SingleTailPage">
   <!--Pages can be added as references or inline-->
     <status:TimelinePage x:Name="timelinePage" Title="타임라인" Icon="ic_timeline_green_300_48dp" />

@@ -58,42 +58,42 @@ namespace TweetTail.User
         {
             var listview = new StatusListView();
             listview.Fetchable = new AccountFetch.Userline(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님의 트윗" });
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 트윗" });
         }
 
         private void btnMedia_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
             listview.Fetchable = new AccountFetch.Medialine(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님의 미디어" });
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 미디어" });
         }
 
         private void btnMention_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
             listview.Fetchable = new AccountFetch.Search(App.tail, issuer, "to:@" + binding.screenName, true);
-            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님에게 가고있는 멘션" });
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님에게 가고있는 멘션" });
         }
 
         private void btnFavorite_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
             listview.Fetchable = new AccountFetch.Favorites(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님의 관심글" });
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 관심글" });
         }
 
         private void btnFollower_Clicked(object sender, EventArgs e)
         {
             var listview = new UserListView();
             listview.Fetchable = new AccountFetch.Followers(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님의 팔로워" });
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 팔로워" });
         }
 
         private void btnFollowing_Clicked(object sender, EventArgs e)
         {
             var listview = new UserListView();
             listview.Fetchable = new AccountFetch.Followings(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Content = listview, Title = binding.nickName + "님의 팔로잉" });
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 팔로잉" });
         }
     }
 }

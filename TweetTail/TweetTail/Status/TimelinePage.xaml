@@ -4,6 +4,7 @@
              xmlns:status="clr-namespace:TweetTail.Status"
              Title="타임라인"
              xmlns:controls="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
+             Style="{DynamicResource backgroundStyle}" 
              x:Class="TweetTail.Status.TimelinePage">
     <ContentPage.Content>
         <AbsoluteLayout

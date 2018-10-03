@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:user="clr-namespace:TweetTail.User"
+             Style="{DynamicResource backgroundStyle}" 
              x:Class="TweetTail.User.UserDetailPage">
     <ContentPage.Content>
         <StackLayout>
@@ -10,14 +11,14 @@
             <StackLayout Orientation="Horizontal">
                 <forms:CachedImage x:Name="imgProfile"></forms:CachedImage>
                 <StackLayout>
-                    <Label x:Name="lblNickname"></Label>
-                    <Label x:Name="lblScreenName"></Label>
+                    <Label Style="{DynamicResource labelStyle}" x:Name="lblNickname"></Label>
+                    <Label Style="{DynamicResource labelStyle}" x:Name="lblScreenName"></Label>
                 </StackLayout>
             </StackLayout>
-            <Label x:Name="lblDescription"></Label>
-            <Label x:Name="lblLocation"></Label>
-            <Label x:Name="lblLink"></Label>
-            <Label x:Name="lblStatus"></Label>
+            <Label Style="{DynamicResource labelStyle}" x:Name="lblDescription"></Label>
+            <Label Style="{DynamicResource labelStyle}" x:Name="lblLocation"></Label>
+            <Label Style="{DynamicResource labelStyle}" x:Name="lblLink"></Label>
+            <Label Style="{DynamicResource labelStyle}" x:Name="lblStatus"></Label>
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="btnTweet" Text="트윗" Clicked="btnTweet_Clicked"></Button>
                 <Button x:Name="btnMedia" Text="미디어" Clicked="btnMedia_Clicked"></Button>
@@ -26,7 +27,7 @@
                 <Button x:Name="btnFollower" Text="팔로워" Clicked="btnFollower_Clicked"></Button>
                 <Button x:Name="btnFollowing" Text="팔로잉" Clicked="btnFollowing_Clicked"></Button>
             </StackLayout>
-            <Label Text="아래 있는 계정으로 이 프로필을 보고있습니다" HorizontalOptions="CenterAndExpand"></Label>
+            <Label Style="{DynamicResource labelStyle}" Text="아래 있는 계정으로 이 프로필을 보고있습니다" HorizontalOptions="CenterAndExpand"></Label>
             <user:UserView x:Name="viewIssuer" HorizontalOptions="CenterAndExpand"></user:UserView>
         </StackLayout>
     </ContentPage.Content>

@@ -3,6 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TweetTail.App">
     <Application.Resources>
+        <Color x:Key="backgroundColor">Black</Color>
+        <Color x:Key="textColor">White</Color>
 
+        <Style x:Key="labelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="{DynamicResource textColor}" />
+        </Style>
+        <Style x:Key="backgroundStyle" TargetType="VisualElement">
+            <Setter Property="BackgroundColor" Value="{DynamicResource backgroundColor}" />
+        </Style>
     </Application.Resources>
 </Application>

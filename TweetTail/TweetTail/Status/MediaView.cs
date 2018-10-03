@@ -56,6 +56,7 @@ namespace TweetTail.Status
         public MediaPage(DataStatus status, int inx = 0)
         {
             viewing = status;
+            
 
             if (status.extendMedias[0].type == "photo")
             {

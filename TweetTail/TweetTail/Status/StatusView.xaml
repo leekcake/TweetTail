@@ -7,8 +7,8 @@
   <ContentView.Content>
         <StackLayout Margin="4">
             <StackLayout x:Name="viewHeader" x:FieldModifier="Public" Orientation="Horizontal" >
-                <ffimageloading:CachedImage  x:Name="imgHeader" x:FieldModifier="Public" Source="ic_repeat_black_24dp" WidthRequest="16" HeightRequest="16" />
-                <Label  x:FieldModifier="Public" x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
+                <ffimageloading:CachedImage  x:Name="imgHeader" x:FieldModifier="Public" Source="ic_repeat_green_300_24dp" WidthRequest="16" HeightRequest="16" />
+                <Label  Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <ffimageloading:CachedImage x:Name="imgProfile"
@@ -18,17 +18,17 @@
                        HeightRequest="48"></ffimageloading:CachedImage>
                 <StackLayout>
                     <StackLayout Orientation="Horizontal">
-                        <Label x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
+                        <Label Style="{DynamicResource labelStyle}" x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
                         <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
 
                         </ffimageloading:CachedImage>
                     </StackLayout>
 
-                    <Label x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
+                    <Label Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
                     <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
 
                     </Grid>
-                    <Label x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
+                    <Label Style="{DynamicResource labelStyle}" x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
                     <StackLayout x:Name="viewButtons" x:FieldModifier="Public" Orientation="Horizontal">
                         <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
                         <ffimageloading:CachedImage x:Name="imgRetweet" Source="ic_repeat_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
