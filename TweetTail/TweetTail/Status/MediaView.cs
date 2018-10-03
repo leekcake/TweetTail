@@ -72,6 +72,25 @@ namespace TweetTail.Status
             else
             {
                 videoView = new VideoPlayer();
+                var gesture = new PanGestureRecognizer();
+                gesture.PanUpdated += (sender, e) =>
+                {
+                    switch (e.StatusType)
+                    {
+                        case GestureStatus.Running:
+                            videoView.TranslationX = e.TotalX;
+                            videoView.TranslationY = e.TotalY;
+                            break;
+                        case GestureStatus.Completed:
+                            if (Math.Abs(videoView.TranslationY) > (Height / 8))
+                            {
+                                App.Navigation.RemovePage(this);
+                            }
+                            videoView.TranslateTo(0, 0);
+                            break;
+                    }
+                };
+                videoView.GestureRecognizers.Add(gesture);
                 Children.Add(new ContentPage()
                 {
                     Content = videoView
