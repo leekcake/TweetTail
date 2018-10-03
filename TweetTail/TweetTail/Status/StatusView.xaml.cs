@@ -83,7 +83,13 @@ namespace TweetTail.Status
             {
                 Command = new Command(() =>
                 {
-                    Application.Current.MainPage.DisplayAlert("TODO", "Reply Button", "OK");
+                    var page = new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"] };
+                    var view = new StatusWriterView() { BindingContext = page };
+                    view.SetReplyStatus(status);
+
+                    page.Content = view;
+                    page.Title = "트윗작성";
+                    App.Navigation.PushAsync(page);
                 }),
                 NumberOfTapsRequired = 1
             });

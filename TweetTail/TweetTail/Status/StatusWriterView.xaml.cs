@@ -10,12 +10,25 @@ using TwitterInterface.Data;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using DataStatus = TwitterInterface.Data.Status;
+
 namespace TweetTail.Status
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StatusWriterView : ContentView
     {
         private List<MediaFile> mediaFiles = new List<MediaFile>();
+        private DataStatus replyStatus;
+
+        public void SetReplyStatus(DataStatus reply)
+        {
+            replyStatus = reply;
+            viewReplyStatus.IsVisible = true;
+            viewReplyStatus.BindingContext = replyStatus;
+            viewReplyStatus.Update();
+
+            editText.Text = "@" + (reply.retweetedStatus != null ? reply.retweetedStatus.creater.screenName : reply.creater.screenName) + " " + editText.Text;
+        }
 
         public StatusWriterView()
         {
@@ -42,6 +55,11 @@ namespace TweetTail.Status
             var update = new StatusUpdate();
 
             update.text = editText.Text;
+
+            if(replyStatus != null)
+            {
+                update.inReplyToStatusId = replyStatus.id;
+            }
 
             try
             {

@@ -2,10 +2,12 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:status="clr-namespace:TweetTail.Status"
              x:Class="TweetTail.Status.StatusWriterView">
     <ContentView.Content>
         <StackLayout>
-            <Editor x:Name="editText" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
+            <status:StatusView x:Name="viewReplyStatus" IsVisible="False"></status:StatusView>
+            <Editor x:Name="editText" TextColor="{DynamicResource textColor}" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
             <ScrollView Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                 <StackLayout x:Name="slSelectedImages" Orientation="Horizontal">
                     
