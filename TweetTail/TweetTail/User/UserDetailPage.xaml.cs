@@ -19,6 +19,18 @@ namespace TweetTail.User
         private DataUser binding;
         private DataAccount issuer;
 
+        private void SetTextHideEmpty(Label label, string text)
+        {
+            if(text == null || text.Trim() == "")
+            {
+                label.IsVisible = false;
+            }
+            else
+            {
+                label.Text = text;
+            }
+        }
+
 		public UserDetailPage (DataUser binding, DataAccount issuer)
 		{
 			InitializeComponent ();
@@ -34,9 +46,9 @@ namespace TweetTail.User
             imgHeader.Source = binding.profileBannerURL;
             imgProfile.Source = binding.profileHttpsImageURL;
 
-            lblDescription.Text = binding.description;
-            lblLink.Text = binding.url;
-            lblLocation.Text = binding.location;
+            SetTextHideEmpty(lblDescription, binding.description);
+            SetTextHideEmpty(lblLink, binding.url);
+            SetTextHideEmpty(lblLocation, binding.location);
             lblNickname.Text = binding.nickName;
             lblScreenName.Text = binding.screenName;
             lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
