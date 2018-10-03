@@ -18,6 +18,7 @@ namespace TwitterInterface.API
         Task<LoginToken> GetLoginTokenAsync(Token consumerToken);
         
         Task<Account> GetAccountFromTweetdeckCookie(CookieCollection cookieData);
+        Task<List<Account>> GetContributees(Account account);
 
         //GET account/settings
         Task<AccountSetting> GetAccountSetting(Account account);

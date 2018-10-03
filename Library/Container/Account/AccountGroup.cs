@@ -32,7 +32,7 @@ namespace Library.Container.Account
             foreach (var account in data["accounts"].ToObject<JArray>())
             {
                 accounts.Add(owner.twitter.LoadAccount(account.ToObject<JObject>()));
-            }   
+            }
         }
 
         internal List<DataAccount> accounts = new List<DataAccount>();
@@ -56,7 +56,14 @@ namespace Library.Container.Account
             var accounts = new JArray();
             foreach (var account in this.accounts)
             {
-                accounts.Add(account.Save());
+                if (!account.IsShadowcopy)
+                {
+                    accounts.Add(account.Save());
+                }
+            }
+            if(accounts.Count == 0) //It's shadow only account group
+            {
+                return null;
             }
             result["accounts"] = accounts;
 

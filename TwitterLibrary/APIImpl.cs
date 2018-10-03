@@ -1727,5 +1727,36 @@ namespace TwitterLibrary
 
             return TwitterDataFactory.parseArray(result["statuses"].ToObject<JArray>(), account.id, TwitterDataFactory.parseStatus).ToList(); 
         }
+
+        private static User parseContributeesUser(JObject obj, long issuer)
+        {
+            return TwitterDataFactory.parseUser(obj["user"].ToObject<JObject>(), issuer);
+        }
+
+        public async Task<List<Account>> GetContributees(Account account)
+        {
+            if(!account.IsTweetdeck)
+            {
+                throw new InvalidOperationException("GetContributees must use tweetdeck account?");
+            }
+
+            var users = TwitterDataFactory.parseArray(
+                JArray.Parse(
+                    await Get("https://api.twitter.com/1.1/users/contributees.json", account, makeQuery())
+            ), account.id, parseContributeesUser);
+
+            var result = new List<Account>();
+
+            var td = account as TDAccount;
+
+            foreach(var user in users)
+            {
+                var shadow = td.MakeShadowCopy(user.id);
+                shadow.user = user;
+                result.Add(shadow);            
+            }
+
+            return result;
+        }
     }
 }

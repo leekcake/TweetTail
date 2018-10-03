@@ -86,6 +86,35 @@ namespace Library.Manager
 
         public async Task VerifyAccounts()
         {
+            for(int i = 0; i < accountGroups.Count; i++)
+            {
+                var group = accountGroups[i];
+                foreach(var account in group.accounts)
+                {
+                    if(account.IsTweetdeck && !account.IsShadowcopy)
+                    {
+                        var shadows = await owner.twitter.GetContributees(account);
+                        
+                        foreach(var shadow in shadows)
+                        {
+                            var check = getAccountGroup(shadow.id);
+                            if(check != null)
+                            {
+                                check.accounts.Add(shadow);
+                            }
+                            else
+                            {
+                                var generated = new AccountGroup(owner, shadow.id);
+                                generated.accounts.Add(shadow);
+                                accountGroups.Add(generated);
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
             foreach(var group in accountGroups)
             {
                 try
@@ -130,7 +159,11 @@ namespace Library.Manager
             var accounts = new JArray();
             foreach(var accountGroup in accountGroups)
             {
-                accounts.Add(accountGroup.save());
+                var save = accountGroup.save();
+                if (save != null)
+                {
+                    accounts.Add(save);
+                }
             }
             data["accounts"] = accounts;
 

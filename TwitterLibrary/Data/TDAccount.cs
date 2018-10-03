@@ -12,6 +12,11 @@ namespace TwitterLibrary.Data
     {
         private string csrfToken, twitterSession, authToken, personalizationId, lang, guestId;
 
+        public override bool IsTweetdeck => true;
+
+        private bool isShadowCopy = false;
+        public override bool IsShadowcopy => isShadowCopy;
+
         public void InitwithCookie(CookieCollection cookie)
         {
             csrfToken = cookie["ct0"].Value;
@@ -26,6 +31,21 @@ namespace TwitterLibrary.Data
                 lang = "ko";
             }
             guestId = cookie["guest_id"].Value;
+        }
+
+        public TDAccount MakeShadowCopy(long id)
+        {
+            var result = new TDAccount();
+            result.csrfToken = csrfToken;
+            result.twitterSession = twitterSession;
+            result.authToken = authToken;
+            result.personalizationId = personalizationId;
+            result.lang = lang;
+            result.guestId = guestId;
+            result.id = id;
+            result.isShadowCopy = true;
+
+            return result;
         }
 
         public override JObject Save()
@@ -70,6 +90,11 @@ namespace TwitterLibrary.Data
                 ));
             message.Headers.Add("X-Twitter-Auth-Type", "OAuth2Session");
             message.Headers.Add("X-Csrf-Token", csrfToken);
+
+            if(IsShadowcopy)
+            {
+                message.Headers.Add("x-act-as-user-id", id + "");
+            }
 
             //Other parameters
             var queryDict = new SortedDictionary<string, string>();

@@ -17,6 +17,22 @@ namespace TwitterInterface.Data
 
         public abstract HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query);
 
+        /// <summary>
+        /// It's from tweetdeck?
+        /// </summary>
+        public abstract bool IsTweetdeck {
+            get;
+        }
+
+        /// <summary>
+        /// It acting like account?
+        /// 
+        /// if true, it's not saved because always created on startup
+        /// </summary>
+        public abstract bool IsShadowcopy {
+            get;
+        }
+
         public virtual JObject Save()
         {
             var result = new JObject();

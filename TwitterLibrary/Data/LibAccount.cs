@@ -12,6 +12,10 @@ namespace TwitterLibrary.Data
     {
         public Token consumer, oauth;
 
+        public override bool IsTweetdeck => false;
+
+        public override bool IsShadowcopy => false;
+
         public override JObject Save()
         {
             var result = base.Save();
