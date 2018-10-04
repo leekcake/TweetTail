@@ -5,7 +5,7 @@
              xmlns:account="clr-namespace:TweetTail.Account"
              x:Class="TweetTail.Status.StatusView">
   <ContentView.Content>
-        <StackLayout Margin="4">
+        <StackLayout Margin="4" x:Name="viewRoot">
             <StackLayout x:Name="viewHeader" x:FieldModifier="Public" Orientation="Horizontal" >
                 <ffimageloading:CachedImage  x:Name="imgHeader" x:FieldModifier="Public" Source="ic_repeat_green_300_24dp" WidthRequest="16" HeightRequest="16" />
                 <Label  Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>

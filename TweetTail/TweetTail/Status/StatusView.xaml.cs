@@ -50,6 +50,15 @@ namespace TweetTail.Status
             InitializeComponent();
             gridImageWrapper = new GridImageWrapper(gridMedias);
 
+            viewRoot.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    if (status == null) return;
+                    App.Navigation.PushAsync(new StatusExpandPage( getDisplayStatus(status) ));
+                })
+            });
+
             imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(() =>
