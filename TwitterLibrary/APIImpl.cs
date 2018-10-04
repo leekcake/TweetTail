@@ -386,20 +386,20 @@ namespace TwitterLibrary
         {
             //TODO: Error handleing
             await handleCurate(Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
-            , account as LibAccount), makeCurateJson("add", id, statusId));
+            , account), makeCurateJson("add", id, statusId));
         }
 
         public async Task RemoveAllTweetFromCollection(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
             //TODO: Error handleing
             await handleCurate(Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
-            , account as LibAccount), makeCurateJson("remove", id, statusId));
+            , account), makeCurateJson("remove", id, statusId));
         }
 
         public async Task<long> uploadMedia(Account account, string fileName, Stream image)
         {
             var message = Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://upload.twitter.com/1.1/media/upload.json"), new KeyValuePair<string, string>[] { }
-            , account as LibAccount);
+            , account);
 
             byte[] imgdata = new byte[image.Length];
             image.Read(imgdata, 0, (int)image.Length);
