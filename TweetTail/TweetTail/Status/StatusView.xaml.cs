@@ -76,7 +76,7 @@ namespace TweetTail.Status
                     {
                         return;
                     }
-                    var view = new StatusWriterView(  ) { BindingContext = page };
+                    var view = new StatusWriterView( selected ) { BindingContext = page };
                     view.SetReplyStatus(status);
 
                     page.Content = view;
