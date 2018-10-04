@@ -8,7 +8,9 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using DataStatus = TwitterInterface.Data.Status;
+using DataUser = TwitterInterface.Data.User;
 using DataNotification = TwitterInterface.Data.Notification;
+using TweetTail.User;
 
 namespace TweetTail.Notification
 {
@@ -18,6 +20,51 @@ namespace TweetTail.Notification
 		public NotificationCell ()
 		{
 			InitializeComponent ();
+            statusView.viewHeader.GestureRecognizers.Clear();
+            statusView.viewHeader.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    var notification = BindingContext as DataNotification;
+
+                    DataUser performer = null;
+
+                    if (notification is DataNotification.Follow)
+                    {
+                        performer = (notification as DataNotification.Follow).Performer;
+                    }
+                    else if(notification is DataNotification.Retweet)
+                    {
+                        performer = (notification as DataNotification.Retweet).Performer;
+                    }
+                    else if (notification is DataNotification.RetweetedMention)
+                    {
+                        performer = (notification as DataNotification.RetweetedMention).Performer;
+                    }
+                    else if (notification is DataNotification.RetweetedRetweet)
+                    {
+                        performer = (notification as DataNotification.RetweetedRetweet).Performer;
+                    }
+                    else if (notification is DataNotification.Favorited)
+                    {
+                        performer = (notification as DataNotification.Favorited).Performer;
+                    }
+                    else if (notification is DataNotification.FavoritedMention)
+                    {
+                        performer = (notification as DataNotification.FavoritedMention).Performer;
+                    }
+                    else if (notification is DataNotification.FavoritedRetweet)
+                    {
+                        performer = (notification as DataNotification.FavoritedRetweet).Performer;
+                    }
+
+                    if(performer == null)
+                    {
+                        return;
+                    }
+                    App.Navigation.PushAsync(new UserDetailPage(performer, App.tail.account.getAccountGroup(performer.issuer[0]).accountForRead));
+                })
+            });
 		}
 
         protected override void OnBindingContextChanged()
