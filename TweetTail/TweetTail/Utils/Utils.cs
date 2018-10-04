@@ -33,7 +33,7 @@ namespace TweetTail.Utils
 
             var selected = await Application.Current.MainPage.DisplayActionSheet(description, "취소", null, actionSheet);
 
-            if (selected == null)
+            if (selected == null || selected == "취소")
             {
                 return null;
             }
