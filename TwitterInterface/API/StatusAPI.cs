@@ -59,5 +59,8 @@ namespace TwitterInterface.API
 
         //GET search/tweets
         Task<List<Status>> SearchTweet(Account account, string query, bool isRecent, int count = 100, string until = null, long sinceId = -1, long maxId = -1);
+
+        //GET timeline/conversation/:id.json
+        Task<List<Status>> GetConversation(Account account, long id);
     }
 }

@@ -1758,5 +1758,12 @@ namespace TwitterLibrary
 
             return result;
         }
+
+        public async Task<List<Status>> GetConversation(Account account, long id)
+        {
+            return TwitterDataFactory.parseConversation( 
+                JObject.Parse(await Get("https://api.twitter.com/2/timeline/conversation/" + id + ".json", account, makeQuery()))
+                , account.id);
+        }
     }
 }

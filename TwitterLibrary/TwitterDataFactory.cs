@@ -148,6 +148,11 @@ namespace TwitterLibrary
 
         public static Status parseStatus(JObject obj, long issuer)
         {
+            return parseStatus(obj, issuer, parseUser(obj["user"].ToObject<JObject>(), issuer));
+        }
+
+        public static Status parseStatus(JObject obj, long issuer, User creater)
+        {
             var status = new Status();
 
             status.issuer = new List<long> { issuer };
@@ -163,7 +168,7 @@ namespace TwitterLibrary
             status.replyToStatusId = SafeGetLong(obj, "in_reply_to_status_id");
             status.replyToUserId = SafeGetLong(obj, "in_reply_to_user_id");
             status.replyToScreenName = SafeGetString(obj, "in_reply_to_screen_name");
-            status.creater = parseUser(obj["user"].ToObject<JObject>(), issuer);
+            status.creater = creater;
             //TODO: coordinates
             //TODO: place
             status.quotedStatusId = SafeGetLong(obj, "quoted_status_id");
@@ -189,8 +194,8 @@ namespace TwitterLibrary
             status.isFavortedByUser = SafeGetBool(obj, "favorited");
             status.isRetweetedByUser = SafeGetBool(obj, "retweeted");
             status.possiblySensitive = SafeGetBool(obj, "possibly_sensitive");
-            
-            return statusFilter.ApplyFilter( status );
+
+            return statusFilter.ApplyFilter(status);
         }
 
         public static Indices parseIndices(JArray obj)
@@ -488,6 +493,69 @@ namespace TwitterLibrary
             {
                 throw new InvalidOperationException();
             }
+        }
+
+        private static Status GetStatusFromConversation(long request, long issuer, JObject global, Dictionary<long, Status> statusCache, Dictionary<long, User> userCache)
+        {
+            if(statusCache.ContainsKey(request))
+            {
+                return statusCache[request];
+            }
+            var tweet = global["tweets"][request.ToString()].ToObject<JObject>();
+            var result = parseStatus(tweet, issuer, GetUserFromConversation(tweet["user_id"].ToObject<long>(), issuer, global, userCache));
+            statusCache[request] = result;
+            return result;   
+        }
+
+        private static User GetUserFromConversation(long request, long issuer, JObject global, Dictionary<long, User> cache)
+        {
+            if (cache.ContainsKey(request))
+            {
+                return cache[request];
+            }
+
+            var result = parseUser(global["users"][request.ToString()].ToObject<JObject>(), issuer);
+            cache[request] = result;
+            return result;
+        }
+
+        public static List<Status> parseConversation(JObject obj, long issuer)
+        {
+            var result = new List<Status>();
+
+            var global = obj["globalObjects"].ToObject<JObject>();
+            var entries = obj["timeline"]["instructions"][0]["addEntries"]["entries"].ToObject<JArray>();
+
+            var statusDict = new Dictionary<long, Status>();
+            var userDict = new Dictionary<long, User>();
+
+            foreach(var entity in entries)
+            {
+                var id = entity["entryId"].ToString();
+                id = id.Substring(0, id.IndexOf("-"));
+                switch(id)
+                {
+                    case "tweet":
+                        result.Add(GetStatusFromConversation(entity["content"]["item"]["content"]["tweet"]["id"].ToObject<long>(), issuer, global, statusDict, userDict));
+                        break;
+                    case "conversationThread":
+                        var components = entity["content"]["item"]["content"]["conversationThread"]["conversationComponents"].ToObject<JArray>();
+                        foreach(var component in components)
+                        {
+                            try
+                            {
+                                result.Add(GetStatusFromConversation(component["conversationTweetComponent"]["tweet"]["id"].ToObject<long>(), issuer, global, statusDict, userDict));
+                            }
+                            catch(Exception e) //Handle for Not conversationTweetComponent object
+                            {
+                                System.Diagnostics.Debug.WriteLine(e.Message + " " + e.StackTrace);
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return result;
         }
     }
 }
