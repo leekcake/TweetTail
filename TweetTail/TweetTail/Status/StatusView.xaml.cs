@@ -43,25 +43,12 @@ namespace TweetTail.Status
             }
         }
 
-        private List<CachedImage> images;
-
-        private CachedImage getMediaView(int inx)
-        {
-            return images[inx];
-        }
+        private GridImageWrapper gridImageWrapper;
 
         public StatusView()
         {
             InitializeComponent();
-
-            images = new List<CachedImage>();
-            for (int i = 0; i < 4; i++)
-            {
-                var cached = new CachedImage();
-                cached.Aspect = Aspect.AspectFill;
-                cached.WidthRequest = 10000;
-                images.Add(cached);
-            }
+            gridImageWrapper = new GridImageWrapper(gridMedias);
 
             imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -227,7 +214,7 @@ namespace TweetTail.Status
             for (int i = 0; i < 4; i++)
             {
                 int inx = i; //Value Copy
-                getMediaView(i).GestureRecognizers.Add(new TapGestureRecognizer
+                gridImageWrapper[i].GestureRecognizers.Add(new TapGestureRecognizer
                 {
                     Command = new Command(() =>
                     {
@@ -257,7 +244,7 @@ namespace TweetTail.Status
             imgProfile.Source = null;
             for (int i = 0; i < 4; i++)
             {
-                getMediaView(i).Source = null;
+                gridImageWrapper[i].Source = null;
             }
 
             imgProfile.Source = display.creater.profileHttpsImageURL;
@@ -266,47 +253,9 @@ namespace TweetTail.Status
             {
                 for (int i = 0; i < display.extendMedias.Length; i++)
                 {
-                    getMediaView(i).Source = display.extendMedias[i].mediaURLHttps + ":thumb";
+                    gridImageWrapper[i].Source = display.extendMedias[i].mediaURLHttps + ":thumb";
                 }
-                
-                gridMedias.RowDefinitions.Clear();
-                gridMedias.ColumnDefinitions.Clear();
-                gridMedias.Children.Clear();
-
-                switch (display.extendMedias.Length)
-                {
-                    case 1:
-                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        break;
-                    case 2:
-                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        gridMedias.Children.Add(getMediaView(1), 1, 0);
-                        break;
-                    case 3:
-                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        gridMedias.Children.Add(getMediaView(1), 1, 0);
-                        gridMedias.Children.Add(getMediaView(2), 0, 1);
-                        break;
-                    case 4:
-                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                        gridMedias.Children.Add(getMediaView(0), 0, 0);
-                        gridMedias.Children.Add(getMediaView(1), 1, 0);
-                        gridMedias.Children.Add(getMediaView(2), 0, 1);
-                        gridMedias.Children.Add(getMediaView(3), 1, 1);
-                        break;
-                }
+                gridImageWrapper.setCount(display.extendMedias.Length);
             }
         }
 
@@ -379,7 +328,7 @@ namespace TweetTail.Status
             imgProfile.Source = null;
             for (int i = 0; i < 4; i++)
             {
-                getMediaView(i).Source = null;
+                gridImageWrapper[i].Source = null;
             }
             if (display.extendMedias != null)
             {
