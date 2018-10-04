@@ -7,10 +7,10 @@
         <ListView x:Name="blendListView"
                   SelectionMode="None">
             <ListView.Header>
-                <Label x:Name="lblHeader" Text="계정병합 사용중지"></Label>
+                <Label Style="{DynamicResource labelStyle}" x:Name="lblHeader" Text="계정병합 사용중지"></Label>
             </ListView.Header>
             <ListView.Footer>
-                <Label x:Name="lblFooter" Text="계정병합 추가하기"></Label>
+                <Label Style="{DynamicResource labelStyle}" x:Name="lblFooter" Text="계정병합 추가하기"></Label>
             </ListView.Footer>
         </ListView>
     </ContentPage.Content>
