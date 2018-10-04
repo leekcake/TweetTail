@@ -68,10 +68,15 @@ namespace TweetTail.Status
 
             imgReply.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() =>
+                Command = new Command(async () =>
                 {
                     var page = new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"] };
-                    var view = new StatusWriterView() { BindingContext = page };
+                    var selected = await Util.SelectAccount("어떤 계정으로 답글을 작성할까요?", status.issuer);
+                    if(selected == null)
+                    {
+                        return;
+                    }
+                    var view = new StatusWriterView(  ) { BindingContext = page };
                     view.SetReplyStatus(status);
 
                     page.Content = view;

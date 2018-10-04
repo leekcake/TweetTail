@@ -38,11 +38,11 @@ namespace TweetTail.Status
 
         private GridImageWrapper gridImageWrapper;
 
-        public StatusWriterView()
+        public StatusWriterView(AccountGroup issuer)
         {
             InitializeComponent();
             gridImageWrapper = new GridImageWrapper(gridMedias);
-            writer = App.tail.account.SelectedAccountGroup;
+            writer = issuer;
 
             for (int i = 0; i < 4; i++)
             {
