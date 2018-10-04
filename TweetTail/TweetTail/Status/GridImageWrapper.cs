@@ -23,6 +23,8 @@ namespace TweetTail.Status
                 cached.WidthRequest = 10000;
                 images.Add(cached);
             }
+
+            setCount(0);
         }
 
         public CachedImage this[int i] {
@@ -35,6 +37,12 @@ namespace TweetTail.Status
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
             grid.Children.Clear();
+
+            if(count == 0)
+            {
+                grid.IsVisible = false;
+            }
+            grid.IsVisible = true;
 
             switch (count)
             {
