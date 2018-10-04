@@ -11,6 +11,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using DataStatus = TwitterInterface.Data.Status;
+using Library.Container.Account;
+using TweetTail.Utils;
 
 namespace TweetTail.Status
 {
@@ -19,6 +21,8 @@ namespace TweetTail.Status
     {
         private List<MediaFile> mediaFiles = new List<MediaFile>();
         private DataStatus replyStatus;
+
+        private AccountGroup writer;
 
         public void SetReplyStatus(DataStatus reply)
         {
@@ -30,9 +34,58 @@ namespace TweetTail.Status
             editText.Text = "@" + (reply.retweetedStatus != null ? reply.retweetedStatus.creater.screenName : reply.creater.screenName) + " " + editText.Text;
         }
 
+        int currentImageInx = 0;
+
+        private GridImageWrapper gridImageWrapper;
+
         public StatusWriterView()
         {
             InitializeComponent();
+            gridImageWrapper = new GridImageWrapper(gridMedias);
+            writer = App.tail.account.SelectedAccountGroup;
+
+            for (int i = 0; i < 4; i++)
+            {
+                //Value Copy
+                var inx = i;
+                gridImageWrapper[i].GestureRecognizers.Add(new TapGestureRecognizer() {
+                    Command = new Command(() =>
+                    {
+                        mediaFiles.RemoveAt(inx);
+                        gridImageWrapper[inx].Source = null;
+                        gridImageWrapper.setCount(--currentImageInx);
+                        //Shift Source Prop 
+                        //removed at 0 cause
+                        //[0] = [1]
+                        //[1] = [2]
+                        //[2] = [3]
+                        for(int icpy = inx + 1; icpy < 4; icpy++)
+                        {
+                            gridImageWrapper[icpy - 1].Source = gridImageWrapper[icpy].Source;
+                        }
+                    })
+                });
+            }
+
+            displayWriter();
+            viewWriter.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(async () =>
+                {
+                    var selected = await Util.SelectAccount("트윗을 쓸 계정을 선택하세요");
+                    if (selected == null) return;
+
+                    writer = selected;
+                    displayWriter();
+                })
+            });
+        }
+
+        public void displayWriter()
+        {
+            var user = writer.accountForRead.user;
+            imgProfile.Source = user.profileHttpsImageURL;
+            lblName.Text = user.nickName + " @" + user.screenName;
         }
 
         private void SetInputStatus(bool enable)
@@ -68,12 +121,12 @@ namespace TweetTail.Status
                     long[] mediaIDs = new long[mediaFiles.Count];
                     for (int i = 0; i < mediaIDs.Length; i++)
                     {
-                        mediaIDs[i] = await App.tail.twitter.uploadMedia(App.tail.account.SelectedAccountGroup.accountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
+                        mediaIDs[i] = await App.tail.twitter.uploadMedia(writer.accountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
                     }
                     update.mediaIDs = mediaIDs;
                 }
 
-                await App.tail.twitter.CreateStatus(App.tail.account.SelectedAccountGroup.accountForWrite, update);
+                await App.tail.twitter.CreateStatus(writer.accountForWrite, update);
             }
             catch (Exception ex)
             {
@@ -90,7 +143,12 @@ namespace TweetTail.Status
             }
 
             mediaFiles.Clear();
-            slSelectedImages.Children.Clear();
+            for(int i = 0; i < 4; i++)
+            {
+                gridImageWrapper[i].Source = null;
+            }
+            currentImageInx = 0;
+            gridImageWrapper.setCount(0);
             editText.Text = "";
         }
 
@@ -110,24 +168,12 @@ namespace TweetTail.Status
             {
                 return;
             }
-
+            
             mediaFiles.Add(media);
-            var image = new Image()
-            {
-                Source = ImageSource.FromStream(() => { return media.GetStream(); })
-            };
-            image.GestureRecognizers.Add(new TapGestureRecognizer()
-            {
-                Command = new Command(() =>
-                {
-                    var inx = mediaFiles.FindIndex((destMedia) => { return media == destMedia; });
-                    mediaFiles.RemoveAt(inx);
-                    slSelectedImages.Children.RemoveAt(inx);
-                }),
-                NumberOfTapsRequired = 1
-            });
+            gridImageWrapper[currentImageInx].Source = ImageSource.FromStream(() => { return media.GetStream(); });
 
-            slSelectedImages.Children.Add(image);
+            gridImageWrapper.setCount(currentImageInx + 1);
+            currentImageInx++;
         }
     }
 }
