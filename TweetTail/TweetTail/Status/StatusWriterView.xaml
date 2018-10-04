@@ -7,7 +7,7 @@
     <ContentView.Content>
         <StackLayout>
             <status:StatusView x:Name="viewReplyStatus" IsVisible="False"></status:StatusView>
-            <Editor x:Name="editText" TextColor="{DynamicResource textColor}" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
+            <Editor Style="{DynamicResource editorStyle}" x:Name="editText" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
             <ScrollView Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                 <StackLayout x:Name="slSelectedImages" Orientation="Horizontal">
                     
