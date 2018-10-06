@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:notification="clr-namespace:TweetTail.Components.Notification"
+             Style="{DynamicResource backgroundStyle}" 
+             x:Class="TweetTail.Pages.Notification.NotificationPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <notification:NotificationListView x:Name="notificationListView"></notification:NotificationListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -63,9 +63,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CWebView\CookieWebViewRenderer.cs" />
-    <Compile Include="FormsVideoLibrary\VideoPicker.cs" />
-    <Compile Include="FormsVideoLibrary\VideoPlayerRenderer.cs" />
+    <Compile Include="Controls\CookiesWebView\CookieWebViewRenderer.cs" />
+    <Compile Include="Controls\FormsVideoLibrary\VideoPicker.cs" />
+    <Compile Include="Controls\FormsVideoLibrary\VideoPlayerRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

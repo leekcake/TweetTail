@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:checkable="clr-namespace:TweetTail.Components.Account.Checkable"
+             Style="{DynamicResource backgroundStyle}"
+             x:Class="TweetTail.Pages.Blend.BlendEditPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Editor Style="{DynamicResource editorStyle}" x:Name="editName" Placeholder="이름"></Editor>
+            <checkable:CheckableAccountListView x:Name="checkableAccountListView" SelectionMode="Single"></checkable:CheckableAccountListView>
+            <Button x:Name="btnConfirm" Text="만들기" Clicked="btnConfirm_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

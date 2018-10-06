@@ -58,37 +58,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Status\TimelinePage.xaml.cs">
+    <Compile Update="Pages\Login\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Status\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Account\AccountCell.xaml">
+    <EmbeddedResource Update="Components\Account\AccountCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Account\AccountPage.xaml">
+    <EmbeddedResource Update="Pages\Account\AccountPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Account\IssuerView.xaml">
+    <EmbeddedResource Update="Components\Account\IssuerView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Blend\BlendEditPage.xaml">
+    <EmbeddedResource Update="Pages\Blend\BlendEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Blend\BlendListPage.xaml">
+    <EmbeddedResource Update="Pages\Blend\BlendListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Account\Checkable\CheckableAccountCell.xaml">
+    <EmbeddedResource Update="Components\Account\Checkable\CheckableAccountCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="LoadingPage.xaml">
+    <EmbeddedResource Update="Pages\LoadingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Login\LoginView.xaml">
+    <EmbeddedResource Update="Pages\Login\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Login\TDLoginPage.xaml">
+    <EmbeddedResource Update="Pages\Login\TDLoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MasterPage.xaml">
@@ -97,64 +100,49 @@
     <EmbeddedResource Update="MasterPageMaster.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Menu\MenuPage.xaml">
+    <EmbeddedResource Update="Pages\Menu\MenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Notification\NotificationCell.xaml">
+    <EmbeddedResource Update="Components\Notification\NotificationCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Notification\NotificationPage.xaml">
+    <EmbeddedResource Update="Pages\Notification\NotificationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SingleTailPage.xaml">
+    <EmbeddedResource Update="Pages\SingleTailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Status\MentionPage.xaml">
+    <EmbeddedResource Update="Pages\Status\MentionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Status\StatusCell.xaml">
+    <EmbeddedResource Update="Components\Status\StatusCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Status\StatusExpandPage.xaml">
+    <EmbeddedResource Update="Pages\Status\StatusExpandPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Status\StatusView.xaml">
+    <EmbeddedResource Update="Components\Status\StatusView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Status\StatusWriterView.xaml">
+    <EmbeddedResource Update="Components\Status\StatusWriterView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Status\TimelinePage.xaml">
+    <EmbeddedResource Update="Pages\Status\TimelinePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="User\UserCell.xaml">
+    <EmbeddedResource Update="Components\User\UserCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="User\UserDetailPage.xaml">
+    <EmbeddedResource Update="Pages\User\UserDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="User\UserView.xaml">
+    <EmbeddedResource Update="Components\User\UserView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Login\LoginView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Status\MediaPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Status\StatusCell.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Status\StatusWriterView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Status\TimelinePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

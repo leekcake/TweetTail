@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Style="{DynamicResource backgroundStyle}"
+             Title="트위터에 로그인"
+             x:Class="TweetTail.Pages.Login.LoginPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Style="{DynamicResource labelStyle}" Text="트위터에 로그인 합니다">
+            </Label>
+            <Button x:Name="btnLoginTD" Clicked="btnLoginTD_Clicked" Text="트윗덱 후킹방식으로 로그인하기" />
+            <Button x:Name="btnLoginTry" Clicked="btnLoginTry_Clicked" Text="로그인 시도하기" />
+            <Label Style="{DynamicResource labelStyle}" Text="만들어진 로그인 링크에서 생긴 핀을 입력하세요" />
+            <Editor x:Name="editPin"/>
+            <Button x:Name="btnLoginComplete" Clicked="btnLoginComplete_Clicked" Text="로그인 완료하기" />
+            <Label Style="{DynamicResource labelStyle}" x:Name="lblStatus" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -3,9 +3,10 @@ using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Library;
-using TweetTail.Login;
 using TwitterLibrary;
-using TweetTail.Menu;
+using TweetTail.Pages;
+using TweetTail.Pages.Login;
+using TweetTail.Pages.Menu;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace TweetTail
@@ -37,7 +38,7 @@ namespace TweetTail
             }
             else
             {
-                NavigationPage = new NavigationPage( new LoginView() );
+                NavigationPage = new NavigationPage( new LoginPage() );
             }
 
             var rootPage = new RootPage();

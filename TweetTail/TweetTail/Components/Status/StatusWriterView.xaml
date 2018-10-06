@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:status="clr-namespace:TweetTail.Components.Status"
+             x:Class="TweetTail.Components.Status.StatusWriterView">
+    <ContentView.Content>
+        <StackLayout>
+            <status:StatusView x:Name="viewReplyStatus" IsVisible="False"></status:StatusView>
+            <StackLayout Orientation="Horizontal" x:Name="viewWriter">
+                <ffimageloading:CachedImage x:Name="imgProfile"
+                                             x:FieldModifier="Public"
+                       VerticalOptions="Start"
+                       WidthRequest="48"
+                       HeightRequest="48"></ffimageloading:CachedImage>
+                <Label Style="{DynamicResource labelStyle}" x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
+                <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
+
+                </ffimageloading:CachedImage>
+            </StackLayout>
+            <Editor Style="{DynamicResource editorStyle}" x:Name="editText" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
+            <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
+
+            </Grid>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="btnAddImage" Text="이미지" HorizontalOptions="Start" Clicked="btnAddImage_Clicked" ></Button>
+                <Button x:Name="btnTweet" Text="트윗하기" HorizontalOptions="End" Clicked="btnTweet_Clicked" ></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

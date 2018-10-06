@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using TweetTail.User;
+using TweetTail.Pages.User;
 using TwitterInterface.Data.Entity;
 using Xamarin.Forms;
 
