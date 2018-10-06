@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TweetTail.Controls.TabbedPageExpanded;
+using TweetTail.Pages.Notification;
+using TweetTail.Pages.Status;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
@@ -11,7 +13,7 @@ using Xamarin.Forms.Xaml;
 namespace TweetTail.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SingleTailPage : Xamarin.Forms.TabbedPage
+    public partial class SingleTailPage : TabbedPageEx
     {
         public SingleTailPage ()
         {
@@ -27,6 +29,24 @@ namespace TweetTail.Pages
             }
 
             On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+
+            TabReselected += SingleTailPage_TabReselected;
+        }
+
+        private void SingleTailPage_TabReselected(object sender, EventArgs args)
+        {
+            if( CurrentPage is TimelinePage )
+            {
+                (CurrentPage as TimelinePage).ScrollToRoot();
+            }
+            else if( CurrentPage is MentionPage )
+            {
+                (CurrentPage as MentionPage).ScrollToRoot();
+            }
+            else if( CurrentPage is NotificationPage )
+            {
+                (CurrentPage as NotificationPage).ScrollToRoot();
+            }
         }
 
         public static void ReloadInNavigationStack()

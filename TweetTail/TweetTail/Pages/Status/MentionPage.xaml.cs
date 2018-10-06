@@ -22,6 +22,11 @@ namespace TweetTail.Pages.Status
             Reload();
         }
 
+        public void ScrollToRoot()
+        {
+            StatusListView.ScrollToRoot();
+        }
+
         public void Reload()
         {
             if (App.tail.blend.SelectedBlendedAccount != null)

@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="Controls\FormsVideoLibrary\VideoPicker.cs" />
     <Compile Include="Controls\FormsVideoLibrary\VideoPlayerRenderer.cs" />
+    <Compile Include="Controls\TabbedPageExpanded\TabbedPageExRenderer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

@@ -22,6 +22,11 @@ namespace TweetTail.Pages.Notification
             Reload();
         }
 
+        public void ScrollToRoot()
+        {
+            notificationListView.ScrollToRoot();
+        }
+
         public void Reload()
         {
             if (App.tail.blend.SelectedBlendedAccount != null)

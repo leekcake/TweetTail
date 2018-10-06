@@ -56,6 +56,11 @@ namespace TweetTail.Utils
             }
         }
 
+        public void ScrollToRoot()
+        {
+            ScrollTo(Items[0], ScrollToPosition.Start, true);
+        }
+
         public void Reload()
         {
             isNoMoreData = false;

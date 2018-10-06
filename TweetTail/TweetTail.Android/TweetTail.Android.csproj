@@ -66,6 +66,7 @@
     <Compile Include="Controls\CookiesWebView\CookieWebViewRenderer.cs" />
     <Compile Include="Controls\FormsVideoLibrary\VideoPicker.cs" />
     <Compile Include="Controls\FormsVideoLibrary\VideoPlayerRenderer.cs" />
+    <Compile Include="Controls\TabbedPageExpanded\TabbedPageExRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
