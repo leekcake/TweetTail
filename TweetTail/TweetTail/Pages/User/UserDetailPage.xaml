@@ -16,6 +16,7 @@
                         <Label Style="{DynamicResource labelStyle}" x:Name="lblScreenName"></Label>
                         <Frame
                             x:Name="viewFollowMe"
+                            IsVisible="False"
                             Padding="3"
                             CornerRadius="5"
                             BackgroundColor="Gray"
