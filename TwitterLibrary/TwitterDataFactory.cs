@@ -12,10 +12,16 @@ namespace TwitterLibrary
     public class TwitterDataFactory
     {
         public const string TwitterDateTemplate = "ddd MMM dd HH:mm:ss +ffff yyyy";
+        public const string PollsCardDateTemplate = "yyyy-MM-dd tt h:mm:ss";
 
         private static DateTime parseTwitterDateTime(string date)
         {
             return DateTime.ParseExact(date, TwitterDateTemplate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+        }
+
+        private static DateTime parsePollsCardDateTime(string date)
+        {
+            return DateTime.ParseExact(date, PollsCardDateTemplate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
         }
 
         private static string SafeGetString(JObject obj, string key)
@@ -187,6 +193,39 @@ namespace TwitterLibrary
             {
                 status.polls = parseArray(entities["polls"].ToObject<JArray>(), parsePolls);
             }
+            else if(obj.ContainsKey("card"))
+            {
+                var card = obj["card"];
+                var cardName = card["name"].ToString();
+                if(cardName.EndsWith("choice_text_only"))
+                {
+                    var polls = new Polls();
+
+                    var values = card["binding_values"];
+
+                    polls.durationMinutes = values["duration_minutes"]["string_value"].ToObject<int>();
+                    polls.endDateTime = parsePollsCardDateTime(values["end_datetime_utc"]["string_value"].ToString());
+                    polls.url = values["api"]["string_value"].ToString();
+
+                    var count = 2;
+                    if(cardName == "poll3choice_text_only")
+                    {
+                        count = 3;
+                    }
+                    else if(cardName == "poll4choice_text_only")
+                    {
+                        count = 4;
+                    }
+                    polls.options = new Polls.Option[count];
+                    for(int i = 0; i < count; i++)
+                    {
+                        polls.options[i] = parseCardPollsOption(values.ToObject<JObject>(), i + 1);
+                        polls.totalCount += polls.options[i].count;
+                    }
+
+                    status.polls = new Polls[] { polls };
+                }
+            }
             if (obj.ContainsKey("extended_entities"))
             {
                 status.extendMedias = parseArray(obj["extended_entities"]["media"].ToObject<JArray>(), parseExtendMedia);
@@ -196,6 +235,16 @@ namespace TwitterLibrary
             status.possiblySensitive = SafeGetBool(obj, "possibly_sensitive");
 
             return statusFilter.ApplyFilter(status);
+        }
+
+        public static Polls.Option parseCardPollsOption(JObject binding, int inx)
+        {
+            return new Polls.Option()
+            {
+                position = inx,
+                count = binding["choice" + inx + "_count"]["string_value"].ToObject<int>(),
+                name = binding["choice" + inx + "_label"]["string_value"].ToString()
+            };
         }
 
         public static Indices parseIndices(JArray obj)

@@ -20,7 +20,7 @@ namespace TwitterLibrary
 {
     public class APIImpl : API
     {
-        private static KeyValuePair<string, string>[] makeQuery(params string[] query)
+        private static List<KeyValuePair<string, string>> makeQuery(params string[] query)
         {
             var list = new List<KeyValuePair<string, string>>();
             for (int i = 0; i < query.Length; i += 2)
@@ -30,8 +30,7 @@ namespace TwitterLibrary
                     list.Add(new KeyValuePair<string, string>(query[i], query[i + 1]));
                 }
             }
-            list.Add(new KeyValuePair<string, string>("tweet_mode", "extended"));
-            return list.ToArray();
+            return list;
         }
 
         private static CursoredList<T> makeCursoredList<T>(JObject array)
@@ -51,24 +50,36 @@ namespace TwitterLibrary
             return base64;
         }
 
-        internal async Task<string> Get(string uri, Account account, KeyValuePair<string, string>[] query)
+        internal async Task<string> Get(string uri, Account account, List<KeyValuePair<string, string>> query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query, account);
+            if(uri.Contains("1.1/statuses") || uri.Contains("2/timeline"))
+            {
+                query.Add(new KeyValuePair<string, string>("tweet_mode", "extended"));
+                query.Add(new KeyValuePair<string, string>("include_cards", "1"));
+                query.Add(new KeyValuePair<string, string>("cards_platform", "Web-13"));
+            }
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query.ToArray(), account);
         }
 
-        internal async Task<string> Get(string uri, Token consumer, Token? oauth, KeyValuePair<string, string>[] query)
+        internal async Task<string> Get(string uri, Token consumer, Token? oauth, List<KeyValuePair<string, string>> query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query, consumer, oauth);
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query.ToArray(), consumer, oauth);
         }
 
-        internal async Task<string> Post(string uri, Account account, KeyValuePair<string, string>[] query)
+        internal async Task<string> Post(string uri, Account account, List<KeyValuePair<string, string>> query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query, account);
+            if (uri.Contains("1.1/statuses") || uri.Contains("2/timeline"))
+            {
+                query.Add(new KeyValuePair<string, string>("tweet_mode", "extended"));
+                query.Add(new KeyValuePair<string, string>("include_cards", "1"));
+                query.Add(new KeyValuePair<string, string>("cards_platform", "Web-13"));
+            }
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query.ToArray(), account);
         }
 
-        internal async Task<string> Post(string uri, Token consumer, Token? oauth, KeyValuePair<string, string>[] query)
+        internal async Task<string> Post(string uri, Token consumer, Token? oauth, List<KeyValuePair<string, string>> query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query, consumer, oauth);
+            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query.ToArray(), consumer, oauth);
         }
 
         internal readonly HttpClient httpClient = new HttpClient();
@@ -83,20 +94,14 @@ namespace TwitterLibrary
 
         public async Task<SavedSearch> DestroySavedSearch(Account account, long id)
         {
-            var response = await Post("https://api.twitter.com/1.1/saved_searches/destroy/" + id + ".json", account, new KeyValuePair<string, string>[]
-            {
-
-            });
+            var response = await Post("https://api.twitter.com/1.1/saved_searches/destroy/" + id + ".json", account, makeQuery());
 
             return TwitterDataFactory.parseSavedSearch(JObject.Parse(response));
         }
 
         public async Task<AccountSetting> GetAccountSetting(Account account)
         {
-            var response = await Get("https://api.twitter.com/1.1/account/settings.json", account, new KeyValuePair<string, string>[]
-            {
-
-            });
+            var response = await Get("https://api.twitter.com/1.1/account/settings.json", account, makeQuery());
 
             var obj = JObject.Parse(response);
             var result = new AccountSetting();
@@ -132,9 +137,7 @@ namespace TwitterLibrary
 
         public async Task<LoginToken> GetLoginTokenAsync(Token consumerToken)
         {
-            var response = await Post("https://api.twitter.com/oauth/request_token", consumerToken, null, new KeyValuePair<string, string>[] {
-
-            });
+            var response = await Post("https://api.twitter.com/oauth/request_token", consumerToken, null, makeQuery());
             var data = HttpUtility.ParseQueryString(response);
 
             var token = new Token();
@@ -158,10 +161,7 @@ namespace TwitterLibrary
         {
             return TwitterDataFactory.parseSavedSearch(
                 JObject.Parse(
-                    await Get("https://api.twitter.com/1.1/saved_searches/show/" + id + ".json", account, new KeyValuePair<string, string>[]
-                    {
-
-                    })
+                    await Get("https://api.twitter.com/1.1/saved_searches/show/" + id + ".json", account, makeQuery())
                 ));
         }
 
@@ -169,10 +169,7 @@ namespace TwitterLibrary
         {
             return TwitterDataFactory.parseArray(
                 JArray.Parse(
-                    await Get("https://api.twitter.com/1.1/saved_searches/list.json", account, new KeyValuePair<string, string>[]
-                    {
-
-                    })
+                    await Get("https://api.twitter.com/1.1/saved_searches/list.json", account, makeQuery())
                 ), TwitterDataFactory.parseSavedSearch).ToList();
         }
 
@@ -194,10 +191,7 @@ namespace TwitterLibrary
 
         public async Task RemoveProfileBanner(Account account)
         {
-            await Post("https://api.twitter.com/1.1/account/remove_profile_banner.json", account, new KeyValuePair<string, string>[]
-            {
-
-            });
+            await Post("https://api.twitter.com/1.1/account/remove_profile_banner.json", account, makeQuery());
         }
 
         public async Task<User> UpdateProfile(Account account, string name, string url, string location, string description, string profileLinkColor)
@@ -229,9 +223,7 @@ namespace TwitterLibrary
 
         public async Task<User> VerifyCredentials(Account account)
         {
-            var response = await Get("https://api.twitter.com/1.1/account/verify_credentials.json", account, new KeyValuePair<string, string>[] {
-
-            });
+            var response = await Get("https://api.twitter.com/1.1/account/verify_credentials.json", account, makeQuery());
 
             return TwitterDataFactory.parseUser(JObject.Parse(response), account.id);
         }

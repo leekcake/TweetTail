@@ -10,10 +10,14 @@ namespace TwitterInterface.Data.Entity
         {
             public int position;
             public string name;
+            public int count;
         }
 
         public DateTime endDateTime;
         public int durationMinutes;
         public Option[] options;
+        public string url; //If it parsed in card, card url
+
+        public int totalCount;
     }
 }

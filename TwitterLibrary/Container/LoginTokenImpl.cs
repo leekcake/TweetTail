@@ -26,9 +26,9 @@ namespace TwitterLibrary.Container
 
         public async Task<Account> login(string pin)
         {
-            var response = await owner.Post("https://api.twitter.com/oauth/access_token", consumer, oauth, new KeyValuePair<string, string>[] {
-                new KeyValuePair<string, string>("oauth_verifier", pin)
-            });
+            var query = new List<KeyValuePair<string, string>>();
+            query.Add(new KeyValuePair<string, string>("oauth_verifier", pin));
+            var response = await owner.Post("https://api.twitter.com/oauth/access_token", consumer, oauth, query);
             var data = HttpUtility.ParseQueryString(response);
 
             var account = new LibAccount();
