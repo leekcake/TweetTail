@@ -117,7 +117,7 @@ namespace TweetTail.Pages.User
             SetTextHideEmpty(lblLink, binding.url);
             SetTextHideEmpty(lblLocation, binding.location);
             lblNickname.Text = binding.nickName;
-            lblScreenName.Text = binding.screenName;
+            lblScreenName.Text = "@" + binding.screenName;
             lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
 
             updateRelationship();
