@@ -46,7 +46,14 @@ namespace TweetTail.Components.Status
 
         private GridImageWrapper gridImageWrapper;
 
-        public StatusView()
+        private StatusView quoteView;
+        
+        public StatusView() : this(true)
+        {
+
+        }
+
+        public StatusView(bool hasQuoteView)
         {
             InitializeComponent();
             gridImageWrapper = new GridImageWrapper(gridMedias);
@@ -59,6 +66,12 @@ namespace TweetTail.Components.Status
                     App.Navigation.PushAsync(new StatusExpandPage( getDisplayStatus(status) ));
                 })
             });
+
+            if(hasQuoteView)
+            {
+                quoteView = new StatusView(false);
+                viewQuoteStore.Content = (quoteView);
+            }
 
             imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -252,15 +265,20 @@ namespace TweetTail.Components.Status
             }
         }
 
-        protected void UpdateImage()
+        protected void ClearImage()
         {
-            var display = getDisplayStatus(status);
-
             imgProfile.Source = null;
             for (int i = 0; i < 4; i++)
             {
                 gridImageWrapper[i].Source = null;
             }
+        }
+
+        protected void UpdateImage()
+        {
+            ClearImage();
+
+            var display = getDisplayStatus(status);
 
             imgProfile.Source = display.creater.profileHttpsImageURL;
 
@@ -358,6 +376,21 @@ namespace TweetTail.Components.Status
             viewIssuer.Update();
             UpdateImage();
             UpdateButton();
+
+            if(quoteView != null)
+            {
+                if (display.quotedStatus != null)
+                {
+                    quoteView.BindingContext = display.quotedStatus;
+                    quoteView.Update();
+                    viewQuoteStore.IsVisible = true;
+                }
+                else
+                {
+                    quoteView.ClearImage();
+                    viewQuoteStore.IsVisible = false;
+                }
+            }
         }
     }
 }

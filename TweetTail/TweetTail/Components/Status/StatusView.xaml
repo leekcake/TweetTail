@@ -28,6 +28,13 @@
                     <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
 
                     </Grid>
+                    <Frame x:Name="viewQuoteStore"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            CornerRadius="5"
+                            IsVisible="False"
+                            OutlineColor="White"
+                           ></Frame>
                     <Label Style="{DynamicResource labelStyle}" x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
                     <StackLayout x:Name="viewButtons" x:FieldModifier="Public" Orientation="Horizontal">
                         <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
