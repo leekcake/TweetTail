@@ -505,6 +505,20 @@ namespace TwitterLibrary
             }
             var tweet = global["tweets"][request.ToString()].ToObject<JObject>();
             var result = parseStatus(tweet, issuer, GetUserFromConversation(tweet["user_id"].ToObject<long>(), issuer, global, userCache));
+            if(result.isQuote)
+            {
+                try
+                {
+                    result.quotedStatus = GetStatusFromConversation(result.quotedStatusId, issuer, global, statusCache, userCache);
+                }
+                catch
+                {
+                    //Quoted tweet may doesn't contains quote when...
+                    //Quoted[0] <- Quoted[1] <- Quoted[2]
+                    //If Conversation API requested for 0,
+                    //GetStatusFromConversation on Quoted[1] Can't reach to Quoted[2] because Conversation API doesn't provide it (and doesn't need to deeper)
+                }
+            }
             statusCache[request] = result;
             return result;   
         }
