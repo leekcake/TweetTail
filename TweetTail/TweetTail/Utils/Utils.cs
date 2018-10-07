@@ -12,6 +12,38 @@ namespace TweetTail.Utils
 {
     public class Util
     {
+        public static string TimespanToString(TimeSpan span)
+        {
+            var result = new StringBuilder();
+
+            if(span.Days != 0)
+            {
+                result.Append(span.Days);
+                result.Append("일 ");
+            }
+
+            if (span.Hours != 0)
+            {
+                result.Append(span.Hours);
+                result.Append("시 ");
+            }
+
+            if(span.Minutes != 0)
+            {
+                result.Append(span.Minutes);
+                result.Append("분 ");
+            }
+
+            if(result.Length == 0)
+            {
+                return string.Format("{0}초 남음", span.Seconds);
+            }
+
+            result.Remove(result.Length - 1, 1);
+
+            return result.ToString();
+        }
+        
         public static void HandleException(Exception exception)
         {
             System.Diagnostics.Debug.WriteLine(exception.Message + " - " + exception.StackTrace);

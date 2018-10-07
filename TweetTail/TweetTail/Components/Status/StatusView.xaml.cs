@@ -45,6 +45,7 @@ namespace TweetTail.Components.Status
         }
 
         private GridImageWrapper gridImageWrapper;
+        private PollView[] pollViews;
 
         private StatusView quoteView;
         
@@ -251,6 +252,12 @@ namespace TweetTail.Components.Status
                     NumberOfTapsRequired = 1
                 });
             }
+
+            pollViews = new PollView[4];
+            for(int i = 0; i < 4; i++)
+            {
+                pollViews[i] = new PollView();
+            }
         }
 
         private DataStatus getDisplayStatus(DataStatus status)
@@ -390,6 +397,32 @@ namespace TweetTail.Components.Status
                     quoteView.ClearImage();
                     viewQuoteStore.IsVisible = false;
                 }
+            }
+
+            if(display.polls != null)
+            {
+                var poll = display.polls[0];
+                viewPollGroup.IsVisible = true;
+                for(int i = 0; i < poll.options.Length; i++)
+                {
+                    pollViews[i].Update(poll, i);
+                    viewPolls.Children.Add(pollViews[i]);
+                }
+                if(poll.endDateTime < DateTime.UtcNow)
+                {
+                    var leftTime = poll.endDateTime - DateTime.UtcNow;
+                    lblPollStatus.Text = string.Format("{0}표 • 투표가 끝났습니다", poll.totalCount);
+                }
+                else
+                {
+                    var leftTime = poll.endDateTime - DateTime.UtcNow;
+                    lblPollStatus.Text = string.Format("{0}표 • {1} 남았습니다.", poll.totalCount, Util.TimespanToString(leftTime));
+                }
+            }
+            else
+            {
+                viewPolls.Children.Clear();
+                viewPollGroup.IsVisible = false;
             }
         }
     }

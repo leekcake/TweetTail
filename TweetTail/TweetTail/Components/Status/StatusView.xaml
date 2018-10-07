@@ -28,6 +28,12 @@
                     <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
 
                     </Grid>
+                    <StackLayout x:Name="viewPollGroup">
+                        <StackLayout x:Name="viewPolls">
+
+                        </StackLayout>
+                        <Label x:Name="lblPollStatus" Style="{DynamicResource labelStyle}"></Label>
+                    </StackLayout>
                     <Frame x:Name="viewQuoteStore"
                             Padding="0"
                             BackgroundColor="Transparent"
