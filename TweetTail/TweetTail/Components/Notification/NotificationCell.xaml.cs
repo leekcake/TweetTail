@@ -138,6 +138,11 @@ namespace TweetTail.Components.Notification
                 var data = notification as DataNotification.Reply;
                 DisplayNotification(data.ReplyTweet, null, null);
             }
+            else if(notification is DataNotification.Quote)
+            {
+                var data = notification as DataNotification.Quote;
+                DisplayNotification(data.QuoteTweet, null, null);
+            }
 
             base.OnBindingContextChanged();
         }

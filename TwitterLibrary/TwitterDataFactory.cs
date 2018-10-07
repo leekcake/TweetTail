@@ -459,6 +459,8 @@ namespace TwitterLibrary
                     return parseNotification(obj, issuer, new Notification.Reply(), typeof(User), typeof(Status), typeof(Status));
                 case "follow":
                     return parseNotification(obj, issuer, new Notification.Follow(), typeof(User), typeof(User), null);
+                case "quote":
+                    return parseNotification(obj, issuer, new Notification.Quote(), typeof(User), typeof(Status), typeof(Status));
             }
             //TODO: Check Unknown Type?
             return null;

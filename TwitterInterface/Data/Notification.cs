@@ -207,6 +207,31 @@ namespace TwitterInterface.Data
             }
         }
 
+        public class Quote : Notification
+        {
+            //TargetObject: 인용이 된 트윗
+            //Target: 인용을 한 트윗
+            //Source: 인용 한 사람
+
+            public Status QuoteTargetTweet {
+                get {
+                    return targetObjects[0] as Status;
+                }
+            }
+
+            public Status QuoteTweet {
+                get {
+                    return targets[0] as Status;
+                }
+            }
+
+            public User Quoter {
+                get {
+                    return sources[0] as User;
+                }
+            }
+        }
+
         public class Follow : Notification
         {
             //Target: 팔로우 대상
