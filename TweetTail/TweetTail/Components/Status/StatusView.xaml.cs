@@ -68,6 +68,20 @@ namespace TweetTail.Components.Status
                 })
             });
 
+            viewHeader.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(async () => 
+                {
+                    if (status == null) return;
+                    var selected = await Util.SelectAccount("유저를 확인할 계정을 선택하세요", status.issuer);
+                    if (selected == null)
+                    {
+                        return;
+                    }
+                    App.Navigation.PushAsync(new UserDetailPage(status.creater, selected.accountForRead));
+                })
+            });
+
             if(hasQuoteView)
             {
                 quoteView = new StatusView(false);
