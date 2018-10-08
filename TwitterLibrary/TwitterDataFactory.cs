@@ -483,6 +483,9 @@ namespace TwitterLibrary
             relationship.isFollower = source["followed_by"].ToObject<bool>();
             //TODO:notifications_enabled
 
+            //TODO: Check this value Offical API Only things?
+            relationship.isBlockedBy = SafeGetBool(source.ToObject<JObject>(), "blocked_by");
+
             return relationship;
         }
 

@@ -30,7 +30,7 @@
             <Label Style="{DynamicResource labelStyle}" x:Name="lblLocation"></Label>
             <Label Style="{DynamicResource labelStyle}" x:Name="lblLink"></Label>
             <Label Style="{DynamicResource labelStyle}" x:Name="lblStatus"></Label>
-            <StackLayout Orientation="Horizontal">
+            <StackLayout x:Name="viewUserAction" Orientation="Horizontal">
                 <Button x:Name="btnTweet" Text="트윗" Clicked="btnTweet_Clicked"></Button>
                 <Button x:Name="btnMedia" Text="미디어" Clicked="btnMedia_Clicked"></Button>
                 <Button x:Name="btnMention" Text="멘션" Clicked="btnMention_Clicked"></Button>

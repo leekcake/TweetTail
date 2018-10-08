@@ -24,5 +24,7 @@ namespace TwitterInterface.Data
         public bool isWantRetweets;
         public bool isMarkedSpam;
         public bool isNotificationsEnabled;
+
+        public bool isBlockedBy;
     }
 }

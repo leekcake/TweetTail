@@ -58,18 +58,11 @@ namespace TweetTail.Pages.User
                     viewFollowMe.IsVisible = false;
                     return;
                 }
+
                 viewRelationship.IsVisible = true;
 
                 relationship = await App.tail.twitter.GetRelationship(issuer, issuer.id, binding.id);
-
-                if (relationship.isFollowing)
-                {
-                    btnFollow.Text = "언팔로우";
-                }
-                else
-                {
-                    btnFollow.Text = "팔로우";
-                }
+                updateUser();
 
                 if (relationship.isBlocked)
                 {
@@ -89,6 +82,32 @@ namespace TweetTail.Pages.User
                     btnMute.Text = "뮤트";
                 }
 
+                if (relationship.isBlockedBy)
+                {
+                    SetRelationshipButtons(true);
+                    btnFollow.Text = "차단됨";
+                    btnFollow.IsEnabled = false;
+                    
+                    viewUserAction.IsVisible = false;
+                    viewFollowMe.IsVisible = false;
+
+                    lblDescription.Text = string.Format("{0}님을 팔로우 하거나 {0} 님의 트윗을 볼 수 없도록 차단되었습니다.", binding.nickName);
+                    lblLink.IsVisible = false;
+                    lblLocation.IsVisible = false;
+                    lblStatus.IsVisible = false;
+                    return;
+                }
+                viewUserAction.IsVisible = true;
+
+                if (relationship.isFollowing)
+                {
+                    btnFollow.Text = "언팔로우";
+                }
+                else
+                {
+                    btnFollow.Text = "팔로우";
+                }
+
                 viewFollowMe.IsVisible = relationship.isFollower;
                 SetRelationshipButtons(true);
             }
@@ -96,6 +115,19 @@ namespace TweetTail.Pages.User
             {
                 System.Diagnostics.Debug.WriteLine( e.Message + " " + e.StackTrace );
             }
+        }
+
+        public void updateUser()
+        {
+            imgHeader.Source = binding.profileBannerURL;
+            imgProfile.Source = binding.profileHttpsImageURL;
+
+            SetTextHideEmpty(lblDescription, binding.description);
+            SetTextHideEmpty(lblLink, binding.url);
+            SetTextHideEmpty(lblLocation, binding.location);
+            lblNickname.Text = binding.nickName;
+            lblScreenName.Text = "@" + binding.screenName;
+            lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
         }
 
 		public UserDetailPage (DataUser binding, DataAccount issuer)
@@ -110,16 +142,7 @@ namespace TweetTail.Pages.User
             viewIssuer.BindingContext = issuer.user;
             viewIssuer.Update();
 
-            imgHeader.Source = binding.profileBannerURL;
-            imgProfile.Source = binding.profileHttpsImageURL;
-
-            SetTextHideEmpty(lblDescription, binding.description);
-            SetTextHideEmpty(lblLink, binding.url);
-            SetTextHideEmpty(lblLocation, binding.location);
-            lblNickname.Text = binding.nickName;
-            lblScreenName.Text = "@" + binding.screenName;
-            lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
-
+            updateUser();
             updateRelationship();
 
             viewIssuerGroup.GestureRecognizers.Add(new TapGestureRecognizer()
