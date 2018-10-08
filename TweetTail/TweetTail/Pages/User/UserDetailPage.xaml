@@ -30,21 +30,41 @@
             <Label Style="{DynamicResource labelStyle}" x:Name="lblLocation"></Label>
             <Label Style="{DynamicResource labelStyle}" x:Name="lblLink"></Label>
             <Label Style="{DynamicResource labelStyle}" x:Name="lblStatus"></Label>
-            <StackLayout x:Name="viewUserAction" Orientation="Horizontal">
-                <Button x:Name="btnTweet" Text="트윗" Clicked="btnTweet_Clicked"></Button>
-                <Button x:Name="btnMedia" Text="미디어" Clicked="btnMedia_Clicked"></Button>
-                <Button x:Name="btnMention" Text="멘션" Clicked="btnMention_Clicked"></Button>
-                <Button x:Name="btnFavorite" Text="관심글" Clicked="btnFavorite_Clicked"></Button>
-                <Button x:Name="btnFollower" Text="팔로워" Clicked="btnFollower_Clicked"></Button>
-                <Button x:Name="btnFollowing" Text="팔로잉" Clicked="btnFollowing_Clicked"></Button>
-            </StackLayout>
+            <Grid HorizontalOptions="CenterAndExpand" x:Name="viewUserAction">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnTweet" Text="트윗" Clicked="btnTweet_Clicked" Grid.Row="0" Grid.Column="0" ></Button>
+                <Button x:Name="btnMedia" Text="미디어" Clicked="btnMedia_Clicked" Grid.Row="0" Grid.Column="1" ></Button>
+                <Button x:Name="btnMention" Text="멘션" Clicked="btnMention_Clicked" Grid.Row="0" Grid.Column="2" ></Button>
+                <Button x:Name="btnFavorite" Text="관심글" Clicked="btnFavorite_Clicked" Grid.Row="0" Grid.Column="3" ></Button>
+                <Button x:Name="btnFollower" Text="팔로워" Clicked="btnFollower_Clicked" Grid.Row="0" Grid.Column="4" ></Button>
+                <Button x:Name="btnFollowing" Text="팔로잉" Clicked="btnFollowing_Clicked" Grid.Row="0" Grid.Column="5" ></Button>
+            </Grid>
             <Label x:Name="lblRelationshipStatus" Style="{DynamicResource labelStyle}" Text="관계 정보를 가져오고 있습니다..."></Label>
-            <StackLayout x:Name="viewRelationship" Orientation="Horizontal">
-                <Button x:Name="btnFollow" Text="팔로우" Clicked="btnFollow_Clicked"></Button>
-                <Button x:Name="btnBlock" Text="블락" Clicked="btnBlock_Clicked"></Button>
-                <Button x:Name="btnMute" Text="공식뮤트" Clicked="btnMute_Clicked"></Button>
-                <Button x:Name="btnInternalMute" Text="비공식뮤트" Clicked="btnInternalMute_Clicked"></Button>
-            </StackLayout>
+            <Grid HorizontalOptions="CenterAndExpand" x:Name="viewRelationship">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnFollow" Text="팔로우" Clicked="btnFollow_Clicked" Grid.Row="0" Grid.Column="0"></Button>
+                <Button x:Name="btnBlock" Text="블락" Clicked="btnBlock_Clicked" Grid.Row="0" Grid.Column="1"></Button>
+                <Button x:Name="btnMute" Text="공식뮤트" Clicked="btnMute_Clicked" Grid.Row="0" Grid.Column="2"></Button>
+                <Button x:Name="btnInternalMute" Text="비공식뮤트" Clicked="btnInternalMute_Clicked" Grid.Row="0" Grid.Column="3"></Button>
+            </Grid>
             <StackLayout x:Name="viewIssuerGroup">
                 <Label Style="{DynamicResource labelStyle}" Text="아래 있는 계정으로 이 프로필을 보고있습니다" HorizontalOptions="CenterAndExpand"></Label>
                 <user:UserView x:Name="viewIssuer" HorizontalOptions="CenterAndExpand"></user:UserView>
