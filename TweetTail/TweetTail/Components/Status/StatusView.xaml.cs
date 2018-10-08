@@ -135,10 +135,13 @@ namespace TweetTail.Components.Status
                         {
                             return;
                         }
-
+                        var animation = new Animation(v => imgRetweet.Rotation = v, 0, 360);
+                        imgRetweet.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
                         await App.tail.twitter.RetweetStatus(selected.accountForWrite, status.id);
                         getDisplayStatus(status).isRetweetedByUser = true;
                         UpdateButton();
+                        imgRetweet.AbortAnimation("Spin");
+                        imgRetweet.RotateTo(360);
                     }
                     catch (Exception e)
                     {
@@ -161,9 +164,15 @@ namespace TweetTail.Components.Status
                             return;
                         }
 
+                        var animation = new Animation(v => imgFavorite.Rotation = v, 0, 360);
+                        imgFavorite.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
+
                         await App.tail.twitter.CreateFavorite(selected.accountForWrite, status.id);
                         getDisplayStatus(status).isFavortedByUser = true;
                         UpdateButton();
+
+                        imgFavorite.AbortAnimation("Spin");
+                        imgFavorite.RotateTo(360);
                     }
                     catch (Exception e)
                     {
