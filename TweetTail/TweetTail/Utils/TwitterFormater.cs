@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using TweetTail.Pages.User;
 using TwitterInterface.Data.Entity;
 using Xamarin.Forms;
@@ -69,7 +70,7 @@ namespace TweetTail.Utils
                 //No hyperlink
                 if (hyperLinks.Count == 0)
                 {
-                    result.Spans.Add(new Span() { Text = text });
+                    result.Spans.Add(new Span() { Text = WebUtility.HtmlDecode(text) });
                     return result;
                 }
 
@@ -78,13 +79,13 @@ namespace TweetTail.Utils
                 {
                     var link = hyperLinks[i];
 
-                    result.Spans.Add(new Span() { Text = text.Substring(pos, link.indices.start - pos) });
+                    result.Spans.Add(new Span() { Text = WebUtility.HtmlDecode(text.Substring(pos, link.indices.start - pos)) });
 
                     if (!link.invisible)
                     {
                         var span = new Span()
                         {
-                            Text = link.replace == null ? text.Substring(link.indices.start, link.indices.Length) : link.replace,
+                            Text = link.replace == null ? WebUtility.HtmlDecode(text.Substring(link.indices.start, link.indices.Length)) : link.replace,
                             TextColor = Color.Blue
                         };
                         span.GestureRecognizers.Add(new TapGestureRecognizer()
@@ -100,7 +101,7 @@ namespace TweetTail.Utils
 
                 if (pos < text.Length)
                 {
-                    result.Spans.Add(new Span() { Text = text.Substring(pos, text.Length - pos) });
+                    result.Spans.Add(new Span() { Text = WebUtility.HtmlDecode(text.Substring(pos, text.Length - pos)) });
                 }
 
                 return result;
