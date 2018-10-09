@@ -20,12 +20,28 @@ namespace TweetTail.Pages.Status
         private class MediaView
         {
             private MediaPage parent;
+            public AbsoluteLayout layout = new AbsoluteLayout();
             public CachedImage image = new CachedImage();
+            public ProgressBar pb = new ProgressBar();
 
             public MediaView(MediaPage parent, ExtendMedia media)
             {
                 this.parent = parent;
+
                 image.Source = media.mediaURLHttps;
+                image.DownloadProgress += Image_DownloadProgress;
+                image.Finish += Image_Finish;
+
+                pb.Progress = 0;
+
+                layout.Children.Add(image);
+                layout.Children.Add(pb);
+
+                AbsoluteLayout.SetLayoutBounds(image, new Rectangle(0, 0, 1, 1));
+                AbsoluteLayout.SetLayoutFlags(image, AbsoluteLayoutFlags.All);
+
+                AbsoluteLayout.SetLayoutBounds(pb, new Rectangle(0.1, 0.4, 0.7, 0.2));
+                AbsoluteLayout.SetLayoutFlags(pb, AbsoluteLayoutFlags.All);
 
                 var gesture = new PanGestureRecognizer();
                 gesture.PanUpdated += (sender, e) =>
@@ -47,6 +63,21 @@ namespace TweetTail.Pages.Status
                 };
                 image.GestureRecognizers.Add(gesture);
             }
+
+            private void Image_Finish(object sender, CachedImageEvents.FinishEventArgs e)
+            {
+                Device.BeginInvokeOnMainThread(() => {
+                    pb.IsVisible = false;
+                });                
+            }
+
+            private void Image_DownloadProgress(object sender, CachedImageEvents.DownloadProgressEventArgs e)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    pb.Progress = e.DownloadProgress.Current / e.DownloadProgress.Total;
+                });                
+            }
         };
 
         private DataStatus viewing;
@@ -64,7 +95,7 @@ namespace TweetTail.Pages.Status
                 {
                     Children.Add(new ContentPage()
                     {
-                        Content = makeCachedImage(media)
+                        Content = makeMediaView(media)
                     });
                 }
                 CurrentPage = Children[inx];
@@ -99,10 +130,10 @@ namespace TweetTail.Pages.Status
             }
         }
 
-        private CachedImage makeCachedImage(ExtendMedia media)
+        private View makeMediaView(ExtendMedia media)
         {
             var view = new MediaView(this, media);
-            return view.image;
+            return view.layout;
         }
 
         private VideoVariant pickVideoVariant(VideoVariant[] variants)
