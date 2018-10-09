@@ -10,12 +10,8 @@
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand" />
             <ListView x:Name="listView"
+                      RowHeight="64"
                       SelectionMode="None">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ImageCell Text="{Binding Title}" Detail="{Binding Description}" ImageSource="{Binding Icon}"></ImageCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

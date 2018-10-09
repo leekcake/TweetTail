@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+          x:Class="TweetTail.Components.Menu.MenuCell">
+    <ViewCell.View>
+        <StackLayout Orientation="Horizontal" HeightRequest="64" >
+            <forms:CachedImage x:Name="imgIcon" Aspect="AspectFit" WidthRequest="64" HeightRequest="64"></forms:CachedImage>
+            <StackLayout>
+                <Label x:Name="lblTitle" Style="{DynamicResource labelStyle}" LineBreakMode="TailTruncation" Text="Hello Xamarin.Forms!" />
+                <Label x:Name="lblDescription" Style="{DynamicResource labelStyle}" LineBreakMode="TailTruncation" Text="Hello Xamarin.Forms!" />
+            </StackLayout>
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

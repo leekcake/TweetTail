@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TweetTail.Components;
+using TweetTail.Components.Menu;
 using TweetTail.Pages.Account;
 using TweetTail.Pages.Blend;
 using Xamarin.Forms;
@@ -14,33 +16,16 @@ namespace TweetTail.Pages.Menu
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MenuPage : ContentPage
 	{
-        public class Item
-        {
-            public string Title {
-                get; set;
-            }
-
-            public string Description {
-                get; set;
-            }
-
-            public string Icon {
-                get; set;
-            }
-
-            public Action action;
-        }
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<MenuData> Items { get; set; }
 
 		public MenuPage ()
 		{
             Title = "Menu";
 			InitializeComponent ();
 
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<MenuData>();
 
-
-            Items.Add(new Item() {
+            Items.Add(new MenuData() {
                 action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new AccountPage());
@@ -48,7 +33,7 @@ namespace TweetTail.Pages.Menu
             });
             Update();
 
-            Items.Add(new Item()
+            Items.Add(new MenuData()
             {
                 Title = "계정 전환",
                 Description = "계정을 전환합니다",
@@ -59,13 +44,14 @@ namespace TweetTail.Pages.Menu
                 })
             });
 
+            listView.ItemTemplate = new DataTemplate(typeof(MenuCell));
             listView.ItemsSource = Items;
             listView.ItemTapped += ListView_ItemTapped;
         }
 
         private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            var item = e.Item as Item;
+            var item = e.Item as MenuData;
             if(item.action != null)
             {
                 item.action.Invoke();
