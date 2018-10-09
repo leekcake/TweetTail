@@ -35,7 +35,10 @@ namespace TweetTail.Droid.Controls.FormsVideoLibrary
                 {
                     // Save the VideoView for future reference
                     videoView = new VideoView(Context);
-
+                    if (Element.IsVideoOnly)
+                    {
+                        videoView.SetAudioFocusRequest(Android.Media.AudioFocus.None);
+                    }
                     // Put the VideoView in a RelativeLayout
                     ARelativeLayout relativeLayout = new ARelativeLayout(Context);
                     relativeLayout.AddView(videoView);

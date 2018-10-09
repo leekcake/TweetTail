@@ -131,5 +131,9 @@ namespace TweetTail.Controls.FormsVideoLibrary
         {
             StopRequested?.Invoke(this, EventArgs.Empty);
         }
+        
+        public bool IsVideoOnly {
+            get; set;
+        }
     }
 }
