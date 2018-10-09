@@ -103,6 +103,10 @@ namespace TweetTail.Pages.Status
             else
             {
                 videoView = new VideoPlayer();
+                if (status.extendMedias[0].type == "animated_gif")
+                {
+                    videoView.IsVideoOnly = true;
+                }
                 var gesture = new PanGestureRecognizer();
                 gesture.PanUpdated += (sender, e) =>
                 {
