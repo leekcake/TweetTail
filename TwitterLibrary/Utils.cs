@@ -51,9 +51,16 @@ namespace TwitterLibrary
             if(!responseMessage.IsSuccessStatusCode)
             {
                 var json = responseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                
+
                 //TODO: Wrapping with Custom Exception
-                throw new IOException(JObject.Parse(json).ToString());
+                try
+                {
+                    throw new IOException(JObject.Parse(json)["errors"][0]["message"].ToString());
+                }
+                catch
+                {
+                    throw new IOException(json);
+                }
             }
         }
 
