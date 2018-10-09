@@ -4005,7 +4005,7 @@ namespace TweetTail.Droid
 			public const int design_snackbar_background = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int ic_account_box_black_48dp = 2130837595;
+			public const int ic_account_box_grey_500_48dp = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
 			public const int ic_audiotrack_dark = 2130837596;

@@ -133,7 +133,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="ic_account_box_black_48dp.png" />
+    <Content Include="ic_account_box_grey_500_48dp.png" />
     <Content Include="ic_create_black_48dp.png" />
     <Content Include="ic_delete_black_24dp.png" />
     <Content Include="ic_delete_grey_500_24dp.png" />

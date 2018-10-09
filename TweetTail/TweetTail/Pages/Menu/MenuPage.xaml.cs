@@ -37,7 +37,7 @@ namespace TweetTail.Pages.Menu
             {
                 Title = "계정 전환",
                 Description = "계정을 전환합니다",
-                Icon = "ic_account_box_black_48dp",
+                Icon = "ic_account_box_grey_500_48dp",
                 action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new BlendListPage());
