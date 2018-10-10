@@ -359,4 +359,13 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_account_box_grey_500_48dp%403x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_search_grey_500_48dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_search_grey_500_48dp%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_search_grey_500_48dp%403x.png" />
+  </ItemGroup>
 </Project>

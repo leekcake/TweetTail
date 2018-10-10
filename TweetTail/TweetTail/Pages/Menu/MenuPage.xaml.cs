@@ -8,6 +8,7 @@ using TweetTail.Components;
 using TweetTail.Components.Menu;
 using TweetTail.Pages.Account;
 using TweetTail.Pages.Blend;
+using TweetTail.Pages.Status;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -41,6 +42,17 @@ namespace TweetTail.Pages.Menu
                 action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new BlendListPage());
+                })
+            });
+
+            Items.Add(new MenuData()
+            {
+                Title = "검색 하기",
+                Description = "트위터를 검색합니다",
+                Icon = "ic_search_grey_500_48dp",
+                action = new Action(() =>
+                {
+                    App.Navigation.PushAsync(new SearchPage(App.tail.account.SelectedAccountGroup));
                 })
             });
 
