@@ -33,11 +33,9 @@
             <Grid HorizontalOptions="CenterAndExpand" x:Name="viewUserAction">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -45,9 +43,9 @@
                 <Button x:Name="btnTweet" Text="트윗" Clicked="btnTweet_Clicked" Grid.Row="0" Grid.Column="0" ></Button>
                 <Button x:Name="btnMedia" Text="미디어" Clicked="btnMedia_Clicked" Grid.Row="0" Grid.Column="1" ></Button>
                 <Button x:Name="btnMention" Text="멘션" Clicked="btnMention_Clicked" Grid.Row="0" Grid.Column="2" ></Button>
-                <Button x:Name="btnFavorite" Text="관심글" Clicked="btnFavorite_Clicked" Grid.Row="0" Grid.Column="3" ></Button>
-                <Button x:Name="btnFollower" Text="팔로워" Clicked="btnFollower_Clicked" Grid.Row="0" Grid.Column="4" ></Button>
-                <Button x:Name="btnFollowing" Text="팔로잉" Clicked="btnFollowing_Clicked" Grid.Row="0" Grid.Column="5" ></Button>
+                <Button x:Name="btnFavorite" Text="관심글" Clicked="btnFavorite_Clicked" Grid.Row="1" Grid.Column="0" ></Button>
+                <Button x:Name="btnFollower" Text="팔로워" Clicked="btnFollower_Clicked" Grid.Row="1" Grid.Column="1" ></Button>
+                <Button x:Name="btnFollowing" Text="팔로잉" Clicked="btnFollowing_Clicked" Grid.Row="1" Grid.Column="2" ></Button>
             </Grid>
             <Label x:Name="lblRelationshipStatus" Style="{DynamicResource labelStyle}" Text="관계 정보를 가져오고 있습니다..."></Label>
             <Grid HorizontalOptions="CenterAndExpand" x:Name="viewRelationship">
