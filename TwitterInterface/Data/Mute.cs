@@ -6,20 +6,7 @@ namespace TwitterInterface.Data
 {
     public class Mute
     {
-        public Place place;
         public Target target;
-
-        public enum Place : int
-        {
-            Unknown = -1,
-            Timeline = 0,
-            UserPage = 1,
-            Search = 2,
-            FollowList = 3,
-            ActionList = 4,
-            List = 5,
-            DirectMessage = 6
-        }
 
         public class Target { }
 
