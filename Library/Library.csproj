@@ -11,6 +11,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TwitterInterface\TwitterInterface.csproj" />
+    <ProjectReference Include="..\TwitterLibrary\TwitterLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>
