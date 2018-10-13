@@ -92,6 +92,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CookiesWebView\CookieWebViewRenderer.cs" />
     <Compile Include="Controls\FormsVideoLibrary\VideoPicker.cs" />
     <Compile Include="Controls\FormsVideoLibrary\VideoPlayerRenderer.cs" />
     <Compile Include="Controls\TabbedPageExpanded\TabbedPageExRenderer.cs" />
