@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Style="{DynamicResource backgroundStyle}"
+             x:Class="TweetTail.Pages.Mute.KeywordMutePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Style="{DynamicResource labelStyle}" Text="이 단어를"/>
+            <Editor x:Name="editKeyword" Style="{DynamicResource editorStyle}" Placeholder="단어"></Editor>
+            <Label Style="{DynamicResource labelStyle}" Text="(옵션) 이 단어로 교체합니다"></Label>
+            <Editor x:Name="editReplace" Style="{DynamicResource editorStyle}" Placeholder="대체어"></Editor>
+            <Button x:Name="btnConfirm" Text="확인" Clicked="btnConfirm_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
