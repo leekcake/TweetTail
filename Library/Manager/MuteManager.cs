@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-using Library.Container.Mute;
 using TwitterInterface.Data;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -46,7 +45,7 @@ namespace Library.Manager
         {
             return tokens.Select((token) =>
             {
-                return MuteExtension.LoadMute(token.ToObject<JObject>());
+                return Mute.Load(token.ToObject<JObject>());
             });
         }
 
