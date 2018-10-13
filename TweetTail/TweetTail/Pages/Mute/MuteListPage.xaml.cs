@@ -38,5 +38,10 @@ namespace TweetTail.Pages.Mute
                 Items.Add(item);
             }
         }
-	}
+
+        protected override void OnAppearing()
+        {
+            Refresh();
+        }
+    }
 }

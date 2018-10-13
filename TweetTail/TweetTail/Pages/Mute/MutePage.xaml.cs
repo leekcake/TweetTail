@@ -34,7 +34,6 @@ namespace TweetTail.Pages.Mute
                     {
                         return App.tail.mute.ReadonlyKeywordMutes;
                     });
-                    page.Refresh();
                     App.Navigation.PushAsync(page);
                 })
             });
@@ -50,11 +49,10 @@ namespace TweetTail.Pages.Mute
                     {
                         return App.tail.mute.ReadonlyKeywordMutes;
                     });
-                    page.Refresh();
                     page.fabAction.IsVisible = true;
                     page.fabAction.Clicked += new EventHandler((sender, e) =>
                     {
-
+                        App.Navigation.PushAsync(new KeywordMutePage());
                     });
                     App.Navigation.PushAsync(page);
                 })
@@ -71,7 +69,6 @@ namespace TweetTail.Pages.Mute
                     {
                         return App.tail.mute.ReadonlyStatusMutes;
                     });
-                    page.Refresh();
                     App.Navigation.PushAsync(page);
                 })
             });
