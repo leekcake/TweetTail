@@ -238,7 +238,7 @@ namespace Library.Manager
                     return null;
                 }
 
-                CutText(display, new Indices() { start = inx, end = inx + target.replace.Length }, target.replace);
+                CutText(display, new Indices() { start = inx, end = inx + (target.replace.Length - 1) }, target.replace);
                 ChangeLength(display, inx, target.keyword.Length, target.replace.Length);
             }
 
@@ -253,7 +253,7 @@ namespace Library.Manager
             {
                 builder.Append(insert);
             }
-            builder.Append(status.text, indices.end + 1, status.text.Length - (indices.end + 1));
+            builder.Append(status.text, indices.end, status.text.Length - (indices.end));
 
             status.text = builder.ToString();
         }
