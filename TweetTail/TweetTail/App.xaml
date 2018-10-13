@@ -16,5 +16,8 @@
             <Setter Property="TextColor" Value="{DynamicResource textColor}"></Setter>
             <Setter Property="PlaceholderColor" Value="{DynamicResource textColor}"></Setter>
         </Style>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{DynamicResource textColor}"></Setter>
+        </Style>
     </Application.Resources>
 </Application>
