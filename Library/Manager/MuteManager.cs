@@ -165,12 +165,12 @@ namespace Library.Manager
 
                 foreach (var mention in display.userMentions)
                 {
-                    var user = userMutes[mention.id];
-                    if (user == null)
+                    if(!userMutes.ContainsKey(mention.id))
                     {
                         rebuild.Add(mention);
                         continue;
                     }
+                    var user = userMutes[mention.id];
 
                     var target = user.target as Mute.UserTarget;
 
@@ -276,8 +276,12 @@ namespace Library.Manager
         {
             if (status == null) return true;
 
+            if (!userMutes.ContainsKey(status.creater.id))
+            {
+                return false;
+            }
+
             var mute = userMutes[status.creater.id];
-            if (mute == null) return false;
 
             var target = mute.target as Mute.UserTarget;
 
@@ -306,8 +310,11 @@ namespace Library.Manager
 
         public User Filter(User user)
         {
+            if (!userMutes.ContainsKey(user.id))
+            {
+                return user;
+            }
             var mute = userMutes[user.id];
-            if (mute == null) return user;
 
             var target = mute.target as Mute.UserTarget;
 
