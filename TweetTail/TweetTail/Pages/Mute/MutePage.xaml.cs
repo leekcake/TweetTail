@@ -32,7 +32,7 @@ namespace TweetTail.Pages.Mute
                     page.Title = "뮤트된 유저 목록";
                     page.refreshFunc = new Func<IEnumerable<TwitterInterface.Data.Mute>>(() =>
                     {
-                        return App.tail.mute.ReadonlyKeywordMutes;
+                        return App.tail.mute.ReadonlyUserMutes;
                     });
                     App.Navigation.PushAsync(page);
                 })
