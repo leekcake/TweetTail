@@ -49,6 +49,7 @@ namespace TwitterInterface.Data
         public class StatusTarget : Target
         {
             public long id;
+            public Status status;
 
             public override void Save(JObject obj)
             {
@@ -83,6 +84,7 @@ namespace TwitterInterface.Data
         public class UserTarget : Target
         {
             public long id;
+            public User user;
 
             /// <summary>
             /// 대상 유저의 순수 트윗을 뮤트합니다
