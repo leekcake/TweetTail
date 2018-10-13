@@ -109,7 +109,7 @@ namespace TwitterLibrary
             return result.ToArray();
         }
 
-        public static User parseUser(JObject obj, long issuer)
+        public static User parseUser(JObject obj, long issuer, bool useFilter = true)
         {
             var user = new User();
             user.issuer = new List<long> { issuer };
@@ -149,12 +149,17 @@ namespace TwitterLibrary
             //TODO: withheld_in_countries
             //TODO: withheld_scope
 
+            if(!useFilter)
+            {
+                return user;
+            }
+
             return userFilter.ApplyFilter(user);
         }
 
         public static Status parseStatus(JObject obj, long issuer)
         {
-            return parseStatus(obj, issuer, parseUser(obj["user"].ToObject<JObject>(), issuer));
+            return parseStatus(obj, issuer, parseUser(obj["user"].ToObject<JObject>(), issuer, false));
         }
 
         public static Status parseStatus(JObject obj, long issuer, User creater)
