@@ -271,29 +271,44 @@ namespace Library.Manager
                 }
             });
 
-            foreach (var mention in status.userMentions)
+            if (status.userMentions != null)
             {
-                check(mention.indices);
+                foreach (var mention in status.userMentions)
+                {
+                    check(mention.indices);
+                }
             }
 
-            foreach (var media in status.extendMedias)
+            if (status.extendMedias != null)
             {
-                check(media.indices);
+                foreach (var media in status.extendMedias)
+                {
+                    check(media.indices);
+                }
             }
 
-            foreach (var symbol in status.symbols)
+            if (status.symbols != null)
             {
-                check(symbol.indices);
+                foreach (var symbol in status.symbols)
+                {
+                    check(symbol.indices);
+                }
             }
 
-            foreach (var hashtag in status.hashtags)
+            if (status.hashtags != null)
             {
-                check(hashtag.indices);
+                foreach (var hashtag in status.hashtags)
+                {
+                    check(hashtag.indices);
+                }
             }
 
-            foreach (var url in status.urls)
+            if (status.urls != null)
             {
-                check(url.indices);
+                foreach (var url in status.urls)
+                {
+                    check(url.indices);
+                }
             }
         }
 
