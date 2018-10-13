@@ -15,6 +15,7 @@ namespace Library
 
         public AccountManager account;
         public BlendManager blend;
+        public MuteManager mute;
 
         public TweetTail(API api, string saveDir)
         {
@@ -25,6 +26,7 @@ namespace Library
 
             account = new AccountManager(this);
             blend = new BlendManager(this);
+            mute = new MuteManager(this);
         }
     }
 }
