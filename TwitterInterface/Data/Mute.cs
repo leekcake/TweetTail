@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -52,16 +53,13 @@ namespace TwitterInterface.Data
             public override void Save(JObject obj)
             {
                 obj["type"] = "status";
-                obj["id"] = id;
+
+                obj["target"] = new JObject(this);
             }
 
             public new static StatusTarget Load(JObject obj)
             {
-                var result = new StatusTarget();
-
-                result.id = obj["id"].ToObject<long>();
-
-                return result;
+                return obj["target"].ToObject<StatusTarget>();
             }
         }
 
@@ -73,22 +71,12 @@ namespace TwitterInterface.Data
             public override void Save(JObject obj)
             {
                 obj["type"] = "keyword";
-                obj["keyword"] = keyword;
-                if (replace != null)
-                {
-                    obj["replace"] = replace;
-                }
+                obj["target"] = new JObject(this);
             }
 
             public new static KeywordTarget Load(JObject obj)
             {
-                var result = new KeywordTarget();
-                result.keyword = obj["keyword"].ToString();
-                if (obj.ContainsKey("replace"))
-                {
-                    result.replace = obj["replace"].ToString();
-                }
-                return result;
+                return obj["target"].ToObject<KeywordTarget>();
             }
         }
 
@@ -120,28 +108,12 @@ namespace TwitterInterface.Data
             public override void Save(JObject obj)
             {
                 obj["type"] = "user";
-                obj["id"] = id;
-                obj["muteTweet"] = muteTweet;
-                obj["muteRetweet"] = muteRetweet;
-                obj["muteOutboundMention"] = muteOutboundMention;
-                obj["muteSingleInboundMention"] = muteSingleInboundMention;
-                obj["muteMultipleInboundMention"] = muteMultipleInboundMention;
-                obj["muteMultipleInboundMentionForcely"] = muteMultipleInboundMentionForcely;
+                obj["target"] = new JObject(this);
             }
 
             public new static UserTarget Load(JObject obj)
             {
-                var target = new UserTarget();
-
-                target.id = obj["id"].ToObject<long>();
-                target.muteTweet = obj["muteTweet"].ToObject<bool>();
-                target.muteRetweet = obj["muteRetweet"].ToObject<bool>();
-                target.muteOutboundMention = obj["muteOutboundMention"].ToObject<bool>();
-                target.muteSingleInboundMention = obj["muteSingleInboundMention"].ToObject<bool>();
-                target.muteMultipleInboundMention = obj["muteMultipleInboundMention"].ToObject<bool>();
-                target.muteMultipleInboundMentionForcely = obj["muteMultipleInboundMentionForcely"].ToObject<bool>();
-
-                return target;
+                return obj["target"].ToObject<UserTarget>();
             }
         }
     }
