@@ -26,8 +26,26 @@ namespace TweetTail.Components.Menu
             try
             {
                 lblTitle.Text = data.Title;
-                lblDescription.Text = data.Description;
-                imgIcon.Source = data.Icon;
+                if (data.Description != null)
+                {
+                    lblDescription.IsVisible = true;
+                    lblDescription.Text = data.Description;
+                }
+                else
+                {
+                    lblDescription.IsVisible = false;
+                }
+                
+                if (data.Icon != null)
+                {
+                    imgIcon.IsVisible = true;
+                    imgIcon.Source = data.Icon;
+                }
+                else
+                {
+                    imgIcon.Source = null;
+                    imgIcon.IsVisible = false;
+                }
             }
             catch
             {
