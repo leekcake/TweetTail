@@ -9,6 +9,7 @@
             VerticalOptions="FillAndExpand"
             >
             <ListView x:Name="lv"
+                      x:FieldModifier="Public"
                     RowHeight="64"
                     SelectionMode="None"
                     AbsoluteLayout.LayoutBounds="0,0,1,1"

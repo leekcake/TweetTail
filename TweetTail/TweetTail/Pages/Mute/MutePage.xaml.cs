@@ -45,6 +45,7 @@ namespace TweetTail.Pages.Mute
                 {
                     var page = new MuteListPage( typeof(KeywordMuteCell) );
                     page.Title = "뮤트된 키워드 목록";
+                    page.lv.RowHeight = 48;
                     page.refreshFunc = new Func<IEnumerable<TwitterInterface.Data.Mute>>(() =>
                     {
                         return App.tail.mute.ReadonlyKeywordMutes;
