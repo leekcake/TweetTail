@@ -87,7 +87,8 @@ namespace Library.Manager
                 return;
             }
 
-            var data = new JObject(File.ReadAllText(savePath));
+            var loaded = File.ReadAllText(savePath);
+            var data = JObject.Parse(loaded);
 
             keywordMutes.Clear();
             foreach (var mute in Load(data["keywords"]))
@@ -135,6 +136,11 @@ namespace Library.Manager
 
             Save();
         }
+
+        public void UpdateMute(Mute mute)
+        {
+            Save();
+        } 
 
         public void UnregisterMute(Mute mute)
         {
