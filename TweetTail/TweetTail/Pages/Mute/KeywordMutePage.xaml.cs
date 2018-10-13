@@ -20,6 +20,16 @@ namespace TweetTail.Pages.Mute
 		{
 			InitializeComponent ();
             this.origin = origin;
+
+            if(origin != null)
+            {
+                var target = origin.target as DataMute.KeywordTarget;
+                editKeyword.Text = target.keyword;
+                if (target.replace != null)
+                {
+                    editReplace.Text = target.replace;
+                }
+            }
 		}
 
         private void btnConfirm_Clicked(object sender, EventArgs e)

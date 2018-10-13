@@ -42,6 +42,7 @@ namespace TweetTail.Pages.Mute
         protected override void OnAppearing()
         {
             Refresh();
+            base.OnAppearing();
         }
     }
 }

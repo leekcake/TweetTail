@@ -9,6 +9,8 @@ using TweetTail.Components.Mute;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using DataMute = TwitterInterface.Data.Mute;
+
 namespace TweetTail.Pages.Mute
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
@@ -49,6 +51,24 @@ namespace TweetTail.Pages.Mute
                     page.refreshFunc = new Func<IEnumerable<TwitterInterface.Data.Mute>>(() =>
                     {
                         return App.tail.mute.ReadonlyKeywordMutes;
+                    });
+                    page.lv.ItemTapped += new EventHandler<ItemTappedEventArgs>(async (sender, e) =>
+                    {
+                        var mute = (e.Item as DataMute);
+                        var target = (mute.target as DataMute.KeywordTarget);
+
+                        //TODO: Replace with Long press
+                        if (await DisplayAlert("작업 확인", target.keyword + " 단어 뮤트를 삭제할까요?", "네", "아니요"))
+                        {
+                            App.tail.mute.UnregisterMute(mute);
+                            page.Refresh();
+                            return;
+                        }
+                        if (await DisplayAlert("작업 확인", target.keyword + " 단어 뮤트를 편집할까요?", "네", "아니요"))
+                        {
+                            App.Navigation.PushAsync(new KeywordMutePage(mute));
+                            return;
+                        }
                     });
                     page.fabAction.IsVisible = true;
                     page.fabAction.Clicked += new EventHandler((sender, e) =>
