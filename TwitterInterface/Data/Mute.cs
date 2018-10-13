@@ -55,7 +55,7 @@ namespace TwitterInterface.Data
             {
                 obj["type"] = "status";
 
-                obj["target"] = new JObject(this);
+                obj["target"] = JObject.FromObject(this);
             }
 
             public new static StatusTarget Load(JObject obj)
@@ -72,7 +72,7 @@ namespace TwitterInterface.Data
             public override void Save(JObject obj)
             {
                 obj["type"] = "keyword";
-                obj["target"] = new JObject(this);
+                obj["target"] = JObject.FromObject(this);
             }
 
             public new static KeywordTarget Load(JObject obj)
@@ -115,7 +115,7 @@ namespace TwitterInterface.Data
             public override void Save(JObject obj)
             {
                 obj["type"] = "user";
-                obj["target"] = new JObject(this);
+                obj["target"] = JObject.FromObject(this);
             }
 
             public new static UserTarget Load(JObject obj)
