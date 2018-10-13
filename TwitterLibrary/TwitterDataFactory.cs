@@ -109,7 +109,12 @@ namespace TwitterLibrary
             return result.ToArray();
         }
 
-        public static User parseUser(JObject obj, long issuer, bool useFilter = true)
+        public static User parseUser(JObject obj, long issuer)
+        {
+            return parseUser(obj, issuer, true);
+        }
+
+        public static User parseUser(JObject obj, long issuer, bool useFilter)
         {
             var user = new User();
             user.issuer = new List<long> { issuer };
