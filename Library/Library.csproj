@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="3.2.0.839982" />
   </ItemGroup>
@@ -12,10 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TwitterInterface\TwitterInterface.csproj" />
     <ProjectReference Include="..\TwitterLibrary\TwitterLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

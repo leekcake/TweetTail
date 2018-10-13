@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
+             x:Class="TweetTail.Pages.Mute.MuteListPage">
+    <ContentPage.Content>
+        <AbsoluteLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            >
+            <ListView x:Name="lv"
+                    RowHeight="64"
+                    SelectionMode="None"
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All">
+            </ListView>
+
+            <views:FloatingActionButton x:Name="fabAction"
+                                        x:FieldModifier="Public"
+                                        IsVisible="False"
+                                           AbsoluteLayout.LayoutFlags="PositionProportional"
+                                           Margin="8"
+                                           Image="ic_create_black_48dp"
+                                       AbsoluteLayout.LayoutBounds=".0,1,100,100"
+                                       ButtonColor="#03A9F4"/>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

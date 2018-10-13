@@ -8,6 +8,7 @@ using TweetTail.Components;
 using TweetTail.Components.Menu;
 using TweetTail.Pages.Account;
 using TweetTail.Pages.Blend;
+using TweetTail.Pages.Mute;
 using TweetTail.Pages.Status;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -53,6 +54,17 @@ namespace TweetTail.Pages.Menu
                 action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new SearchPage(App.tail.account.SelectedAccountGroup));
+                })
+            });
+
+            Items.Add(new MenuData()
+            {
+                Title = "뮤트목록",
+                Description = "뮤트된 대상들을 확인하고 관리합니다",
+                Icon = "ic_visibility_off_grey_500_24dp",
+                action = new Action(() =>
+                {
+                    App.Navigation.PushAsync(new MutePage());
                 })
             });
 

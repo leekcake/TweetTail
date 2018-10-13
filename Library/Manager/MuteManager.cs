@@ -10,6 +10,7 @@ using System.IO;
 using TwitterInterface.Data.Entity;
 
 using TwitterLibrary;
+using System.Collections.ObjectModel;
 
 namespace Library.Manager
 {
@@ -31,6 +32,24 @@ namespace Library.Manager
         private List<Mute> keywordMutes = new List<Mute>();
         private Dictionary<long, Mute> userMutes = new Dictionary<long, Mute>();
         private Dictionary<long, Mute> statusMutes = new Dictionary<long, Mute>();
+
+        public IEnumerable<Mute> ReadonlyKeywordMutes {
+            get {
+                return keywordMutes;
+            }
+        }
+
+        public IEnumerable<Mute> ReadonlyUserMutes {
+            get {
+                return userMutes.Values;
+            }
+        }
+
+        public IEnumerable<Mute> ReadonlyStatusMutes {
+            get {
+                return statusMutes.Values;
+            }
+        }
 
         private JArray Save(IEnumerable<Mute> mutes)
         {
