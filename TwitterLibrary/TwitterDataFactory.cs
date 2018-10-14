@@ -21,7 +21,14 @@ namespace TwitterLibrary
 
         private static DateTime parsePollsCardDateTime(string date)
         {
-            return DateTime.ParseExact(date, PollsCardDateTemplate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+            try
+            {
+                return DateTime.ParseExact(date, PollsCardDateTemplate, CultureInfo.CurrentCulture, DateTimeStyles.AdjustToUniversal);
+            }
+            catch
+            {
+                return DateTime.ParseExact(date, PollsCardDateTemplate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+            }
         }
 
         private static string SafeGetString(JObject obj, string key)
