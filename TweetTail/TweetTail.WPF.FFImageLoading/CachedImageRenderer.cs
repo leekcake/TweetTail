@@ -9,6 +9,8 @@ using Xamarin.Forms.Platform.WPF;
 using FFImageLoading;
 
 using Image = System.Windows.Controls.Image;
+using FFImageLoading.Forms.Args;
+using System.Threading.Tasks;
 
 namespace FFImageLoading.Forms.Platform
 {
@@ -30,18 +32,32 @@ namespace FFImageLoading.Forms.Platform
 
         protected override void OnElementChanged(ElementChangedEventArgs<CachedImage> e)
         {
-            base.OnElementChanged(e);
-
-            if (e.NewElement != null)
+            if (Control == null && Element != null)
             {
                 if (Control == null)
                 {
                     var control = new Image();
                     SetNativeControl(control);
                 }
-                UpdateAspect();
-                UpdateImage(Control, Element, e.OldElement);
             }
+            
+            if (e.OldElement != null)
+            {
+                e.OldElement.InternalReloadImage = null;
+                e.OldElement.InternalCancel = null;
+            }
+
+            if (e.NewElement != null)
+            {
+                _isSizeSet = false;
+                e.NewElement.InternalReloadImage = new Action(ReloadImage);
+                e.NewElement.InternalCancel = new Action(CancelIfNeeded);
+
+                UpdateAspect();
+                UpdateImage(Control, e.NewElement, e.OldElement);
+            }
+            
+            base.OnElementChanged(e);
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -163,6 +179,13 @@ namespace FFImageLoading.Forms.Platform
                 _currentTask?.Cancel();
             }
             catch (Exception) { }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            CancelIfNeeded();
+
+            base.Dispose(disposing);
         }
     }
 }
