@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="타임라인"
-             xmlns:controls="clr-namespace:SuaveControls.Views;assembly=SuaveControls.FloatingActionButton"
              xmlns:status="clr-namespace:TweetTail.Components.Status"
              Style="{DynamicResource backgroundStyle}" 
              x:Class="TweetTail.Pages.Status.TimelinePage">
@@ -16,12 +15,11 @@
                                AbsoluteLayout.LayoutFlags="All">
             </status:StatusListView>
 
-            <controls:FloatingActionButton x:Name="fabTweet"
+            <Button x:Name="fabTweet"
                                            AbsoluteLayout.LayoutFlags="PositionProportional"
                                            Margin="8"
                                            Image="ic_create_black_48dp"
                                        AbsoluteLayout.LayoutBounds=".0,1,100,100"
-                                       ButtonColor="#03A9F4"
                                        Clicked="fabTweet_Clicked"/>
         </AbsoluteLayout>
     </ContentPage.Content>
