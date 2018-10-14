@@ -82,7 +82,15 @@ namespace TwitterLibrary
             return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query.ToArray(), consumer, oauth);
         }
 
-        internal readonly HttpClient httpClient = new HttpClient();
+        internal readonly HttpClient httpClient;
+
+        public APIImpl()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseCookies = false;
+
+            httpClient = new HttpClient(handler);
+        }
 
         public async Task<SavedSearch> CreateSavedSearch(Account account, string query)
         {
