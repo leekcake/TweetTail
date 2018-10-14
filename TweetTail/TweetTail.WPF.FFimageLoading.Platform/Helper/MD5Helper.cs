@@ -8,7 +8,22 @@ namespace FFImageLoading.Helpers
 {
     public class MD5Helper : IMD5Helper
     {
-        private MD5 md5 = System.Security.Cryptography.MD5.Create();
+        [ThreadStatic]
+        private static MD5 md5;
+
+        private byte[] SafeHash(byte[] input)
+        {
+            if(md5 == null)
+            {
+                md5 = System.Security.Cryptography.MD5.Create();
+            }
+            return md5.ComputeHash(input);
+        }
+
+        public byte[] ComputeHash(byte[] input)
+        {
+            return SafeHash(input);
+        }
 
         public string MD5(Stream input)
         {
@@ -20,11 +35,6 @@ namespace FFImageLoading.Helpers
         {
             var bytes = ComputeHash(Encoding.UTF8.GetBytes(input));
             return BitConverter.ToString(bytes)?.ToSanitizedKey();
-        }
-
-        public byte[] ComputeHash(byte[] input)
-        {
-            return md5.ComputeHash(input);
         }
 
         public static byte[] StreamToByteArray(Stream stream)
