@@ -24,7 +24,7 @@ namespace FFImageLoading.DataResolvers
             }
         }
 
-        private static Dictionary<string, string> TrimmedResource = new Dictionary<string, string>();
+        private Dictionary<string, string> TrimmedResource = new Dictionary<string, string>();
 
         public ResourceDataResolver()
         {
