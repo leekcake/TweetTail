@@ -22,6 +22,7 @@ namespace TweetTail.Components.Mute
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
+            if (BindingContext == null) return;
 
             var mute = BindingContext as DataMute;
             var target = mute.target as DataMute.UserTarget;
