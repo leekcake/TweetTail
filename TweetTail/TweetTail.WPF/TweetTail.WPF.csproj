@@ -91,6 +91,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\CookiesWebView\CookieWebViewRenderer.cs" />
+    <Compile Include="Hotfix\Renderers\ListViewRendererFix.cs" />
+    <Compile Include="Hotfix\Renderers\NavigationPageRendererFix.cs" />
+    <Compile Include="Hotfix\Renderers\TabbedPageRendererFix.cs" />
+    <Compile Include="Hotfix\StackingContentLoader.cs" />
     <Compile Include="WebBrowserHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
