@@ -21,6 +21,8 @@ namespace TweetTail.Components.Menu
         {
             base.OnBindingContextChanged();
 
+            if (BindingContext == null) return;
+
             var data = BindingContext as MenuData;
 
             try
