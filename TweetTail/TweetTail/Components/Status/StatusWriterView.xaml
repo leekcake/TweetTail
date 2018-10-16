@@ -18,7 +18,7 @@
 
                 </ffimageloading:CachedImage>
             </StackLayout>
-            <Editor Style="{DynamicResource editorStyle}" x:Name="editText" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
+            <Editor Style="{DynamicResource editorStyle}" x:Name="editText" Placeholder="무슨 잉여로운 일이 일어나고 있나요" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
             <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
 
             </Grid>
