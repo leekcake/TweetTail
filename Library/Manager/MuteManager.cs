@@ -51,6 +51,13 @@ namespace Library.Manager
             }
         }
 
+        public Mute GetUserMute(User user)
+        {
+            if (user == null) return null;
+            if (!userMutes.ContainsKey(user.id)) return null;
+            return userMutes[user.id];
+        }
+
         private JArray Save(IEnumerable<Mute> mutes)
         {
             var result = new JArray();
