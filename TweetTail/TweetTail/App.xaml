@@ -7,17 +7,12 @@
         <Color x:Key="textColor">White</Color>
 
         <Style x:Key="labelStyle" TargetType="Label">
-            <Setter Property="TextColor" Value="{DynamicResource textColor}" />
         </Style>
         <Style x:Key="backgroundStyle" TargetType="VisualElement">
-            <Setter Property="BackgroundColor" Value="{DynamicResource backgroundColor}" />
         </Style>
         <Style x:Key="editorStyle" TargetType="Editor">
-            <Setter Property="TextColor" Value="{DynamicResource textColor}"></Setter>
-            <Setter Property="PlaceholderColor" Value="{DynamicResource textColor}"></Setter>
         </Style>
         <Style x:Key="buttonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="{DynamicResource textColor}"></Setter>
         </Style>
     </Application.Resources>
 </Application>
