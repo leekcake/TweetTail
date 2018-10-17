@@ -87,6 +87,16 @@ namespace TwitterInterface.Data
             public User user;
 
             /// <summary>
+            /// 이 뮤트 타겟이 아무것도 대상으로 삼지 않고 있는지의 여부를 확인합니다
+            /// </summary>
+            public bool isNeedless {
+                get {
+                    return !muteGoAway && !muteTweet && !muteRetweet && !muteOutboundMention 
+                        && !muteSingleInboundMention && !muteMultipleInboundMention && !muteMultipleInboundMentionForcely;
+                }
+            }
+
+            /// <summary>
             /// 이 유저가 포함되어 있다면 거의 모든 항목에서 차단하려 시도합니다
             /// </summary>
             public bool muteGoAway;
