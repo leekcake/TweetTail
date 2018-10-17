@@ -164,6 +164,7 @@ namespace Library.Manager
                     statusMutes.Remove(id);
                 }
             }
+            Save();
         }
 
         public Status Filter(Status data)
