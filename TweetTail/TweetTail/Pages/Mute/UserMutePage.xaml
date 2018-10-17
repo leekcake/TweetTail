@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:user="clr-namespace:TweetTail.Components.User"
+             Style="{DynamicResource backgroundStyle}"
+             x:Class="TweetTail.Pages.Mute.UserMutePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <user:UserView x:Name="viewTarget"></user:UserView>
+            <Switch x:Name="swiGoAway"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저의 모든것을 뮤트합니다"></Label>
+            <Switch x:Name="swiTweet"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저의 순수트윗을 뮤트합니다"></Label>
+            <Switch x:Name="swiRetweet"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저의 리트윗을 뮤트합니다"></Label>
+            <Switch x:Name="swiOutboundMention"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저가 다른 유저에게 보내는 멘션트윗을 차단합니다"></Label>
+            <Switch x:Name="swiSingleInboundMention"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저만 포함된 멘션트윗을 뮤트합니다"></Label>
+            <Switch x:Name="swiMultipleInboundMention"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저가 포함된 멘션트윗에서 이 유저의 정보를 제거합니다"></Label>
+            <Switch x:Name="swiMultipleInboundMentionForcely"></Switch>
+            <Label Style="{DynamicResource labelStyle}" Text="이 유저가 포함된 멘션트윗을 뮤트합니다"></Label>
+            <Button x:Name="btnOK" Clicked="btnOK_Clicked" Text="확인"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

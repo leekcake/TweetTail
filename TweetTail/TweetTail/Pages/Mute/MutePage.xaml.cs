@@ -36,6 +36,10 @@ namespace TweetTail.Pages.Mute
                     {
                         return App.tail.mute.ReadonlyUserMutes;
                     });
+                    page.lv.ItemTapped += new EventHandler<ItemTappedEventArgs>((sender, e) =>
+                    {
+                        App.Navigation.PushAsync(new UserMutePage( ((e.Item as DataMute).target as DataMute.UserTarget).user ));
+                    });
                     App.Navigation.PushAsync(page);
                 })
             });

@@ -13,6 +13,7 @@ using TwitterInterface.Data;
 using TweetTail.Utils;
 using TweetTail.Components.Status;
 using TweetTail.Components.User;
+using TweetTail.Pages.Mute;
 
 namespace TweetTail.Pages.User
 {
@@ -278,7 +279,7 @@ namespace TweetTail.Pages.User
         {
             try
             {
-
+                App.Navigation.PushAsync(new UserMutePage(binding));
             }
             catch (Exception ex)
             {
