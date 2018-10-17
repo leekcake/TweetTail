@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 
 namespace FFImageLoading.Helpers
@@ -8,7 +9,7 @@ namespace FFImageLoading.Helpers
     {
         public async void Post(Action action)
         {
-            Application.Current.Dispatcher.Invoke(action);
+            await Application.Current.Dispatcher.BeginInvoke(action);
         }
 
         public Task PostAsync(Action action)

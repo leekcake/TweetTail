@@ -20,11 +20,11 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
     public class ListViewRendererFix : ListViewRenderer
     {
         ITemplatedItemsView<Cell> TemplatedItemsView => Element;
-
+        
         protected override void OnElementChanged(ElementChangedEventArgs<ListView> e)
         {
             base.OnElementChanged(e);
-            if(Control != null)
+            if (Control != null)
             {
                 Control.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
             }
@@ -38,7 +38,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
             base.UpdateWidth();
             if (Control == null || Element == null)
                 return;
-
+            
             if(token != null)
             {
                 token.Cancel();
@@ -46,21 +46,19 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
             }
             token = new CancellationTokenSource();
             var holder = token;
-            new Task(async () =>
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
             {
                 await Task.Delay(100);
                 if (holder.IsCancellationRequested)
                 {
                     return;
                 }
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    var source = Element.ItemsSource;
-                    Element.ItemsSource = null;
-                    Element.ItemsSource = source;
-                });
+                var source = Element.ItemsSource;
+                Element.ItemsSource = null;
+                Element.ItemsSource = source;
                 token = null;
-            }).Start();
+            }));
         }
     }
 }
