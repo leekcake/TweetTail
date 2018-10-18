@@ -68,6 +68,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                 UpdateItemSource();
             }
 
+            Control.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
             base.OnElementChanged(e);
         }
 
