@@ -274,10 +274,10 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                 Element.ItemsSource = null;
                 Element.ItemsSource = source;
 
-                UpdateItemSource();
-
                 TemplatedItemsView.TemplatedItems.CollectionChanged += TemplatedItems_CollectionChanged;
                 TemplatedItemsView.TemplatedItems.GroupedCollectionChanged += TemplatedItems_GroupedCollectionChanged;
+                
+                UpdateItemSource();
                 token = null;
             }));
         }
