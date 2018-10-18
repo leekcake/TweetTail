@@ -257,11 +257,15 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
 
             Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
             {
-                await Task.Delay(100);
-                if (holder.IsCancellationRequested)
+                try
+                {
+                    await Task.Delay(100, holder.Token);
+                }
+                catch
                 {
                     return;
                 }
+
                 var source = Element.ItemsSource;
                 Element.ItemsSource = null;
                 Element.ItemsSource = source;
