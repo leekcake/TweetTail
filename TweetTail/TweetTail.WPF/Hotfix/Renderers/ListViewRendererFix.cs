@@ -267,8 +267,17 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                 }
 
                 var source = Element.ItemsSource;
+
+                TemplatedItemsView.TemplatedItems.CollectionChanged -= TemplatedItems_CollectionChanged;
+                TemplatedItemsView.TemplatedItems.GroupedCollectionChanged -= TemplatedItems_GroupedCollectionChanged;
+
                 Element.ItemsSource = null;
                 Element.ItemsSource = source;
+
+                UpdateItemSource();
+
+                TemplatedItemsView.TemplatedItems.CollectionChanged += TemplatedItems_CollectionChanged;
+                TemplatedItemsView.TemplatedItems.GroupedCollectionChanged += TemplatedItems_GroupedCollectionChanged;
                 token = null;
             }));
         }
