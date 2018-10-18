@@ -94,6 +94,19 @@ namespace TweetTail.Pages.Mute
                     {
                         return App.tail.mute.ReadonlyStatusMutes;
                     });
+                    page.lv.ItemTapped += new EventHandler<ItemTappedEventArgs>(async (sender, e) =>
+                    {
+                        var mute = (e.Item as DataMute);
+                        var target = (mute.target as DataMute.StatusTarget);
+
+                        //TODO: Replace with Long press
+                        if (await DisplayAlert("작업 확인", target.status.text + " 트윗 뮤트를 삭제할까요?", "네", "아니요"))
+                        {
+                            App.tail.mute.UnregisterMute(mute);
+                            page.Refresh();
+                            return;
+                        }
+                    });
                     App.Navigation.PushAsync(page);
                 })
             });

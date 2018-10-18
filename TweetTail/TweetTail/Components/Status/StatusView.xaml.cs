@@ -13,6 +13,7 @@ using Xamarin.Forms.Xaml;
 
 using DataUser = TwitterInterface.Data.User;
 using DataStatus = TwitterInterface.Data.Status;
+using DataMute = TwitterInterface.Data.Mute;
 using TweetTail.Pages.Status;
 using TweetTail.Pages.User;
 
@@ -206,7 +207,7 @@ namespace TweetTail.Components.Status
                             return;
                         }
                     }
-                    statuses.Remove(status);
+                    statuses?.Remove(status);
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -229,7 +230,8 @@ namespace TweetTail.Components.Status
 
                         string[] moreActionSheet = {
                             "다른 계정으로 리트윗",
-                            "다른 계정으로 관심글"
+                            "다른 계정으로 관심글",
+                            "트윗 뮤트"
                         };
                         var selected = await Application.Current.MainPage.DisplayActionSheet("이 트윗으로...", "취소", null, moreActionSheet);
                         AccountGroup account;
@@ -252,6 +254,17 @@ namespace TweetTail.Components.Status
                                 }
 
                                 await App.tail.twitter.CreateFavorite(account.accountForWrite, target.id);
+                                break;
+                            case "트윗 뮤트":
+                                App.tail.mute.RegisterMute(new DataMute()
+                                {
+                                    target = new DataMute.StatusTarget()
+                                    {
+                                        id = status.id,
+                                        status = status
+                                    }
+                                });
+                                statuses?.Remove(status);
                                 break;
                         }
                     }
