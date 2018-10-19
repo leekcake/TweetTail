@@ -24,7 +24,7 @@
                         </ffimageloading:CachedImage>
                     </StackLayout>
 
-                    <Label Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
+                    <Label Style="{DynamicResource labelStyle}" WidthRequest="300" x:FieldModifier="Public" LineBreakMode="WordWrap" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
                     <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
 
                     </Grid>
