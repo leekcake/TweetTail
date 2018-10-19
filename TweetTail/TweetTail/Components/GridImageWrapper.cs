@@ -20,7 +20,6 @@ namespace TweetTail.Components
             {
                 var cached = new CachedImage();
                 cached.Aspect = Aspect.AspectFill;
-                cached.WidthRequest = 10000;
                 images.Add(cached);
             }
 
@@ -43,6 +42,21 @@ namespace TweetTail.Components
                 grid.IsVisible = false;
             }
             grid.IsVisible = true;
+
+            if(count > 1)
+            {
+                foreach(var item in images)
+                {
+                    item.WidthRequest = grid.Width / 2;
+                }
+            }
+            else
+            {
+                foreach (var item in images)
+                {
+                    item.WidthRequest = grid.Width;
+                }
+            }
 
             switch (count)
             {

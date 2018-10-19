@@ -16,7 +16,7 @@
                        VerticalOptions="Start"
                        WidthRequest="48"
                        HeightRequest="48"></ffimageloading:CachedImage>
-                <StackLayout>
+                <StackLayout HorizontalOptions="FillAndExpand">
                     <StackLayout Orientation="Horizontal">
                         <Label Style="{DynamicResource labelStyle}" x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
                         <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
@@ -25,7 +25,7 @@
                     </StackLayout>
 
                     <Label Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
-                    <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
+                    <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
 
                     </Grid>
                     <StackLayout x:Name="viewPollGroup">
