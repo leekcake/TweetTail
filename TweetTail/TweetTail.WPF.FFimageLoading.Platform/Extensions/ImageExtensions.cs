@@ -53,6 +53,12 @@ namespace FFImageLoading.Extensions
             {
                 var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
                 bitmap = new WriteableBitmap(decoder.Frames[0]);
+
+                if (imageInformation != null)
+                {
+                    imageInformation.SetCurrentSize(bitmap.PixelWidth, bitmap.PixelHeight);
+                    imageInformation.SetOriginalSize(bitmap.PixelWidth, bitmap.PixelHeight);
+                }
             });
             return bitmap;
         }
@@ -64,8 +70,15 @@ namespace FFImageLoading.Extensions
             {
                 var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
                 bitmap = new WriteableBitmap(decoder.Frames[0]);
+
+                if (imageInformation != null)
+                {
+                    imageInformation.SetCurrentSize(bitmap.PixelWidth, bitmap.PixelHeight);
+                    imageInformation.SetOriginalSize(bitmap.PixelWidth, bitmap.PixelHeight);
+                }
             });
             var holder = new BitmapHolder(bitmap);
+
             return holder;
         }
     }
