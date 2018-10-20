@@ -91,6 +91,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\CookiesWebView\CookieWebViewRenderer.cs" />
+    <Compile Include="Hotfix\CellControlFix.cs" />
     <Compile Include="Hotfix\Renderers\ListViewRendererFix.cs" />
     <Compile Include="Hotfix\Renderers\NavigationPageRendererFix.cs" />
     <Compile Include="Hotfix\Renderers\TabbedPageRendererFix.cs" />

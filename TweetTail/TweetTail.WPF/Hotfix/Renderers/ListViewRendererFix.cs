@@ -19,6 +19,7 @@ using Size = Xamarin.Forms.Size;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.ComponentModel;
+using DataTemplate = System.Windows.DataTemplate;
 
 [assembly: ExportRenderer(typeof(ListView), typeof(ListViewRendererFix))]
 namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
@@ -52,7 +53,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     var listView = new WList
                     {
                         DataContext = Element,
-                        ItemTemplate = (System.Windows.DataTemplate)System.Windows.Application.Current.Resources["CellTemplate"],
+                        ItemTemplate = (DataTemplate)System.Windows.Application.Current.Resources["CellTemplateFix"],
                         Style = (System.Windows.Style)System.Windows.Application.Current.Resources["ListViewTemplate"]
                     };
                     SetNativeControl(listView);

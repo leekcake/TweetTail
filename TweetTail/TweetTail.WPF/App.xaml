@@ -2,8 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TweetTail.WPF"
+             xmlns:fix="clr-namespace:TweetTail.WPF.Hotfix"
+             xmlns:wpf="clr-namespace:Xamarin.Forms.Platform.WPF;assembly=Xamarin.Forms.Platform.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <wpf:HeightConverter x:Key="HeightConverter" />
+        <DataTemplate x:Key="CellTemplateFix">
+            <fix:CellControlFix Cell="{Binding}" Margin="5,0,0,0"
+						 Height="{Binding Cell.RenderHeight,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource HeightConverter}}" >
+            </fix:CellControlFix>
+        </DataTemplate>
     </Application.Resources>
 </Application>
