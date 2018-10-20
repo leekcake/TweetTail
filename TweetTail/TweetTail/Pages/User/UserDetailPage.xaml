@@ -7,7 +7,7 @@
              x:Class="TweetTail.Pages.User.UserDetailPage">
     <ContentPage.Content>
         <StackLayout>
-            <forms:CachedImage x:Name="imgHeader" HorizontalOptions="CenterAndExpand" Aspect="AspectFill"></forms:CachedImage>
+            <forms:CachedImage x:Name="imgHeader" HorizontalOptions="Fill" Aspect="AspectFill"></forms:CachedImage>
             <StackLayout Orientation="Horizontal">
                 <forms:CachedImage x:Name="imgProfile"></forms:CachedImage>
                 <StackLayout>
