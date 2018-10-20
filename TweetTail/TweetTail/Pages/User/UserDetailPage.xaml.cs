@@ -24,6 +24,20 @@ namespace TweetTail.Pages.User
         private DataAccount issuer;
         private Relationship relationship;
 
+        private bool SetVisibleByText(Label label, string text)
+        {
+            if (text == null || text.Trim() == "")
+            {
+                label.IsVisible = false;
+                return false;
+            }
+            else
+            {
+                label.IsVisible = true;
+                return true;
+            }
+        }
+
         private void SetTextHideEmpty(Label label, string text)
         {
             if(text == null || text.Trim() == "")
@@ -32,6 +46,7 @@ namespace TweetTail.Pages.User
             }
             else
             {
+                label.IsVisible = true;
                 label.Text = text;
             }
         }
@@ -123,8 +138,14 @@ namespace TweetTail.Pages.User
             imgHeader.Source = binding.profileBannerURL;
             imgProfile.Source = binding.profileHttpsImageURL;
 
-            SetTextHideEmpty(lblDescription, binding.description);
-            SetTextHideEmpty(lblLink, binding.url);
+            if(SetVisibleByText(lblDescription, binding.description))
+            {
+                lblDescription.FormattedText = TwitterFormater.ParseFormattedString(binding.description, binding.descriptionEntities, new List<long>() { issuer.id });
+            }
+            if(SetVisibleByText(lblLink, binding.url))
+            {
+                lblLink.FormattedText = TwitterFormater.ParseFormattedString(binding.url, binding.urlURLEntity);
+            }
             SetTextHideEmpty(lblLocation, binding.location);
             lblNickname.Text = binding.nickName;
             lblScreenName.Text = "@" + binding.screenName;
