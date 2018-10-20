@@ -41,7 +41,7 @@ namespace TwitterLibrary.Data
 
         public override HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query)
         {
-            return Utils.generateHttpRequest(method, uri, query, this);
+            return Utils.generateHttpRequest(method, uri, query, consumer, oauth);
         }
     }
 }
