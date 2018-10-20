@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TwitterInterface.Data.Entity;
 
 namespace TwitterInterface.Data
 {
@@ -19,6 +20,9 @@ namespace TwitterInterface.Data
         public string location;
         public string url;
         public string description;
+
+        public URL[] urlURLEntity;
+        public BasicEntitiesGroup descriptionEntities;
 
         //TODO: derived
 

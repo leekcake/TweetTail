@@ -5,7 +5,7 @@ using TwitterInterface.Data.Entity;
 
 namespace TwitterInterface.Data
 {
-    public class Status
+    public class Status : BasicEntitiesGroup
     {
         //이 트윗정보를 얻기 위해 사용된 계정 아이디
         public List<long> issuer;
@@ -41,12 +41,8 @@ namespace TwitterInterface.Data
         public int replyCount;
         public int retweetCount;
         public int favoriteCount;
-
-        public HashTag[] hashtags;
-        public URL[] urls;
-        public UserMention[] userMentions;
+        
         public ExtendMedia[] extendMedias;
-        public Symbol[] symbols;
         public Polls[] polls;
 
         public bool isFavortedByUser;

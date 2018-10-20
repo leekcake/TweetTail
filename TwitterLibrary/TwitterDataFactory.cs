@@ -132,6 +132,20 @@ namespace TwitterLibrary
             user.location = SafeGetString(obj, "location");
             user.url = SafeGetString(obj, "url");
             user.description = SafeGetString(obj, "description");
+
+            try
+            {
+                var entities = obj["entities"];
+                var urls = entities["url"]["urls"];
+                user.urlURLEntity = parseArray(urls.ToObject<JArray>(), parseURL);
+                user.descriptionEntities = new BasicEntitiesGroup();
+                parseBasicEntitesGroup(user.descriptionEntities, entities["description"].ToObject<JObject>());
+            }
+            catch
+            {
+
+            }
+
             //TOOD: derived
             user.isProtected = obj["protected"].ToObject<bool>();
             user.isVerified = obj["verified"].ToObject<bool>();
@@ -174,6 +188,14 @@ namespace TwitterLibrary
             return parseStatus(obj, issuer, parseUser(obj["user"].ToObject<JObject>(), issuer, false));
         }
 
+        private static void parseBasicEntitesGroup(BasicEntitiesGroup into, JObject entities)
+        {
+            into.hashtags = parseArray(entities["hashtags"].ToObject<JArray>(), parseHashTag);
+            into.urls = parseArray(entities["urls"].ToObject<JArray>(), parseURL);
+            into.userMentions = parseArray(entities["user_mentions"].ToObject<JArray>(), parseUserMention);
+            into.symbols = parseArray(entities["symbols"].ToObject<JArray>(), parseSymbol);
+        }
+
         public static Status parseStatus(JObject obj, long issuer, User creater)
         {
             var status = new Status();
@@ -202,10 +224,7 @@ namespace TwitterLibrary
             status.favoriteCount = obj["favorite_count"].ToObject<int>();
             var entities = obj["entities"].ToObject<JObject>();
 
-            status.hashtags = parseArray(entities["hashtags"].ToObject<JArray>(), parseHashTag);
-            status.urls = parseArray(entities["urls"].ToObject<JArray>(), parseURL);
-            status.userMentions = parseArray(entities["user_mentions"].ToObject<JArray>(), parseUserMention);
-            status.symbols = parseArray(entities["symbols"].ToObject<JArray>(), parseSymbol);
+            parseBasicEntitesGroup(status, entities);
             if (entities.ContainsKey("polls"))
             {
                 status.polls = parseArray(entities["polls"].ToObject<JArray>(), parsePolls);
