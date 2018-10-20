@@ -40,7 +40,7 @@ namespace TweetTail.Pages.Status
                 AbsoluteLayout.SetLayoutBounds(image, new Rectangle(0, 0, 1, 1));
                 AbsoluteLayout.SetLayoutFlags(image, AbsoluteLayoutFlags.All);
 
-                AbsoluteLayout.SetLayoutBounds(pb, new Rectangle(0.1, 0.4, 0.7, 0.2));
+                AbsoluteLayout.SetLayoutBounds(pb, new Rectangle(0.1, 0.45, 0.8, 0.15));
                 AbsoluteLayout.SetLayoutFlags(pb, AbsoluteLayoutFlags.All);
 
                 var gesture = new PanGestureRecognizer();
