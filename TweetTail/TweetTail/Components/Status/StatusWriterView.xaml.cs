@@ -38,11 +38,18 @@ namespace TweetTail.Components.Status
 
         private GridImageWrapper gridImageWrapper;
 
+        private void SetProgressVisible(bool visible)
+        {
+            lblProgress.IsVisible = visible;
+            pbProgress.IsVisible = visible;
+        }
+
         public StatusWriterView(AccountGroup issuer)
         {
             InitializeComponent();
             gridImageWrapper = new GridImageWrapper(gridMedias);
             writer = issuer;
+            SetProgressVisible(false);
 
             for (int i = 0; i < 4; i++)
             {
@@ -104,6 +111,9 @@ namespace TweetTail.Components.Status
             }
 
             SetInputStatus(false);
+            SetProgressVisible(true);
+            pbProgress.Progress = 0d;
+            lblProgress.Text = "초기화...";
 
             var update = new StatusUpdate();
 
@@ -121,11 +131,14 @@ namespace TweetTail.Components.Status
                     long[] mediaIDs = new long[mediaFiles.Count];
                     for (int i = 0; i < mediaIDs.Length; i++)
                     {
+                        pbProgress.Progress = ((double) i / mediaIDs.Length) * 0.9d;
+                        lblProgress.Text = (i+1) + "번째 미디어 업로드 중";
                         mediaIDs[i] = await App.tail.twitter.uploadMedia(writer.accountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
                     }
                     update.mediaIDs = mediaIDs;
                 }
-
+                pbProgress.Progress = 0.9d;
+                lblProgress.Text = "트윗 발송중...";
                 await App.tail.twitter.CreateStatus(writer.accountForWrite, update);
             }
             catch (Exception ex)
@@ -135,6 +148,7 @@ namespace TweetTail.Components.Status
                 return;
             }
             SetInputStatus(true);
+            SetProgressVisible(false);
 
             if (BindingContext != null && BindingContext is Page)
             {
@@ -154,15 +168,16 @@ namespace TweetTail.Components.Status
 
         private async void btnAddImage_Clicked(object sender, EventArgs e)
         {
-            await CrossMedia.Current.Initialize();
+            var mediaProxy = App.Media;
+            await mediaProxy.Initialize();
 
-            if (!CrossMedia.Current.IsPickPhotoSupported)
+            if (!mediaProxy.IsPickPhotoSupported)
             {
                 //TODO: Notify
                 return;
             }
 
-            var media = await CrossMedia.Current.PickPhotoAsync();
+            var media = await mediaProxy.PickPhotoAsync();
 
             if (media == null)
             {

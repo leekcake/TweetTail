@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using TweetTail.WPF.Controls.CrossMedia;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
@@ -31,6 +31,7 @@ namespace TweetTail.WPF
             InitializeComponent();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             Forms.Init();
+            TweetTail.App.Media = new MediaImplementation();
             LoadApplication(new TweetTail.App());
         }
     }

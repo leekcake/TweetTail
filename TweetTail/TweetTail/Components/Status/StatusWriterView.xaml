@@ -19,9 +19,11 @@
                 </ffimageloading:CachedImage>
             </StackLayout>
             <Editor Style="{DynamicResource editorStyle}" x:Name="editText" Placeholder="무슨 잉여로운 일이 일어나고 있나요" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
-            <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="CenterAndExpand">
+            <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
 
             </Grid>
+            <ProgressBar x:Name="pbProgress"></ProgressBar>
+            <Label x:Name="lblProgress"></Label>
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="btnAddImage" Text="이미지" HorizontalOptions="Start" Clicked="btnAddImage_Clicked" ></Button>
                 <Button x:Name="btnTweet" Text="트윗하기" HorizontalOptions="End" Clicked="btnTweet_Clicked" ></Button>

@@ -7,6 +7,8 @@ using TwitterLibrary;
 using TweetTail.Pages;
 using TweetTail.Pages.Login;
 using TweetTail.Pages.Menu;
+using Plugin.Media.Abstractions;
+using Plugin.Media;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace TweetTail
@@ -14,6 +16,19 @@ namespace TweetTail
     public partial class App : Application
     {
         public static Library.TweetTail tail;
+        private static IMedia media;
+        public static IMedia Media {
+            get {
+                if(media == null)
+                {
+                    media = CrossMedia.Current;
+                }
+                return media;
+            }
+            set {
+                media = value;
+            }
+        }
 
         public static INavigation Navigation {
             get {
