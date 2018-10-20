@@ -308,7 +308,7 @@ namespace TweetTail.Components.Status
             }
         }
 
-        protected void ClearImage()
+        public void ClearImage()
         {
             imgProfile.Source = null;
             for (int i = 0; i < 4; i++)
@@ -317,7 +317,7 @@ namespace TweetTail.Components.Status
             }
         }
 
-        protected void UpdateImage()
+        public void UpdateImage()
         {
             ClearImage();
 
