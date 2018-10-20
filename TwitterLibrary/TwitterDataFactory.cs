@@ -135,11 +135,14 @@ namespace TwitterLibrary
 
             try
             {
+                user.descriptionEntities = new BasicEntitiesGroup();
+
                 var entities = obj["entities"];
+
+                parseBasicEntitesGroup(user.descriptionEntities, entities["description"].ToObject<JObject>());
+
                 var urls = entities["url"]["urls"];
                 user.urlURLEntity = parseArray(urls.ToObject<JArray>(), parseURL);
-                user.descriptionEntities = new BasicEntitiesGroup();
-                parseBasicEntitesGroup(user.descriptionEntities, entities["description"].ToObject<JObject>());
             }
             catch
             {
@@ -190,10 +193,17 @@ namespace TwitterLibrary
 
         private static void parseBasicEntitesGroup(BasicEntitiesGroup into, JObject entities)
         {
-            into.hashtags = parseArray(entities["hashtags"].ToObject<JArray>(), parseHashTag);
-            into.urls = parseArray(entities["urls"].ToObject<JArray>(), parseURL);
-            into.userMentions = parseArray(entities["user_mentions"].ToObject<JArray>(), parseUserMention);
-            into.symbols = parseArray(entities["symbols"].ToObject<JArray>(), parseSymbol);
+            if(entities.ContainsKey("hashtags"))
+                into.hashtags = parseArray(entities["hashtags"].ToObject<JArray>(), parseHashTag);
+
+            if (entities.ContainsKey("urls"))
+                into.urls = parseArray(entities["urls"].ToObject<JArray>(), parseURL);
+
+            if (entities.ContainsKey("user_mentions"))
+                into.userMentions = parseArray(entities["user_mentions"].ToObject<JArray>(), parseUserMention);
+
+            if (entities.ContainsKey("symbols"))
+                into.symbols = parseArray(entities["symbols"].ToObject<JArray>(), parseSymbol);
         }
 
         public static Status parseStatus(JObject obj, long issuer, User creater)
