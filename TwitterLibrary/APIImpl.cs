@@ -50,6 +50,20 @@ namespace TwitterLibrary
             return base64;
         }
 
+        internal void AttachImageToRequest(HttpRequestMessage message, Stream image, string name)
+        {
+            byte[] imgdata = new byte[image.Length];
+            image.Read(imgdata, 0, (int)image.Length);
+            var imageContent = new ByteArrayContent(imgdata);
+
+            imageContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+
+            var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(imageContent, name);
+
+            message.Content = multipartContent;
+        }
+
         internal async Task<string> Get(string uri, Account account, List<KeyValuePair<string, string>> query)
         {
             if(uri.Contains("1.1/statuses") || uri.Contains("2/timeline"))
@@ -215,17 +229,25 @@ namespace TwitterLibrary
 
         public async Task UpdateProfileBanner(Account account, Stream image)
         {
-            await Post("https://api.twitter.com/1.1/account/update_profile_banner.json", account,
-                makeQuery("banner", streamToBase64(image)));
+            var message = account.GenerateRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/account/update_profile_banner.json"), new KeyValuePair<string, string>[] { });
+            AttachImageToRequest(message, image, "banner");
+            
+            var response = await httpClient.SendAsync(message);
+
+            Utils.VerifyTwitterResponse(response);
         }
 
         public async Task<User> UpdateProfileImage(Account account, Stream image)
         {
+            var message = account.GenerateRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/account/update_profile_image.json"), new KeyValuePair<string, string>[] { });
+            AttachImageToRequest(message, image, "image");
+
+            var response = await httpClient.SendAsync(message);
+
+            Utils.VerifyTwitterResponse(response);
+
             return TwitterDataFactory.parseUser(
-                JObject.Parse(
-                        await Post("https://api.twitter.com/1.1/account/update_profile_image.json", account,
-                            makeQuery("image", streamToBase64(image)))
-                    ), account.id
+                JObject.Parse( await response.Content.ReadAsStringAsync() ), account.id
                 );
         }
 
@@ -401,16 +423,7 @@ namespace TwitterLibrary
             var message = Utils.generateHttpRequest(HttpMethod.Post, new Uri("https://upload.twitter.com/1.1/media/upload.json"), new KeyValuePair<string, string>[] { }
             , account);
 
-            byte[] imgdata = new byte[image.Length];
-            image.Read(imgdata, 0, (int)image.Length);
-            var imageContent = new ByteArrayContent(imgdata);
-
-            imageContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
-
-            var multipartContent = new MultipartFormDataContent();
-            multipartContent.Add(imageContent, "media");
-
-            message.Content = multipartContent;
+            AttachImageToRequest(message, image, "media");
 
             var response = await httpClient.SendAsync(message);
 
