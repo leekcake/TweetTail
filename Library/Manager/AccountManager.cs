@@ -21,9 +21,23 @@ namespace Library.Manager
             load();
         }
 
-        internal List<AccountGroup> accountGroups = new List<AccountGroup>();
+        private List<AccountGroup> accountGroups = new List<AccountGroup>();
+        private Dictionary<long, AccountGroup> accountDict = new Dictionary<long, AccountGroup>();
+
+        private void AddAccountGroup(AccountGroup group)
+        {
+            accountGroups.Add(group);
+            accountDict[group.id] = group;
+        }
+
+        private void RemoveAccountGroup(AccountGroup group)
+        {
+            accountGroups.Remove(group);
+            accountDict.Remove(group.id);
+        }
+
         public ReadOnlyCollection<AccountGroup> readOnlyAccountGroups => accountGroups.AsReadOnly();
-        public AccountGroup SelectedAccountGroup => accountGroups.Find((data) => { return data.id == selectedAccountId; });
+        public AccountGroup SelectedAccountGroup => getAccountGroup(selectedAccountId);
 
         private long selectedAccountId;
         public long SelectedAccountId {
@@ -46,7 +60,7 @@ namespace Library.Manager
                     selectedAccountId = account.id;
                 }
                 group = new AccountGroup(owner, account.id);
-                accountGroups.Add(group);
+                AddAccountGroup(group);
             }
 
             group.accounts.Add(account);
@@ -56,18 +70,23 @@ namespace Library.Manager
 
         public AccountGroup getAccountGroup(long id)
         {
-            return accountGroups.Find((data) => { return data.id == id; });
+            AccountGroup group;
+            if (accountDict.TryGetValue(id, out group))
+            {
+                return group;
+            }
+            return null;
         }
 
         public void removeAccount(Account account)
         {
-            var group = accountGroups.Find((data) => { return data.id == account.id; });
+            var group = getAccountGroup(account.id);
             if (group == null) return;
 
             group.accounts.RemoveAll((data) => { return data == account; });
             if(group.accounts.Count == 0)
             {
-                accountGroups.RemoveAll((data) => data.id == group.id);
+                RemoveAccountGroup(group);
                 if(account.id == selectedAccountId)
                 {
                     if(accountGroups.Count == 0)
@@ -106,7 +125,7 @@ namespace Library.Manager
                             {
                                 var generated = new AccountGroup(owner, shadow.id);
                                 generated.accounts.Add(shadow);
-                                accountGroups.Add(generated);
+                                AddAccountGroup(generated);
                             }
                         }
 
@@ -119,10 +138,13 @@ namespace Library.Manager
             {
                 try
                 {
-                    var user = await owner.twitter.VerifyCredentials(group.accountForRead);
-                    foreach (var account in group.accounts)
+                    if (group.accounts[0].user == null)
                     {
-                        account.user = user;
+                        var user = await owner.twitter.VerifyCredentials(group.accountForRead);
+                        foreach (var account in group.accounts)
+                        {
+                            account.user = user;
+                        }
                     }
                 }
                 catch (Exception e)
@@ -147,7 +169,7 @@ namespace Library.Manager
 
             foreach(var accountGroup in accounts)
             {
-                accountGroups.Add(new AccountGroup(owner, accountGroup.ToObject<JObject>()));
+                AddAccountGroup(new AccountGroup(owner, accountGroup.ToObject<JObject>()));
             }
         }
 
