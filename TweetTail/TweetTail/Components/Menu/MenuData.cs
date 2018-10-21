@@ -18,6 +18,6 @@ namespace TweetTail.Components.Menu
             get; set;
         }
 
-        public Action action;
+        public Action Action;
     }
 }

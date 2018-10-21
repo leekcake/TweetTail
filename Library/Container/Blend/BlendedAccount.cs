@@ -12,38 +12,38 @@ namespace Library.Container.Blend
     {
         internal TweetTail tail;
 
-        public long[] ids;
-        public string name;
+        public long[] IDs;
+        public string Name;
 
         public BlendedAccount(TweetTail tail)
         {
             this.tail = tail;
         }
 
-        public static BlendedAccount load(TweetTail tail, JObject obj)
+        public static BlendedAccount Load(TweetTail tail, JObject obj)
         {
             var value = new BlendedAccount(tail);
-            value.name = obj["name"].ToString();
+            value.Name = obj["name"].ToString();
             var ids = obj["ids"].ToObject<JArray>();
-            value.ids = new long[ids.Count];
+            value.IDs = new long[ids.Count];
             for (int i = 0; i < ids.Count; i++)
             {
-                value.ids[i] = ids[i].ToObject<long>();
+                value.IDs[i] = ids[i].ToObject<long>();
             }
 
             return value;
         }
 
-        public JObject save()
+        public JObject Save()
         {
             var result = new JObject();
-            result["name"] = name;
-            result["ids"] = new JArray(ids);
+            result["name"] = Name;
+            result["ids"] = new JArray(IDs);
 
             return result;
         }
 
-        public static List<Status> blendStatus(List<Status>[] statuses)
+        public static List<Status> BlendStatus(List<Status>[] statuses)
         {
             var dict = new Dictionary<long, Status>();
             var list = new List<Status>();
@@ -52,26 +52,26 @@ namespace Library.Container.Blend
             {
                 foreach (var status in statusList)
                 {
-                    if (dict.ContainsKey(status.id))
+                    if (dict.ContainsKey(status.ID))
                     {
-                        dict[status.id].issuer.Add(status.issuer[0]);
+                        dict[status.ID].Issuer.Add(status.Issuer[0]);
                     }
                     else
                     {
-                        dict[status.id] = status;
+                        dict[status.ID] = status;
                         list.Add(status);
                     }
                 }
             }
             list.Sort(delegate (Status s1, Status s2)
             {
-                return s2.id.CompareTo(s1.id);
+                return s2.ID.CompareTo(s1.ID);
             });
 
             return list;
         }
 
-        public static List<Notification> blendNotification(List<Notification>[] notifications)
+        public static List<Notification> BlendNotification(List<Notification>[] notifications)
         {
             var list = new List<Notification>();
             foreach(var notificationList in notifications)
@@ -81,43 +81,43 @@ namespace Library.Container.Blend
 
             list.Sort(delegate (Notification s1, Notification s2)
             {
-                return s2.maxPosition.CompareTo(s1.maxPosition);
+                return s2.MaxPosition.CompareTo(s1.MaxPosition);
             });
 
             return list;
         }
 
-        public async Task<List<Status>> getTimeline(int count = 200, long sinceId = -1, long maxId = -1)
+        public async Task<List<Status>> GetTimeline(int count = 200, long sinceId = -1, long maxId = -1)
         {
-            var statuses = new List<Status>[ids.Length];
+            var statuses = new List<Status>[IDs.Length];
             for (int i = 0; i < statuses.Length; i++)
             {
-                statuses[i] = await tail.twitter.GetTimeline(tail.account.getAccountGroup(ids[i]).accountForRead, count, sinceId, maxId);
+                statuses[i] = await tail.TwitterAPI.GetTimelineAsync(tail.Account.GetAccountGroup(IDs[i]).AccountForRead, count, sinceId, maxId);
             }
 
-            return blendStatus(statuses);
+            return BlendStatus(statuses);
         }
 
-        public async Task<List<Status>> getMentionline(int count = 200, long sinceId = -1, long maxId = -1)
+        public async Task<List<Status>> GetMentionline(int count = 200, long sinceId = -1, long maxId = -1)
         {
-            var statuses = new List<Status>[ids.Length];
+            var statuses = new List<Status>[IDs.Length];
             for (int i = 0; i < statuses.Length; i++)
             {
-                statuses[i] = await tail.twitter.GetMentionline(tail.account.getAccountGroup(ids[i]).accountForRead, count, sinceId, maxId);
+                statuses[i] = await tail.TwitterAPI.GetMentionlineAsync(tail.Account.GetAccountGroup(IDs[i]).AccountForRead, count, sinceId, maxId);
             }
 
-            return blendStatus(statuses);
+            return BlendStatus(statuses);
         }
 
-        public async Task<List<Notification>> getNotifications(int count = 40, long sinceId = -1, long maxId = -1)
+        public async Task<List<Notification>> GetNotifications(int count = 40, long sinceId = -1, long maxId = -1)
         {
-            var notifications = new List<Notification>[ids.Length];
+            var notifications = new List<Notification>[IDs.Length];
             for (int i = 0; i < notifications.Length; i++)
             {
-                notifications[i] = await tail.twitter.GetNotifications(tail.account.getAccountGroup(ids[i]).accountForRead, count, sinceId, maxId);
+                notifications[i] = await tail.TwitterAPI.GetNotificationsAsync(tail.Account.GetAccountGroup(IDs[i]).AccountForRead, count, sinceId, maxId);
             }
 
-            return blendNotification(notifications);
+            return BlendNotification(notifications);
         }
     }
 }

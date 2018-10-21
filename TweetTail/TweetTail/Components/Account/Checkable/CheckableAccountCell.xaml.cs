@@ -16,7 +16,7 @@ namespace TweetTail.Components.Account.Checkable
 		{
 			InitializeComponent ();
 
-            switchChecked.Toggled += SwitchChecked_Toggled;
+            CheckedSwitch.Toggled += SwitchChecked_Toggled;
 		}
 
         private void SwitchChecked_Toggled(object sender, ToggledEventArgs e)
@@ -26,7 +26,7 @@ namespace TweetTail.Components.Account.Checkable
             {
                 return;
             }
-            (BindingContext as CheckableAccount).isChecked = switchChecked.IsToggled;
+            (BindingContext as CheckableAccount).IsChecked = CheckedSwitch.IsToggled;
         }
 
         protected override void OnBindingContextChanged()
@@ -37,7 +37,7 @@ namespace TweetTail.Components.Account.Checkable
                 return;
             }
 
-            userView.BindingContext = (BindingContext as CheckableAccount).account.user;
+            userView.BindingContext = (BindingContext as CheckableAccount).Account.User;
             userView.Update();
 
             base.OnBindingContextChanged();

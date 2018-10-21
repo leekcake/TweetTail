@@ -8,9 +8,9 @@ namespace TwitterInterface.Data
     {
         public struct CollectionTweet
         {
-            public string featureContext;
-            public long tweetId;
-            public long tweetSortIndex;
+            public string FeatureContext;
+            public long TweetId;
+            public long TweetSortIndex;
         }
 
         public enum Order
@@ -34,17 +34,17 @@ namespace TwitterInterface.Data
             return "";
         }
 
-        public string name;
-        public string type;
-        public string description;
+        public string Name;
+        public string Type;
+        public string Description;
 
-        public long userId;
+        public long UserId;
 
-        public string collectionURL;
-        public string url;
+        public string CollectionURL;
+        public string URL;
 
-        public bool isPrivate;
+        public bool IsPrivate;
 
-        public Order timelineOrder;
+        public Order TimelineOrder;
     }
 }

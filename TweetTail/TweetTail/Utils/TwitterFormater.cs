@@ -16,17 +16,17 @@ namespace TweetTail.Utils
         {
             private class Hyperlink
             {
-                public Indices indices;
-                public Command command;
-                public string replace;
+                public Indices Indices;
+                public Command Command;
+                public string Replace;
 
-                public bool invisible = false;
+                public bool IsVisible = false;
 
                 public Hyperlink(Indices indices, Command command, string replace = null)
                 {
-                    this.indices = indices;
-                    this.command = command;
-                    this.replace = replace;
+                    Indices = indices;
+                    Command = command;
+                    Replace = replace;
                 }
             }
 
@@ -42,7 +42,7 @@ namespace TweetTail.Utils
             {
                 for (int i = 0; i < hyperLinks.Count; i++)
                 {
-                    if (hyperLinks[i].indices.start > link.indices.start)
+                    if (hyperLinks[i].Indices.Start > link.Indices.Start)
                     {
                         hyperLinks.Insert(i, link);
                         return;
@@ -60,7 +60,7 @@ namespace TweetTail.Utils
             {
                 InsertHyperlink(new Hyperlink(indices, null)
                 {
-                    invisible = true
+                    IsVisible = true
                 });
             }
 
@@ -80,24 +80,24 @@ namespace TweetTail.Utils
                 {
                     var link = hyperLinks[i];
 
-                    result.Spans.Add(new Span() { Text = WebUtility.HtmlDecode(text.Substring(pos, link.indices.start - pos)) });
+                    result.Spans.Add(new Span() { Text = WebUtility.HtmlDecode(text.Substring(pos, link.Indices.Start - pos)) });
 
-                    if (!link.invisible)
+                    if (!link.IsVisible)
                     {
                         var span = new Span()
                         {
-                            Text = link.replace == null ? WebUtility.HtmlDecode(text.Substring(link.indices.start, link.indices.Length)) : link.replace,
+                            Text = link.Replace == null ? WebUtility.HtmlDecode(text.Substring(link.Indices.Start, link.Indices.Length)) : link.Replace,
                             TextColor = Color.Blue
                         };
                         span.GestureRecognizers.Add(new TapGestureRecognizer()
                         {
-                            Command = link.command
+                            Command = link.Command
                         });
 
                         result.Spans.Add(span);
                     }
 
-                    pos = link.indices.end;
+                    pos = link.Indices.End;
                 }
 
                 if (pos < text.Length)
@@ -111,11 +111,11 @@ namespace TweetTail.Utils
 
         public static FormattedString ParseFormattedString(DataStatus status)
         {
-            var builder = new Builder(status.text);
+            var builder = new Builder(status.Text);
 
-            ParseURLEntity(builder, status.urls);
-            ParseMediaEntity(builder, status.extendMedias);
-            ParseMentionEntity(builder, status.userMentions, status.issuer);
+            ParseURLEntity(builder, status.URLs);
+            ParseMediaEntity(builder, status.ExtendMedias);
+            ParseMentionEntity(builder, status.UserMentions, status.Issuer);
 
             return builder.ToFormattedString();
         }
@@ -133,8 +133,8 @@ namespace TweetTail.Utils
         {
             var builder = new Builder(text);
 
-            ParseURLEntity(builder, group.urls);
-            ParseMentionEntity(builder, group.userMentions, issuer);
+            ParseURLEntity(builder, group.URLs);
+            ParseMentionEntity(builder, group.UserMentions, issuer);
 
             return builder.ToFormattedString();
         }
@@ -148,10 +148,10 @@ namespace TweetTail.Utils
 
             foreach (var url in entities)
             {
-                builder.RegisterHyperlink(url.indices, new Command(() =>
+                builder.RegisterHyperlink(url.Indices, new Command(() =>
                 {
-                    Device.OpenUri(new Uri(url.url));
-                }), url.displayURL);
+                    Device.OpenUri(new Uri(url.RawURL));
+                }), url.DisplayURL);
             }
         }
 
@@ -163,7 +163,7 @@ namespace TweetTail.Utils
             }
 
             //Media already handled in StatusView, so hide it.
-            builder.RegisterRemover(entities[0].indices);
+            builder.RegisterRemover(entities[0].Indices);
         }
 
         public static void ParseMentionEntity(Builder builder, UserMention[] entities, List<long> issuer)
@@ -175,12 +175,12 @@ namespace TweetTail.Utils
 
             foreach (var mention in entities)
             {
-                builder.RegisterHyperlink(mention.indices, new Command(async () =>
+                builder.RegisterHyperlink(mention.Indices, new Command(async () =>
                 {
                     var account = issuer == null ?
-                        App.tail.account.SelectedAccountGroup.accountForRead :
-                        (await Util.SelectAccount("유저페이지를 열때 사용할 계정", issuer)).accountForRead;
-                    var user = await App.tail.twitter.GetUser(account, mention.id);
+                        App.Tail.Account.SelectedAccountGroup.AccountForRead :
+                        (await Util.SelectAccount("유저페이지를 열때 사용할 계정", issuer)).AccountForRead;
+                    var user = await App.Tail.TwitterAPI.GetUserAsync(account, mention.ID);
                     if (user != null)
                     {
                         App.Navigation.PushAsync(new UserDetailPage(user, account));

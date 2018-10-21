@@ -6,18 +6,18 @@ namespace TwitterInterface.Data
 {
     public class StatusUpdate
     {
-        public string text;
+        public string Text;
 
-        public long inReplyToStatusId;
+        public long InReplyToStatusId;
 
-        public bool autoPopulateReplyMetadata = false;
-        public long[] excludeReplyUserIds;
+        public bool AutoPopulateReplyMetadata = false;
+        public long[] ExcludeReplyUserIds;
 
-        public string attachmentURL;
+        public string AttachmentURL;
 
-        public long[] mediaIDs;
+        public long[] MediaIDs;
 
-        public bool possiblySensitive;
+        public bool PossiblySensitive;
         
         //TODO: lat
         //TODO: long

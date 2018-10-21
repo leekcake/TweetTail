@@ -6,15 +6,15 @@ namespace TwitterInterface.Data.Entity
 {
     public class ExtendMedia
     {
-        public long id;
+        public long ID;
 
-        public string mediaURL;
-        public string mediaURLHttps;
-        public URL url;
+        public string MediaURL;
+        public string MediaURLHttps;
+        public URL URL;
 
-        public string type;
+        public string Type;
 
-        public VideoInformation video;
-        public Indices indices;
+        public VideoInformation Video;
+        public Indices Indices;
     }
 }

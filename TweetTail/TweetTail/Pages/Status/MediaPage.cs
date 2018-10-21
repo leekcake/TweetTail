@@ -20,28 +20,28 @@ namespace TweetTail.Pages.Status
         private class MediaView
         {
             private MediaPage parent;
-            public AbsoluteLayout layout = new AbsoluteLayout();
-            public CachedImage image = new CachedImage();
-            public ProgressBar pb = new ProgressBar();
+            public AbsoluteLayout Layout = new AbsoluteLayout();
+            public CachedImage Image = new CachedImage();
+            public ProgressBar ImageProgressBar = new ProgressBar();
 
             public MediaView(MediaPage parent, ExtendMedia media)
             {
                 this.parent = parent;
 
-                image.Source = media.mediaURLHttps;
-                image.DownloadProgress += Image_DownloadProgress;
-                image.Finish += Image_Finish;
+                Image.Source = media.MediaURLHttps;
+                Image.DownloadProgress += Image_DownloadProgress;
+                Image.Finish += Image_Finish;
 
-                pb.Progress = 0;
+                ImageProgressBar.Progress = 0;
 
-                layout.Children.Add(image);
-                layout.Children.Add(pb);
+                Layout.Children.Add(Image);
+                Layout.Children.Add(ImageProgressBar);
 
-                AbsoluteLayout.SetLayoutBounds(image, new Rectangle(0, 0, 1, 1));
-                AbsoluteLayout.SetLayoutFlags(image, AbsoluteLayoutFlags.All);
+                AbsoluteLayout.SetLayoutBounds(Image, new Rectangle(0, 0, 1, 1));
+                AbsoluteLayout.SetLayoutFlags(Image, AbsoluteLayoutFlags.All);
 
-                AbsoluteLayout.SetLayoutBounds(pb, new Rectangle(0.1, 0.45, 0.8, 0.15));
-                AbsoluteLayout.SetLayoutFlags(pb, AbsoluteLayoutFlags.All);
+                AbsoluteLayout.SetLayoutBounds(ImageProgressBar, new Rectangle(0.1, 0.45, 0.8, 0.15));
+                AbsoluteLayout.SetLayoutFlags(ImageProgressBar, AbsoluteLayoutFlags.All);
 
                 var gesture = new PanGestureRecognizer();
                 gesture.PanUpdated += (sender, e) =>
@@ -49,25 +49,25 @@ namespace TweetTail.Pages.Status
                     switch (e.StatusType)
                     {
                         case GestureStatus.Running:
-                            image.TranslationX = e.TotalX;
-                            image.TranslationY = e.TotalY;
+                            Image.TranslationX = e.TotalX;
+                            Image.TranslationY = e.TotalY;
                             break;
                         case GestureStatus.Completed:
-                            if ( Math.Abs(image.TranslationY) > (parent.Height / 8))
+                            if ( Math.Abs(Image.TranslationY) > (parent.Height / 8))
                             {
                                 App.Navigation.RemovePage(parent);
                             }
-                            image.TranslateTo(0, 0);
+                            Image.TranslateTo(0, 0);
                             break;
                     }
                 };
-                image.GestureRecognizers.Add(gesture);
+                Image.GestureRecognizers.Add(gesture);
             }
 
             private void Image_Finish(object sender, CachedImageEvents.FinishEventArgs e)
             {
                 Device.BeginInvokeOnMainThread(() => {
-                    pb.IsVisible = false;
+                    ImageProgressBar.IsVisible = false;
                 });                
             }
 
@@ -75,7 +75,7 @@ namespace TweetTail.Pages.Status
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    pb.Progress = e.DownloadProgress.Current / e.DownloadProgress.Total;
+                    ImageProgressBar.Progress = e.DownloadProgress.Current / e.DownloadProgress.Total;
                 });                
             }
         };
@@ -89,13 +89,13 @@ namespace TweetTail.Pages.Status
             viewing = status;
             Style = (Style) Application.Current.Resources["backgroundStyle"];
 
-            if (status.extendMedias[0].type == "photo")
+            if (status.ExtendMedias[0].Type == "photo")
             {
-                foreach (var media in status.extendMedias)
+                foreach (var media in status.ExtendMedias)
                 {
                     Children.Add(new ContentPage()
                     {
-                        Content = makeMediaView(media)
+                        Content = MakeMediaView(media)
                     });
                 }
                 CurrentPage = Children[inx];
@@ -103,7 +103,7 @@ namespace TweetTail.Pages.Status
             else
             {
                 videoView = new VideoPlayer();
-                if (status.extendMedias[0].type == "animated_gif")
+                if (status.ExtendMedias[0].Type == "animated_gif")
                 {
                     videoView.IsVideoOnly = true;
                 }
@@ -130,22 +130,22 @@ namespace TweetTail.Pages.Status
                 {
                     Content = videoView
                 });
-                videoView.Source = VideoSource.FromUri(pickVideoVariant(status.extendMedias[0].video.variants).url);
+                videoView.Source = VideoSource.FromUri(PickVideoVariant(status.ExtendMedias[0].Video.Variants).URL);
             }
         }
 
-        private View makeMediaView(ExtendMedia media)
+        private View MakeMediaView(ExtendMedia media)
         {
             var view = new MediaView(this, media);
-            return view.layout;
+            return view.Layout;
         }
 
-        private VideoVariant pickVideoVariant(VideoVariant[] variants)
+        private VideoVariant PickVideoVariant(VideoVariant[] variants)
         {
             var best = variants[0];
             foreach (var variant in variants)
             {
-                if (best.bitrate < variant.bitrate)
+                if (best.Bitrate < variant.Bitrate)
                 {
                     best = variant;
                 }

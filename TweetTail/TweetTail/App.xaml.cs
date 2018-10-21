@@ -15,7 +15,7 @@ namespace TweetTail
 {
     public partial class App : Application
     {
-        public static Library.TweetTail tail;
+        public static Library.TweetTail Tail;
         private static IMedia media;
         public static IMedia Media {
             get {
@@ -44,10 +44,10 @@ namespace TweetTail
 
             var localData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             
-            tail = new Library.TweetTail(new APIImpl(), 
+            Tail = new Library.TweetTail(new API(), 
                 Path.Combine(localData, "save"));
             
-            if (tail.account.readOnlyAccountGroups.Count != 0)
+            if (Tail.Account.ReadOnlyAccountGroups.Count != 0)
             {
                 NavigationPage = new NavigationPage( new LoadingPage() );
             }

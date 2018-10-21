@@ -53,80 +53,80 @@ namespace TweetTail.Pages.User
 
         private void SetRelationshipButtons(bool enable)
         {
-            lblRelationshipStatus.IsVisible = !enable;
-            btnFollow.IsEnabled = enable;
-            btnBlock.IsEnabled = enable;
-            btnMute.IsEnabled = enable;
-            btnInternalMute.IsEnabled = enable;
+            RelationshipStatusLabel.IsVisible = !enable;
+            FollowButton.IsEnabled = enable;
+            BlockButton.IsEnabled = enable;
+            MuteButton.IsEnabled = enable;
+            InternalMuteButton.IsEnabled = enable;
         }
 
-        private async void updateRelationship()
+        private async void UpdateRelationship()
         {
             try
             {
                 SetRelationshipButtons(false);
 
                 //My account
-                if(issuer.id == binding.id)
+                if(issuer.ID == binding.ID)
                 {
                     SetRelationshipButtons(true);
-                    viewRelationship.IsVisible = false;
-                    viewFollowMe.IsVisible = false;
-                    btnEdit.IsVisible = true;
+                    RelationshipGrid.IsVisible = false;
+                    FollowMeFrame.IsVisible = false;
+                    EditButton.IsVisible = true;
                     return;
                 }
-                btnEdit.IsVisible = false;
+                EditButton.IsVisible = false;
 
-                viewRelationship.IsVisible = true;
+                RelationshipGrid.IsVisible = true;
 
-                relationship = await App.tail.twitter.GetRelationship(issuer, issuer.id, binding.id);
-                updateUser();
+                relationship = await App.Tail.TwitterAPI.GetRelationshipAsync(issuer, issuer.ID, binding.ID);
+                UpdateUser();
 
-                if (relationship.isBlocked)
+                if (relationship.IsBlocked)
                 {
-                    btnBlock.Text = "언블락";
+                    BlockButton.Text = "언블락";
                 }
                 else
                 {
-                    btnBlock.Text = "블락";
+                    BlockButton.Text = "블락";
                 }
 
-                if (relationship.isMuted)
+                if (relationship.IsMuted)
                 {
-                    btnMute.Text = "언뮤트";
+                    MuteButton.Text = "언뮤트";
                 }
                 else
                 {
-                    btnMute.Text = "뮤트";
+                    MuteButton.Text = "뮤트";
                 }
 
-                if (relationship.isBlockedBy)
+                if (relationship.IsBlockedBy)
                 {
                     SetRelationshipButtons(true);
-                    btnFollow.Text = "차단됨";
-                    btnFollow.IsEnabled = false;
+                    FollowButton.Text = "차단됨";
+                    FollowButton.IsEnabled = false;
                     
-                    viewUserAction.IsVisible = false;
-                    viewFollowMe.IsVisible = false;
+                    UserActionGrid.IsVisible = false;
+                    FollowMeFrame.IsVisible = false;
 
-                    lblDescription.Text = string.Format("{0}님을 팔로우 하거나 {0} 님의 트윗을 볼 수 없도록 차단되었습니다.", binding.nickName);
-                    lblLink.IsVisible = false;
-                    lblLocation.IsVisible = false;
-                    lblStatus.IsVisible = false;
+                    DescriptionLabel.Text = string.Format("{0}님을 팔로우 하거나 {0} 님의 트윗을 볼 수 없도록 차단되었습니다.", binding.NickName);
+                    LinkLabel.IsVisible = false;
+                    LocationLabel.IsVisible = false;
+                    StatusLabel.IsVisible = false;
                     return;
                 }
-                viewUserAction.IsVisible = true;
+                UserActionGrid.IsVisible = true;
 
-                if (relationship.isFollowing)
+                if (relationship.IsFollowing)
                 {
-                    btnFollow.Text = "언팔로우";
+                    FollowButton.Text = "언팔로우";
                 }
                 else
                 {
-                    btnFollow.Text = "팔로우";
+                    FollowButton.Text = "팔로우";
                 }
 
-                viewFollowMe.IsVisible = relationship.isFollower;
+                FollowMeFrame.IsVisible = relationship.IsFollower;
                 SetRelationshipButtons(true);
             }
             catch(Exception e)
@@ -135,32 +135,32 @@ namespace TweetTail.Pages.User
             }
         }
 
-        public void updateUser()
+        public void UpdateUser()
         {
-            imgHeader.Source = binding.profileBannerURL;
-            imgProfile.Source = binding.profileHttpsImageURL;
+            HeaderImage.Source = binding.ProfileBannerURL;
+            ProfileImage.Source = binding.ProfileHttpsImageURL;
 
-            if(SetVisibleByText(lblDescription, binding.description))
+            if(SetVisibleByText(DescriptionLabel, binding.Description))
             {
-                lblDescription.FormattedText = TwitterFormater.ParseFormattedString(binding.description, binding.descriptionEntities, new List<long>() { issuer.id });
+                DescriptionLabel.FormattedText = TwitterFormater.ParseFormattedString(binding.Description, binding.descriptionEntities, new List<long>() { issuer.ID });
             }
-            if(SetVisibleByText(lblLink, binding.url))
+            if(SetVisibleByText(LinkLabel, binding.URL))
             {
-                lblLink.FormattedText = TwitterFormater.ParseFormattedString(binding.url, binding.urlURLEntity);
+                LinkLabel.FormattedText = TwitterFormater.ParseFormattedString(binding.URL, binding.URLEntities);
             }
-            SetTextHideEmpty(lblLocation, binding.location);
-            lblNickname.Text = binding.nickName;
-            lblScreenName.Text = "@" + binding.screenName;
-            lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
+            SetTextHideEmpty(LocationLabel, binding.Location);
+            NickNameLabel.Text = binding.NickName;
+            ScreenNameLabel.Text = "@" + binding.ScreenName;
+            StatusLabel.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.StatusesCount, binding.FavouritesCount, binding.FollowerCount, binding.FollowingCount);
         }
 
         public void UpdateBinding(DataUser user)
         {
             binding = user;
-            Title = binding.nickName + "님의 프로필";
+            Title = binding.NickName + "님의 프로필";
             
-            updateUser();
-            updateRelationship();
+            UpdateUser();
+            UpdateRelationship();
         }
 
         public UserDetailPage (DataUser binding, DataAccount issuer)
@@ -168,23 +168,23 @@ namespace TweetTail.Pages.User
 			InitializeComponent ();
             this.issuer = issuer;
 
-            viewIssuer.BindingContext = issuer.user;
-            viewIssuer.Update();
+            IssuerView.BindingContext = issuer.User;
+            IssuerView.Update();
 
             UpdateBinding(binding);
 
-            viewIssuerGroup.GestureRecognizers.Add(new TapGestureRecognizer()
+            IssuerGroupView.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(async () =>
                 {
                     try
                     {
                         var account = await Util.SelectAccount("전환할 계정을 선택하세요");
-                        this.issuer = account.accountForRead;
+                        this.issuer = account.AccountForRead;
 
-                        viewIssuer.BindingContext = this.issuer.user;
-                        viewIssuer.Update();
-                        updateRelationship();
+                        IssuerView.BindingContext = this.issuer.User;
+                        IssuerView.Update();
+                        UpdateRelationship();
                     }
                     catch(Exception e)
                     {
@@ -194,62 +194,62 @@ namespace TweetTail.Pages.User
             });
         }
 
-        private void btnTweet_Clicked(object sender, EventArgs e)
+        private void TweetButton_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Userline(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 트윗" });
+            listview.Fetchable = new AccountFetch.Userline(App.Tail, issuer, binding);
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 트윗" });
         }
 
-        private void btnMedia_Clicked(object sender, EventArgs e)
+        private void MediaButton_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Medialine(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 미디어" });
+            listview.Fetchable = new AccountFetch.Medialine(App.Tail, issuer, binding);
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 미디어" });
         }
 
-        private void btnMention_Clicked(object sender, EventArgs e)
+        private void MentionButton_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Search(App.tail, issuer, "to:@" + binding.screenName, true);
-            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님에게 가고있는 멘션" });
+            listview.Fetchable = new AccountFetch.Search(App.Tail, issuer, "to:@" + binding.ScreenName, true);
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님에게 가고있는 멘션" });
         }
 
-        private void btnFavorite_Clicked(object sender, EventArgs e)
+        private void FavoriteButton_Clicked(object sender, EventArgs e)
         {
             var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Favorites(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 관심글" });
+            listview.Fetchable = new AccountFetch.Favorites(App.Tail, issuer, binding);
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 관심글" });
         }
 
-        private void btnFollower_Clicked(object sender, EventArgs e)
+        private void FollowerButton_Clicked(object sender, EventArgs e)
         {
             var listview = new UserListView();
-            listview.Fetchable = new AccountFetch.Followers(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 팔로워" });
+            listview.Fetchable = new AccountFetch.Followers(App.Tail, issuer, binding);
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 팔로워" });
         }
 
-        private void btnFollowing_Clicked(object sender, EventArgs e)
+        private void FollowingButton_Clicked(object sender, EventArgs e)
         {
             var listview = new UserListView();
-            listview.Fetchable = new AccountFetch.Followings(App.tail, issuer, binding);
-            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.nickName + "님의 팔로잉" });
+            listview.Fetchable = new AccountFetch.Followings(App.Tail, issuer, binding);
+            App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 팔로잉" });
         }
 
-        private async void btnFollow_Clicked(object sender, EventArgs e)
+        private async void FollowButton_Clicked(object sender, EventArgs e)
         {
             SetRelationshipButtons(false);
             try
             {
-                if(relationship.isFollowing)
+                if(relationship.IsFollowing)
                 {
-                    await App.tail.twitter.DestroyFriendship(issuer, binding.id);
+                    await App.Tail.TwitterAPI.DestroyFriendshipAsync(issuer, binding.ID);
                 }
                 else
                 {
-                    await App.tail.twitter.CreateFriendship(issuer, binding.id);
+                    await App.Tail.TwitterAPI.CreateFriendshipAsync(issuer, binding.ID);
                 }
-                updateRelationship();
+                UpdateRelationship();
             }
             catch(Exception ex)
             {
@@ -258,20 +258,20 @@ namespace TweetTail.Pages.User
             SetRelationshipButtons(true);
         }
 
-        private async void btnBlock_Clicked(object sender, EventArgs e)
+        private async void BlockButton_Clicked(object sender, EventArgs e)
         {
             SetRelationshipButtons(false);
             try
             {
-                if (relationship.isBlocked)
+                if (relationship.IsBlocked)
                 {
-                    await App.tail.twitter.Unblock(issuer, binding.id);
+                    await App.Tail.TwitterAPI.UnblockAsync(issuer, binding.ID);
                 }
                 else
                 {
-                    await App.tail.twitter.Block(issuer, binding.id);
+                    await App.Tail.TwitterAPI.BlockAsync(issuer, binding.ID);
                 }
-                updateRelationship();
+                UpdateRelationship();
             }
             catch (Exception ex)
             {
@@ -280,20 +280,20 @@ namespace TweetTail.Pages.User
             SetRelationshipButtons(true);
         }
 
-        private async void btnMute_Clicked(object sender, EventArgs e)
+        private async void MuteButton_Clicked(object sender, EventArgs e)
         {
             SetRelationshipButtons(false);
             try
             {
-                if (relationship.isMuted)
+                if (relationship.IsMuted)
                 {
-                    await App.tail.twitter.Unmute(issuer, binding.id);
+                    await App.Tail.TwitterAPI.UnmuteAsync(issuer, binding.ID);
                 }
                 else
                 {
-                    await App.tail.twitter.Mute(issuer, binding.id);
+                    await App.Tail.TwitterAPI.MuteAsync(issuer, binding.ID);
                 }
-                updateRelationship();
+                UpdateRelationship();
             }
             catch (Exception ex)
             {
@@ -302,7 +302,7 @@ namespace TweetTail.Pages.User
             SetRelationshipButtons(true);
         }
 
-        private void btnInternalMute_Clicked(object sender, EventArgs e)
+        private void InternalMuteButton_Clicked(object sender, EventArgs e)
         {
             try
             {
@@ -314,7 +314,7 @@ namespace TweetTail.Pages.User
             }
         }
 
-        private void btnEdit_Clicked(object sender, EventArgs e)
+        private void EditButton_Clicked(object sender, EventArgs e)
         {
             try
             {

@@ -9,24 +9,24 @@ namespace Library
 {
     public class TweetTail
     {
-        public API twitter;
+        public IAPI TwitterAPI;
 
-        public string saveDir;
+        public string SaveDir;
 
-        public AccountManager account;
-        public BlendManager blend;
-        public MuteManager mute;
+        public AccountManager Account;
+        public BlendManager Blend;
+        public MuteManager Mute;
 
-        public TweetTail(API api, string saveDir)
+        public TweetTail(IAPI api, string saveDir)
         {
-            twitter = api;
-            this.saveDir = saveDir;
+            TwitterAPI = api;
+            SaveDir = saveDir;
 
             Directory.CreateDirectory(saveDir);
 
-            account = new AccountManager(this);
-            blend = new BlendManager(this);
-            mute = new MuteManager(this);
+            Account = new AccountManager(this);
+            Blend = new BlendManager(this);
+            Mute = new MuteManager(this);
         }
     }
 }

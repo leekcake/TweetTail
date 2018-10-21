@@ -6,11 +6,11 @@ namespace TwitterInterface.Data.Entity
 {
     public class Indices
     {
-        public int start, end;
+        public int Start, End;
 
         public int Length {
             get {
-                return end - start;
+                return End - Start;
             }
         }
     }

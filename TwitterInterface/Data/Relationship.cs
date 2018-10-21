@@ -6,25 +6,25 @@ namespace TwitterInterface.Data
 {
     public class Relationship
     {
-        public long sourceId;
-        public string sourceScreen;
+        public long SourceId;
+        public string SourceScreen;
 
-        public long targetId;
-        public string targetScreen;
+        public long TargetId;
+        public string TargetScreen;
 
-        public bool isCanDM;
+        public bool IsCanDM;
 
-        public bool isBlocked;
-        public bool isMuted;
+        public bool IsBlocked;
+        public bool IsMuted;
 
-        public bool isFollower;
-        public bool isFollowing;
+        public bool IsFollower;
+        public bool IsFollowing;
 
-        public bool isAllReplies;
-        public bool isWantRetweets;
-        public bool isMarkedSpam;
-        public bool isNotificationsEnabled;
+        public bool IsAllReplies;
+        public bool IsWantRetweets;
+        public bool IsMarkedSpam;
+        public bool IsNotificationsEnabled;
 
-        public bool isBlockedBy;
+        public bool IsBlockedBy;
     }
 }

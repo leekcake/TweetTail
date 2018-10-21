@@ -15,217 +15,202 @@ namespace Library.Container.Fetch
 
         }
 
-        public class Timeline : SinceFetch<Status>
+        public abstract class AccountSinceFetch<T> : SinceFetch<T>
         {
-            private TweetTail tail;
-            private DataAccount account;
+            protected TweetTail tail;
+            protected DataAccount account;
 
-            public Timeline(TweetTail tail, DataAccount account)
+            public AccountSinceFetch(TweetTail tail, DataAccount account)
             {
                 this.tail = tail;
                 this.account = account;
             }
-
-            protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
-            {
-                return tail.twitter.GetTimeline(account, 100, sinceId, maxId);
-            }
-
-            protected override long GetID(Status data)
-            {
-                return data.id;
-            }
         }
 
-        public class Mentionline : SinceFetch<Status>
+        public abstract class AccountCursoredFetch<T> : CursoredFetch<T>
         {
-            private TweetTail tail;
-            private DataAccount account;
+            protected TweetTail tail;
+            protected DataAccount account;
 
-            public Mentionline(TweetTail tail, DataAccount account)
+            public AccountCursoredFetch(TweetTail tail, DataAccount account)
             {
                 this.tail = tail;
                 this.account = account;
             }
+        }
+
+        public class Timeline : AccountSinceFetch<Status>
+        {
+            public Timeline(TweetTail tail, DataAccount account) : base(tail, account)
+            {
+            }
 
             protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
             {
-                return tail.twitter.GetMentionline(account, 100, sinceId, maxId);
+                return tail.TwitterAPI.GetTimelineAsync(account, 100, sinceId, maxId);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
-        public class Userline : SinceFetch<Status>
+        public class Mentionline : AccountSinceFetch<Status>
         {
-            private TweetTail tail;
-            private DataAccount account;
+            public Mentionline(TweetTail tail, DataAccount account) : base(tail, account)
+            {
+            }
+
+            protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
+            {
+                return tail.TwitterAPI.GetMentionlineAsync(account, 100, sinceId, maxId);
+            }
+
+            protected override long GetID(Status data)
+            {
+                return data.ID;
+            }
+        }
+
+        public class Userline : AccountSinceFetch<Status>
+        {
             private User target;
 
-            public Userline(TweetTail tail, DataAccount account, User target)
+            public Userline(TweetTail tail, DataAccount account, User target) : base(tail, account)
             {
-                this.tail = tail;
-                this.account = account;
                 this.target = target;
             }
 
             protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
             {
-                return tail.twitter.GetUserline(account, target.id, 100, sinceId, maxId);
+                return tail.TwitterAPI.GetUserlineAsync(account, target.ID, 100, sinceId, maxId);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
-        public class Medialine : SinceFetch<Status>
+        public class Medialine : AccountSinceFetch<Status>
         {
-            private TweetTail tail;
-            private DataAccount account;
             private User target;
 
-            public Medialine(TweetTail tail, DataAccount account, User target)
+            public Medialine(TweetTail tail, DataAccount account, User target) : base(tail, account)
             {
-                this.tail = tail;
-                this.account = account;
                 this.target = target;
             }
 
             protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
             {
-                return tail.twitter.GetMedialine(account, target.id, 100, sinceId, maxId);
+                return tail.TwitterAPI.GetMedialineAsync(account, target.ID, 100, sinceId, maxId);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
-        public class Favorites : SinceFetch<Status>
+        public class Favorites : AccountSinceFetch<Status>
         {
-            private TweetTail tail;
-            private DataAccount account;
             private User target;
 
-            public Favorites(TweetTail tail, DataAccount account, User target)
+            public Favorites(TweetTail tail, DataAccount account, User target) : base(tail, account)
             {
-                this.tail = tail;
-                this.account = account;
                 this.target = target;
             }
 
             protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
             {
-                return tail.twitter.GetFavorites(account, target.id, 100, sinceId, maxId);
+                return tail.TwitterAPI.GetFavoritesAsync(account, target.ID, 100, sinceId, maxId);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
-        public class Followers : CursoredFetch<User>
+        public class Followers : AccountCursoredFetch<User>
         {
-            private TweetTail tail;
-            private DataAccount account;
             private User target;
 
-            public Followers(TweetTail tail, DataAccount account, User target)
+            public Followers(TweetTail tail, DataAccount account, User target) : base(tail, account)
             {
-                this.tail = tail;
-                this.account = account;
-                this.target = target;
-            }
-
-            protected override Task<CursoredList<User>> GetDatas(long cursor)
-            {
-                return tail.twitter.GetFollowers(account, target.id, cursor);
-            }
-
-            protected override long GetID(User data)
-            {
-                return data.id;
-            }
-        }
-
-        public class Followings : CursoredFetch<User>
-        {
-            private TweetTail tail;
-            private DataAccount account;
-            private User target;
-
-            public Followings(TweetTail tail, DataAccount account, User target)
-            {
-                this.tail = tail;
-                this.account = account;
                 this.target = target;
             }
 
             protected override Task<CursoredList<User>> GetDatas(long cursor)
             {
-                return tail.twitter.GetFriends(account, target.id, cursor);
+                return tail.TwitterAPI.GetFollowersAsync(account, target.ID, cursor);
             }
 
             protected override long GetID(User data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
-        public class Search : SinceFetch<Status>
+        public class Followings : AccountCursoredFetch<User>
         {
-            private TweetTail tail;
-            private DataAccount account;
-            private string query;
-            private bool isRecent;
-            private string until;
+            private User target;
 
-            public Search(TweetTail tail, DataAccount account, string query, bool isRecent, string until = null)
+            public Followings(TweetTail tail, DataAccount account, User target) : base(tail, account)
             {
-                this.tail = tail;
-                this.account = account;
-                this.query = query;
-                this.isRecent = isRecent;
-                this.until = until;
+                this.target = target;
+            }
+
+            protected override Task<CursoredList<User>> GetDatas(long cursor)
+            {
+                return tail.TwitterAPI.GetFriendsAsync(account, target.ID, cursor);
+            }
+
+            protected override long GetID(User data)
+            {
+                return data.ID;
+            }
+        }
+
+        public class Search : AccountSinceFetch<Status>
+        {
+            private string Query;
+            private bool IsRecent;
+            private string Until;
+
+            public Search(TweetTail tail, DataAccount account, string query, bool isRecent, string until = null) : base(tail, account)
+            {
+                Query = query;
+                IsRecent = isRecent;
+                Until = until;
             }
 
             protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
             {
-                return tail.twitter.SearchTweet(account, query, isRecent, 100, until, sinceId, maxId);
+                return tail.TwitterAPI.SearchTweetAsync(account, Query, IsRecent, 100, Until, sinceId, maxId);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
-        public class Notifications : SinceFetch<Notification>
+        public class Notifications : AccountSinceFetch<Notification>
         {
-            private TweetTail tail;
-            private DataAccount account;
-
-            public Notifications(TweetTail tail, DataAccount account)
+            public Notifications(TweetTail tail, DataAccount account) : base(tail, account)
             {
-                this.tail = tail;
-                this.account = account;
             }
 
             protected override Task<List<Notification>> GetDatas(long sinceId, long maxId)
             {
-                return tail.twitter.GetNotifications(account, 40, sinceId, maxId);
+                return tail.TwitterAPI.GetNotificationsAsync(account, 40, sinceId, maxId);
             }
 
             protected override long GetID(Notification data)
             {
-                return data.maxPosition;
+                return data.MaxPosition;
             }
         }
     }

@@ -29,13 +29,13 @@ namespace TweetTail.Pages.Status
 
         public void Reload()
         {
-            if (App.tail.blend.SelectedBlendedAccount != null)
+            if (App.Tail.Blend.SelectedBlendedAccount != null)
             {
-                StatusListView.Fetchable = new BlendAccountFetch<DataStatus>.Mentionline(App.tail.blend.SelectedBlendedAccount);
+                StatusListView.Fetchable = new BlendAccountFetch<DataStatus>.Mentionline(App.Tail.Blend.SelectedBlendedAccount);
             }
             else
             {
-                StatusListView.Fetchable = new AccountFetch.Mentionline(App.tail, App.tail.account.SelectedAccountGroup.accountForRead);
+                StatusListView.Fetchable = new AccountFetch.Mentionline(App.Tail, App.Tail.Account.SelectedAccountGroup.AccountForRead);
             }
         }
     }

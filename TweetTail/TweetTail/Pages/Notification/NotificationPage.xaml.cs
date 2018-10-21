@@ -24,18 +24,18 @@ namespace TweetTail.Pages.Notification
 
         public void ScrollToRoot()
         {
-            notificationListView.ScrollToRoot();
+            NotificationListView.ScrollToRoot();
         }
 
         public void Reload()
         {
-            if (App.tail.blend.SelectedBlendedAccount != null)
+            if (App.Tail.Blend.SelectedBlendedAccount != null)
             {
-                notificationListView.Fetchable = new BlendAccountFetch<DataNotification>.Notifications(App.tail.blend.SelectedBlendedAccount);
+                NotificationListView.Fetchable = new BlendAccountFetch<DataNotification>.Notifications(App.Tail.Blend.SelectedBlendedAccount);
             }
             else
             {
-                notificationListView.Fetchable = new AccountFetch.Notifications(App.tail, App.tail.account.SelectedAccountGroup.accountForRead);
+                NotificationListView.Fetchable = new AccountFetch.Notifications(App.Tail, App.Tail.Account.SelectedAccountGroup.AccountForRead);
             }
         }
 

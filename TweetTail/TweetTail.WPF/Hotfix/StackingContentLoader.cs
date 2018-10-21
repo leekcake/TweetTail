@@ -20,7 +20,7 @@ namespace TweetTail.WPF.Hotfix
 
     public class StackingContentLoader : IContentLoader
     {
-        private FormsContentLoaderPublic parent = new FormsContentLoaderPublic();
+        private FormsContentLoaderPublic Parent = new FormsContentLoaderPublic();
 
         //Doesn't destroy oldContent for Navigate Stacking
         public Task<object> LoadContentAsync(FrameworkElement parent, object oldContent, object newContent, CancellationToken cancellationToken)
@@ -29,12 +29,12 @@ namespace TweetTail.WPF.Hotfix
                 throw new InvalidOperationException("UIThreadRequired");
 
             var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            return Task.Factory.StartNew(() => this.parent.LoadContentPublic(parent, newContent), cancellationToken, TaskCreationOptions.None, scheduler);
+            return Task.Factory.StartNew(() => Parent.LoadContentPublic(parent, newContent), cancellationToken, TaskCreationOptions.None, scheduler);
         }
 
         public void OnSizeContentChanged(FrameworkElement parent, object content)
         {
-            ((IContentLoader)this.parent).OnSizeContentChanged(parent, content);
+            ((IContentLoader)Parent).OnSizeContentChanged(parent, content);
         }
     }
 }

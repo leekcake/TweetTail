@@ -8,12 +8,12 @@ namespace TweetTail.Components.Account.Checkable
 {
     public class CheckableAccount
     {
-        public DataAccount account;
-        public bool isChecked = false;
+        public DataAccount Account;
+        public bool IsChecked = false;
 
         public CheckableAccount(DataAccount account)
         {
-            this.account = account;
+            this.Account = account;
         }
     }
 }

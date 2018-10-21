@@ -23,39 +23,39 @@ namespace TweetTail.Pages.Mute
 
             if(origin != null)
             {
-                var target = origin.target as DataMute.KeywordTarget;
-                editKeyword.Text = target.keyword;
-                if (target.replace != null)
+                var target = origin.Target as DataMute.KeywordTarget;
+                KeywordEditor.Text = target.Keyword;
+                if (target.Replace != null)
                 {
-                    editReplace.Text = target.replace;
+                    ReplaceEditor.Text = target.Replace;
                 }
             }
 		}
 
-        private void btnConfirm_Clicked(object sender, EventArgs e)
+        private void ConfirmButton_Clicked(object sender, EventArgs e)
         {
             var isNew = false;
             if(origin == null)
             {
                 isNew = true;
                 origin = new DataMute();
-                origin.target = new DataMute.KeywordTarget();
+                origin.Target = new DataMute.KeywordTarget();
             }
-            var target = origin.target as DataMute.KeywordTarget;
-            target.keyword = editKeyword.Text;
-            target.replace = editReplace.Text;
-            if(target.replace == "")
+            var target = origin.Target as DataMute.KeywordTarget;
+            target.Keyword = KeywordEditor.Text;
+            target.Replace = ReplaceEditor.Text;
+            if(target.Replace == "")
             {
-                target.replace = null;
+                target.Replace = null;
             }
 
             if (isNew)
             {
-                App.tail.mute.RegisterMute(origin);
+                App.Tail.Mute.RegisterMute(origin);
             }
             else
             {
-                App.tail.mute.UpdateMute(origin);
+                App.Tail.Mute.UpdateMute(origin);
             }
 
             App.Navigation.RemovePage(this);

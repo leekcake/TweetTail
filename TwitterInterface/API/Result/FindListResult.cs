@@ -7,8 +7,8 @@ namespace TwitterInterface.API.Result
 {
     public struct FindListResult
     {
-        public List<Collection> collections;
+        public List<Collection> Collections;
 
-        public string nextCursor;
+        public string NextCursor;
     }
 }

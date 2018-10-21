@@ -22,24 +22,24 @@ namespace TweetTail.Pages.Blend
             Items = new ObservableCollection<string>();
             Reload();
             
-            blendListView.ItemsSource = Items;
-            blendListView.ItemTapped += BlendListView_ItemTapped;
+            BlendListView.ItemsSource = Items;
+            BlendListView.ItemTapped += BlendListView_ItemTapped;
 
-            lblHeader.GestureRecognizers.Add(new TapGestureRecognizer()
+            HeaderLabel.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
                 {
-                    if(App.tail.blend.SelectedBlendName == null)
+                    if(App.Tail.Blend.SelectedBlendName == null)
                     {
                         return;
                     }
-                    App.tail.blend.SelectedBlendName = null;
+                    App.Tail.Blend.SelectedBlendName = null;
                     SingleTailPage.ReloadInNavigationStack();
                     App.Navigation.RemovePage(this);
                 })
             });
 
-            lblFooter.GestureRecognizers.Add(new TapGestureRecognizer()
+            FooterLabel.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
                 {
@@ -50,12 +50,12 @@ namespace TweetTail.Pages.Blend
 
         private void BlendListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (App.tail.blend.SelectedBlendName == (string) e.Item)
+            if (App.Tail.Blend.SelectedBlendName == (string) e.Item)
             {
                 return;
             }
 
-            App.tail.blend.SelectedBlendName = e.Item as string;
+            App.Tail.Blend.SelectedBlendName = e.Item as string;
             SingleTailPage.ReloadInNavigationStack();
             App.Navigation.RemovePage(this);
         }
@@ -63,9 +63,9 @@ namespace TweetTail.Pages.Blend
         public void Reload()
         {
             Items.Clear();
-            foreach (var blend in App.tail.blend.readOnlyBlendedAccounts)
+            foreach (var blend in App.Tail.Blend.ReadOnlyBlendedAccounts)
             {
-                Items.Add(blend.name);
+                Items.Add(blend.Name);
             }
         }
 	}

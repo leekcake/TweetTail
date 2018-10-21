@@ -6,14 +6,14 @@ namespace TwitterInterface.Data
 {
     public class Notification
     {
-        public string action;
-        public DateTime createdAt;
+        public string Action;
+        public DateTime CreatedAt;
 
-        public long maxPosition, minPosition;
+        public long MaxPosition, MinPosition;
 
-        public object[] targetObjects;
-        public object[] targets;
-        public object[] sources;
+        public object[] TargetObjects;
+        public object[] Targets;
+        public object[] Sources;
 
         public class Retweet : Notification
         {
@@ -23,19 +23,19 @@ namespace TwitterInterface.Data
 
             public Status RetweetTargetTweet {
                 get {
-                    return targetObjects[0] as Status;
+                    return TargetObjects[0] as Status;
                 }
             }
 
             public Status RetweetedTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -48,19 +48,19 @@ namespace TwitterInterface.Data
 
             public User Retweeter {
                 get {
-                    return targetObjects[0] as User;
+                    return TargetObjects[0] as User;
                 }
             }
 
             public Status RetweetedTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -73,19 +73,19 @@ namespace TwitterInterface.Data
 
             public User Retweeter {
                 get {
-                    return targetObjects[0] as User;
+                    return TargetObjects[0] as User;
                 }
             }
 
             public Status RetweetedTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -96,13 +96,13 @@ namespace TwitterInterface.Data
             //Target: 마음 찍힌 트윗
             public Status FavoritedTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -115,19 +115,19 @@ namespace TwitterInterface.Data
 
             public User Retweeter {
                 get {
-                    return targetObjects[0] as User;
+                    return TargetObjects[0] as User;
                 }
             }
 
             public Status RetweetedTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -140,19 +140,19 @@ namespace TwitterInterface.Data
 
             public User Retweeter {
                 get {
-                    return targetObjects[0] as User;
+                    return TargetObjects[0] as User;
                 }
             }
 
             public Status FavoritedTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -165,19 +165,19 @@ namespace TwitterInterface.Data
 
             public Status MentionedTweet {
                 get {
-                    return targetObjects[0] as Status;
+                    return TargetObjects[0] as Status;
                 }
             }
 
             public User MentionedUser {
                 get {
-                    return targets[0] as User;
+                    return Targets[0] as User;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -190,19 +190,19 @@ namespace TwitterInterface.Data
 
             public Status ReplyTargetTweet {
                 get {
-                    return targetObjects[0] as Status;
+                    return TargetObjects[0] as Status;
                 }
             }
 
             public Status ReplyTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Replyer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -215,19 +215,19 @@ namespace TwitterInterface.Data
 
             public Status QuoteTargetTweet {
                 get {
-                    return targetObjects[0] as Status;
+                    return TargetObjects[0] as Status;
                 }
             }
 
             public Status QuoteTweet {
                 get {
-                    return targets[0] as Status;
+                    return Targets[0] as Status;
                 }
             }
 
             public User Quoter {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }
@@ -239,13 +239,13 @@ namespace TwitterInterface.Data
 
             public User Followed {
                 get {
-                    return targets[0] as User;
+                    return Targets[0] as User;
                 }
             }
 
             public User Performer {
                 get {
-                    return sources[0] as User;
+                    return Sources[0] as User;
                 }
             }
         }

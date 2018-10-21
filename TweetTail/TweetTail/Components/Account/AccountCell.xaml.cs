@@ -27,8 +27,8 @@ namespace TweetTail.Components.Account
                 return;
             }
 
-            userView.BindingContext = (BindingContext as DataAccount).user;
-            userView.Update();
+            UserView.BindingContext = (BindingContext as DataAccount).User;
+            UserView.Update();
 
             base.OnBindingContextChanged();
         }

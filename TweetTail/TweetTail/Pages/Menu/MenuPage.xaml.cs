@@ -28,7 +28,7 @@ namespace TweetTail.Pages.Menu
             Items = new ObservableCollection<MenuData>();
 
             Items.Add(new MenuData() {
-                action = new Action(() =>
+                Action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new AccountPage());
                 })
@@ -40,7 +40,7 @@ namespace TweetTail.Pages.Menu
                 Title = "계정 전환",
                 Description = "계정을 전환합니다",
                 Icon = "ic_account_box_grey_500_48dp",
-                action = new Action(() =>
+                Action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new BlendListPage());
                 })
@@ -51,9 +51,9 @@ namespace TweetTail.Pages.Menu
                 Title = "검색 하기",
                 Description = "트위터를 검색합니다",
                 Icon = "ic_search_grey_500_48dp",
-                action = new Action(() =>
+                Action = new Action(() =>
                 {
-                    App.Navigation.PushAsync(new SearchPage(App.tail.account.SelectedAccountGroup));
+                    App.Navigation.PushAsync(new SearchPage(App.Tail.Account.SelectedAccountGroup));
                 })
             });
 
@@ -62,23 +62,23 @@ namespace TweetTail.Pages.Menu
                 Title = "뮤트목록",
                 Description = "뮤트된 대상들을 확인하고 관리합니다",
                 Icon = "ic_visibility_off_grey_500_24dp",
-                action = new Action(() =>
+                Action = new Action(() =>
                 {
                     App.Navigation.PushAsync(new MutePage());
                 })
             });
 
-            listView.ItemTemplate = new DataTemplate(typeof(MenuCell));
-            listView.ItemsSource = Items;
-            listView.ItemTapped += ListView_ItemTapped;
+            ListView.ItemTemplate = new DataTemplate(typeof(MenuCell));
+            ListView.ItemsSource = Items;
+            ListView.ItemTapped += ListView_ItemTapped;
         }
 
         private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             var item = e.Item as MenuData;
-            if(item.action != null)
+            if(item.Action != null)
             {
-                item.action.Invoke();
+                item.Action.Invoke();
             }
 
             (Parent as MasterDetailPage).IsPresented = false;
@@ -89,10 +89,10 @@ namespace TweetTail.Pages.Menu
             var item = Items[0];
             try
             {
-                var user = App.tail.account.SelectedAccountGroup.accountForRead.user;
-                item.Title = user.nickName + " @" + user.screenName;
-                item.Description = user.description;
-                item.Icon = user.profileHttpsImageURL;
+                var user = App.Tail.Account.SelectedAccountGroup.AccountForRead.User;
+                item.Title = user.NickName + " @" + user.ScreenName;
+                item.Description = user.Description;
+                item.Icon = user.ProfileHttpsImageURL;
             }
             catch(NullReferenceException nre)
             {
@@ -104,15 +104,15 @@ namespace TweetTail.Pages.Menu
             //Notify to Refresh
             Items[0] = item;
 
-            var name = App.tail.blend.SelectedBlendName;
+            var name = App.Tail.Blend.SelectedBlendName;
             if(name == null || name == "")
             {
-                lblBlendStatus.IsVisible = false;
+                BlendStatusLabel.IsVisible = false;
             }
             else
             {
-                lblBlendStatus.IsVisible = true;
-                lblBlendStatus.Text = name + " 병합 계정을 사용하고 있습니다.";
+                BlendStatusLabel.IsVisible = true;
+                BlendStatusLabel.Text = name + " 병합 계정을 사용하고 있습니다.";
             }
         }
         

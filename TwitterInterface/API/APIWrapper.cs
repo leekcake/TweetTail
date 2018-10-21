@@ -11,568 +11,568 @@ using TwitterInterface.Data;
 
 namespace TwitterInterface.API
 {
-    public class APIWrapper : API
+    public class APIWrapper : IAPI
     {
-        private API origin;
+        private IAPI origin;
 
-        public APIWrapper(API origin)
+        public APIWrapper(IAPI origin)
         {
             this.origin = origin;
         }
 
-        public virtual Task AddAllTweetToCollection(Account account, string id, long[] statusId, long relativeTo, bool above = true)
+        public virtual Task AddAllTweetToCollectionAsync(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
-            return origin.AddAllTweetToCollection(account, id, statusId, relativeTo, above);
+            return origin.AddAllTweetToCollectionAsync(account, id, statusId, relativeTo, above);
         }
 
-        public virtual Task AddMembersToUser(Account account, long[] userId, long listId)
+        public virtual Task AddMembersToUserAsync(Account account, long[] userId, long listId)
         {
-            return origin.AddMembersToUser(account, userId, listId);
+            return origin.AddMembersToUserAsync(account, userId, listId);
         }
 
-        public virtual Task AddMembersToUser(Account account, long[] userId, string slug, long ownerId)
+        public virtual Task AddMembersToUserAsync(Account account, long[] userId, string slug, long ownerId)
         {
-            return origin.AddMembersToUser(account, userId, slug, ownerId);
+            return origin.AddMembersToUserAsync(account, userId, slug, ownerId);
         }
 
-        public virtual Task AddMembersToUser(Account account, long[] userId, string slug, string ownerScreenName)
+        public virtual Task AddMembersToUserAsync(Account account, long[] userId, string slug, string ownerScreenName)
         {
-            return origin.AddMembersToUser(account, userId, slug, ownerScreenName);
+            return origin.AddMembersToUserAsync(account, userId, slug, ownerScreenName);
         }
 
-        public virtual Task AddMembersToUser(Account account, string[] screenName, long listId)
+        public virtual Task AddMembersToUserAsync(Account account, string[] screenName, long listId)
         {
-            return origin.AddMembersToUser(account, screenName, listId);
+            return origin.AddMembersToUserAsync(account, screenName, listId);
         }
 
-        public virtual Task AddMembersToUser(Account account, string[] screenName, string slug, long ownerId)
+        public virtual Task AddMembersToUserAsync(Account account, string[] screenName, string slug, long ownerId)
         {
-            return origin.AddMembersToUser(account, screenName, slug, ownerId);
+            return origin.AddMembersToUserAsync(account, screenName, slug, ownerId);
         }
 
-        public virtual Task AddMembersToUser(Account account, string[] screenName, string slug, string ownerScreenName)
+        public virtual Task AddMembersToUserAsync(Account account, string[] screenName, string slug, string ownerScreenName)
         {
-            return origin.AddMembersToUser(account, screenName, slug, ownerScreenName);
+            return origin.AddMembersToUserAsync(account, screenName, slug, ownerScreenName);
         }
 
-        public virtual Task AddMemberToUser(Account account, long userId, long listId)
+        public virtual Task AddMemberToUserAsync(Account account, long userId, long listId)
         {
-            return origin.AddMemberToUser(account, userId, listId);
+            return origin.AddMemberToUserAsync(account, userId, listId);
         }
 
-        public virtual Task AddMemberToUser(Account account, long userId, string slug, long ownerId)
+        public virtual Task AddMemberToUserAsync(Account account, long userId, string slug, long ownerId)
         {
-            return origin.AddMemberToUser(account, userId, slug, ownerId);
+            return origin.AddMemberToUserAsync(account, userId, slug, ownerId);
         }
 
-        public virtual Task AddMemberToUser(Account account, long userId, string slug, string ownerScreenName)
+        public virtual Task AddMemberToUserAsync(Account account, long userId, string slug, string ownerScreenName)
         {
-            return origin.AddMemberToUser(account, userId, slug, ownerScreenName);
+            return origin.AddMemberToUserAsync(account, userId, slug, ownerScreenName);
         }
 
-        public virtual Task AddMemberToUser(Account account, string screenName, long listId)
+        public virtual Task AddMemberToUserAsync(Account account, string screenName, long listId)
         {
-            return origin.AddMemberToUser(account, screenName, listId);
+            return origin.AddMemberToUserAsync(account, screenName, listId);
         }
 
-        public virtual Task AddMemberToUser(Account account, string screenName, string slug, long ownerId)
+        public virtual Task AddMemberToUserAsync(Account account, string screenName, string slug, long ownerId)
         {
-            return origin.AddMemberToUser(account, screenName, slug, ownerId);
+            return origin.AddMemberToUserAsync(account, screenName, slug, ownerId);
         }
 
-        public virtual Task AddMemberToUser(Account account, string screenName, string slug, string ownerScreenName)
+        public virtual Task AddMemberToUserAsync(Account account, string screenName, string slug, string ownerScreenName)
         {
-            return origin.AddMemberToUser(account, screenName, slug, ownerScreenName);
+            return origin.AddMemberToUserAsync(account, screenName, slug, ownerScreenName);
         }
 
-        public virtual Task AddTweetToCollection(Account account, string id, long statusId, long relativeTo, bool above = true)
+        public virtual Task AddTweetToCollectionAsync(Account account, string id, long statusId, long relativeTo, bool above = true)
         {
-            return origin.AddTweetToCollection(account, id, statusId, relativeTo, above);
+            return origin.AddTweetToCollectionAsync(account, id, statusId, relativeTo, above);
         }
 
-        public virtual Task<User> Block(Account account, long userId)
+        public virtual Task<User> BlockAsync(Account account, long userId)
         {
-            return origin.Block(account, userId);
+            return origin.BlockAsync(account, userId);
         }
 
-        public virtual Task<User> Block(Account account, string screenName)
+        public virtual Task<User> BlockAsync(Account account, string screenName)
         {
-            return origin.Block(account, screenName);
+            return origin.BlockAsync(account, screenName);
         }
 
-        public virtual Task<Collection> CreateCollection(Account account, string name, string description, string url, Collection.Order? order)
+        public virtual Task<Collection> CreateCollectionAsync(Account account, string name, string description, string url, Collection.Order? order)
         {
-            return origin.CreateCollection(account, name, description, url, order);
+            return origin.CreateCollectionAsync(account, name, description, url, order);
         }
 
-        public virtual Task<Status> CreateFavorite(Account account, long id)
+        public virtual Task<Status> CreateFavoriteAsync(Account account, long id)
         {
-            return origin.CreateFavorite(account, id);
+            return origin.CreateFavoriteAsync(account, id);
         }
 
-        public virtual Task<User> CreateFriendship(Account account, long userId)
+        public virtual Task<User> CreateFriendshipAsync(Account account, long userId)
         {
-            return origin.CreateFriendship(account, userId);
+            return origin.CreateFriendshipAsync(account, userId);
         }
 
-        public virtual Task<User> CreateFriendship(Account account, string screenName)
+        public virtual Task<User> CreateFriendshipAsync(Account account, string screenName)
         {
-            return origin.CreateFriendship(account, screenName);
+            return origin.CreateFriendshipAsync(account, screenName);
         }
 
-        public virtual Task<TwitterList> CreateList(Account account, string name, string mode = "public", string description = "")
+        public virtual Task<TwitterList> CreateListAsync(Account account, string name, string mode = "public", string description = "")
         {
-            return origin.CreateList(account, name, mode, description);
+            return origin.CreateListAsync(account, name, mode, description);
         }
 
-        public virtual Task<SavedSearch> CreateSavedSearch(Account account, string query)
+        public virtual Task<SavedSearch> CreateSavedSearchAsync(Account account, string query)
         {
-            return origin.CreateSavedSearch(account, query);
+            return origin.CreateSavedSearchAsync(account, query);
         }
 
-        public virtual Task<Status> CreateStatus(Account account, StatusUpdate update)
+        public virtual Task<Status> CreateStatusAsync(Account account, StatusUpdate update)
         {
-            return origin.CreateStatus(account, update);
+            return origin.CreateStatusAsync(account, update);
         }
 
-        public virtual Task DestroyCollection(Account account, string id)
+        public virtual Task DestroyCollectionAsync(Account account, string id)
         {
-            return origin.DestroyCollection(account, id);
+            return origin.DestroyCollectionAsync(account, id);
         }
 
-        public virtual Task<Status> DestroyFavorite(Account account, long id)
+        public virtual Task<Status> DestroyFavoriteAsync(Account account, long id)
         {
-            return origin.DestroyFavorite(account, id);
+            return origin.DestroyFavoriteAsync(account, id);
         }
 
-        public virtual Task<User> DestroyFriendship(Account account, long userId)
+        public virtual Task<User> DestroyFriendshipAsync(Account account, long userId)
         {
-            return origin.DestroyFriendship(account, userId);
+            return origin.DestroyFriendshipAsync(account, userId);
         }
 
-        public virtual Task<User> DestroyFriendship(Account account, string screenName)
+        public virtual Task<User> DestroyFriendshipAsync(Account account, string screenName)
         {
-            return origin.DestroyFriendship(account, screenName);
+            return origin.DestroyFriendshipAsync(account, screenName);
         }
 
-        public virtual Task<TwitterList> DestroyList(Account account, long listId)
+        public virtual Task<TwitterList> DestroyListAsync(Account account, long listId)
         {
-            return origin.DestroyList(account, listId);
+            return origin.DestroyListAsync(account, listId);
         }
 
-        public virtual Task<TwitterList> DestroyList(Account account, string slug, long ownerId)
+        public virtual Task<TwitterList> DestroyListAsync(Account account, string slug, long ownerId)
         {
-            return origin.DestroyList(account, slug, ownerId);
+            return origin.DestroyListAsync(account, slug, ownerId);
         }
 
-        public virtual Task<TwitterList> DestroyList(Account account, string slug, string ownerScreenName)
+        public virtual Task<TwitterList> DestroyListAsync(Account account, string slug, string ownerScreenName)
         {
-            return origin.DestroyList(account, slug, ownerScreenName);
+            return origin.DestroyListAsync(account, slug, ownerScreenName);
         }
 
-        public virtual Task<SavedSearch> DestroySavedSearch(Account account, long id)
+        public virtual Task<SavedSearch> DestroySavedSearchAsync(Account account, long id)
         {
-            return origin.DestroySavedSearch(account, id);
+            return origin.DestroySavedSearchAsync(account, id);
         }
 
-        public virtual Task<Status> DestroyStatus(Account account, long id)
+        public virtual Task<Status> DestroyStatusAsync(Account account, long id)
         {
-            return origin.DestroyStatus(account, id);
+            return origin.DestroyStatusAsync(account, id);
         }
 
-        public virtual Task<FindListResult> FindList(Account account, long userId, long count, string cursor)
+        public virtual Task<FindListResult> FindListAsync(Account account, long userId, long count, string cursor)
         {
-            return origin.FindList(account, userId, count, cursor);
+            return origin.FindListAsync(account, userId, count, cursor);
         }
 
-        public virtual Task<FindListResult> FindList(Account account, string screenName, long count, string cursor)
+        public virtual Task<FindListResult> FindListAsync(Account account, string screenName, long count, string cursor)
         {
-            return origin.FindList(account, screenName, count, cursor);
+            return origin.FindListAsync(account, screenName, count, cursor);
         }
 
-        public virtual Task<FindListResult> FindListByTweetId(Account account, long tweetId, long count, string cursor)
+        public virtual Task<FindListResult> FindListByTweetIdAsync(Account account, long tweetId, long count, string cursor)
         {
-            return origin.FindListByTweetId(account, tweetId, count, cursor);
+            return origin.FindListByTweetIdAsync(account, tweetId, count, cursor);
         }
 
-        public virtual Task<Account> GetAccountFromTweetdeckCookie(CookieCollection cookieData)
+        public virtual Task<Account> GetAccountFromTweetdeckCookieAsync(CookieCollection cookieData)
         {
-            return origin.GetAccountFromTweetdeckCookie(cookieData);
+            return origin.GetAccountFromTweetdeckCookieAsync(cookieData);
         }
 
-        public virtual Task<List<Status>> GetAccountRetweets(Account account, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetAccountRetweetsAsync(Account account, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetAccountRetweets(account, count, sinceId, maxId);
+            return origin.GetAccountRetweetsAsync(account, count, sinceId, maxId);
         }
 
-        public virtual Task<AccountSetting> GetAccountSetting(Account account)
+        public virtual Task<AccountSetting> GetAccountSettingAsync(Account account)
         {
-            return origin.GetAccountSetting(account);
+            return origin.GetAccountSettingAsync(account);
         }
 
-        public virtual Task<CursoredList<long>> GetBlockIds(Account account, long cursor = -1)
+        public virtual Task<CursoredList<long>> GetBlockIdsAsync(Account account, long cursor = -1)
         {
-            return origin.GetBlockIds(account, cursor);
+            return origin.GetBlockIdsAsync(account, cursor);
         }
 
-        public virtual Task<CursoredList<User>> GetBlockList(Account account, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetBlockListAsync(Account account, long cursor = -1)
         {
-            return origin.GetBlockList(account, cursor);
+            return origin.GetBlockListAsync(account, cursor);
         }
 
-        public virtual Task<Collection> GetCollection(Account account, string id)
+        public virtual Task<Collection> GetCollectionAsync(Account account, string id)
         {
-            return origin.GetCollection(account, id);
+            return origin.GetCollectionAsync(account, id);
         }
 
-        public virtual Task<List<Account>> GetContributees(Account account)
+        public virtual Task<List<Account>> GetContributeesAsync(Account account)
         {
-            return origin.GetContributees(account);
+            return origin.GetContributeesAsync(account);
         }
 
-        public virtual Task<List<Status>> GetConversation(Account account, long id)
+        public virtual Task<List<Status>> GetConversationAsync(Account account, long id)
         {
-            return origin.GetConversation(account, id);
+            return origin.GetConversationAsync(account, id);
         }
 
-        public virtual Task<GetEntriesResult> GetEntries(Account account, string id, long count, long maxPosition = -1, long minPosition = -1)
+        public virtual Task<GetEntriesResult> GetEntriesAsync(Account account, string id, long count, long maxPosition = -1, long minPosition = -1)
         {
-            return origin.GetEntries(account, id, count, maxPosition, minPosition);
+            return origin.GetEntriesAsync(account, id, count, maxPosition, minPosition);
         }
 
-        public virtual Task<List<Status>> GetFavorites(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetFavoritesAsync(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetFavorites(account, userId, count, sinceId, maxId);
+            return origin.GetFavoritesAsync(account, userId, count, sinceId, maxId);
         }
 
-        public virtual Task<List<Status>> GetFavorites(Account account, string userScreenName, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetFavoritesAsync(Account account, string userScreenName, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetFavorites(account, userScreenName, count, sinceId, maxId);
+            return origin.GetFavoritesAsync(account, userScreenName, count, sinceId, maxId);
         }
 
-        public virtual Task<CursoredList<long>> GetFollowerIds(Account account, long userId, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<long>> GetFollowerIdsAsync(Account account, long userId, long cursor = -1, long count = 100)
         {
-            return origin.GetFollowerIds(account, userId, cursor, count);
+            return origin.GetFollowerIdsAsync(account, userId, cursor, count);
         }
 
-        public virtual Task<CursoredList<long>> GetFollowerIds(Account account, string screenName, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<long>> GetFollowerIdsAsync(Account account, string screenName, long cursor = -1, long count = 100)
         {
-            return origin.GetFollowerIds(account, screenName, cursor, count);
+            return origin.GetFollowerIdsAsync(account, screenName, cursor, count);
         }
 
-        public virtual Task<CursoredList<User>> GetFollowers(Account account, long userId, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<User>> GetFollowersAsync(Account account, long userId, long cursor = -1, long count = 100)
         {
-            return origin.GetFollowers(account, userId, cursor, count);
+            return origin.GetFollowersAsync(account, userId, cursor, count);
         }
 
-        public virtual Task<CursoredList<User>> GetFollowers(Account account, string screenName, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<User>> GetFollowersAsync(Account account, string screenName, long cursor = -1, long count = 100)
         {
-            return origin.GetFollowers(account, screenName, cursor, count);
+            return origin.GetFollowersAsync(account, screenName, cursor, count);
         }
 
-        public virtual Task<CursoredList<long>> GetFriendIds(Account account, long userId, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<long>> GetFriendIdsAsync(Account account, long userId, long cursor = -1, long count = 100)
         {
-            return origin.GetFriendIds(account, userId, cursor, count);
+            return origin.GetFriendIdsAsync(account, userId, cursor, count);
         }
 
-        public virtual Task<CursoredList<long>> GetFriendIds(Account account, string screenName, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<long>> GetFriendIdsAsync(Account account, string screenName, long cursor = -1, long count = 100)
         {
-            return origin.GetFriendIds(account, screenName, cursor, count);
+            return origin.GetFriendIdsAsync(account, screenName, cursor, count);
         }
 
-        public virtual Task<CursoredList<User>> GetFriends(Account account, long userId, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<User>> GetFriendsAsync(Account account, long userId, long cursor = -1, long count = 100)
         {
-            return origin.GetFriends(account, userId, cursor, count);
+            return origin.GetFriendsAsync(account, userId, cursor, count);
         }
 
-        public virtual Task<CursoredList<User>> GetFriends(Account account, string screenName, long cursor = -1, long count = 100)
+        public virtual Task<CursoredList<User>> GetFriendsAsync(Account account, string screenName, long cursor = -1, long count = 100)
         {
-            return origin.GetFriends(account, screenName, cursor, count);
+            return origin.GetFriendsAsync(account, screenName, cursor, count);
         }
 
-        public virtual Task<List<Friendship>> GetFriendship(Account account, params long[] userId)
+        public virtual Task<List<Friendship>> GetFriendshipAsync(Account account, params long[] userId)
         {
-            return origin.GetFriendship(account, userId);
+            return origin.GetFriendshipAsync(account, userId);
         }
 
-        public virtual Task<List<Friendship>> GetFriendship(Account account, params string[] screenName)
+        public virtual Task<List<Friendship>> GetFriendshipAsync(Account account, params string[] screenName)
         {
-            return origin.GetFriendship(account, screenName);
+            return origin.GetFriendshipAsync(account, screenName);
         }
 
-        public virtual Task<TwitterList> GetList(Account account, long listId)
+        public virtual Task<TwitterList> GetListAsync(Account account, long listId)
         {
-            return origin.GetList(account, listId);
+            return origin.GetListAsync(account, listId);
         }
 
-        public virtual Task<TwitterList> GetList(Account account, string slug, long ownerId)
+        public virtual Task<TwitterList> GetListAsync(Account account, string slug, long ownerId)
         {
-            return origin.GetList(account, slug, ownerId);
+            return origin.GetListAsync(account, slug, ownerId);
         }
 
-        public virtual Task<TwitterList> GetList(Account account, string slug, string ownerScreenName)
+        public virtual Task<TwitterList> GetListAsync(Account account, string slug, string ownerScreenName)
         {
-            return origin.GetList(account, slug, ownerScreenName);
+            return origin.GetListAsync(account, slug, ownerScreenName);
         }
 
-        public virtual Task<List<Status>> GetListline(Account account, long listId, long sinceId, long maxId)
+        public virtual Task<List<Status>> GetListlineAsync(Account account, long listId, long sinceId, long maxId)
         {
-            return origin.GetListline(account, listId, sinceId, maxId);
+            return origin.GetListlineAsync(account, listId, sinceId, maxId);
         }
 
-        public virtual Task<List<Status>> GetListline(Account account, string slug, long ownerId, long sinceId, long maxId)
+        public virtual Task<List<Status>> GetListlineAsync(Account account, string slug, long ownerId, long sinceId, long maxId)
         {
-            return origin.GetListline(account, slug, ownerId, sinceId, maxId);
+            return origin.GetListlineAsync(account, slug, ownerId, sinceId, maxId);
         }
 
-        public virtual Task<List<Status>> GetListline(Account account, string slug, string ownerScreenName, long sinceId, long maxId)
+        public virtual Task<List<Status>> GetListlineAsync(Account account, string slug, string ownerScreenName, long sinceId, long maxId)
         {
-            return origin.GetListline(account, slug, ownerScreenName, sinceId, maxId);
+            return origin.GetListlineAsync(account, slug, ownerScreenName, sinceId, maxId);
         }
 
-        public virtual Task<List<TwitterList>> GetLists(Account account, string screenName, bool reverse = false)
+        public virtual Task<List<TwitterList>> GetListsAsync(Account account, string screenName, bool reverse = false)
         {
-            return origin.GetLists(account, screenName, reverse);
+            return origin.GetListsAsync(account, screenName, reverse);
         }
 
-        public virtual Task<List<TwitterList>> GetLists(Account account, long userId, bool reverse = false)
+        public virtual Task<List<TwitterList>> GetListsAsync(Account account, long userId, bool reverse = false)
         {
-            return origin.GetLists(account, userId, reverse);
+            return origin.GetListsAsync(account, userId, reverse);
         }
 
-        public virtual Task<LoginToken> GetLoginTokenAsync(Token consumerToken)
+        public virtual Task<ILoginToken> GetLoginTokenAsync(Token consumerToken)
         {
             return origin.GetLoginTokenAsync(consumerToken);
         }
 
-        public virtual Task<List<Status>> GetMedialine(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetMedialineAsync(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetMedialine(account, userId, count, sinceId, maxId);
+            return origin.GetMedialineAsync(account, userId, count, sinceId, maxId);
         }
 
-        public virtual Task<CursoredList<User>> GetMemberOfList(Account account, long listId, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetMemberOfListAsync(Account account, long listId, long count = 20, long cursor = -1)
         {
-            return origin.GetMemberOfList(account, listId, count, cursor);
+            return origin.GetMemberOfListAsync(account, listId, count, cursor);
         }
 
-        public virtual Task<CursoredList<User>> GetMemberOfList(Account account, string slug, long ownerId, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetMemberOfListAsync(Account account, string slug, long ownerId, long count = 20, long cursor = -1)
         {
-            return origin.GetMemberOfList(account, slug, ownerId, count, cursor);
+            return origin.GetMemberOfListAsync(account, slug, ownerId, count, cursor);
         }
 
-        public virtual Task<CursoredList<User>> GetMemberOfList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetMemberOfListAsync(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1)
         {
-            return origin.GetMemberOfList(account, slug, ownerScreenName, count, cursor);
+            return origin.GetMemberOfListAsync(account, slug, ownerScreenName, count, cursor);
         }
 
-        public virtual Task<CursoredList<TwitterList>> GetMembershipsOfUser(Account account, long userId, long count = 20, long cursor = -1, bool filterToOwnedLists = false)
+        public virtual Task<CursoredList<TwitterList>> GetMembershipsOfUserAsync(Account account, long userId, long count = 20, long cursor = -1, bool filterToOwnedLists = false)
         {
-            return origin.GetMembershipsOfUser(account, userId, count, cursor, filterToOwnedLists);
+            return origin.GetMembershipsOfUserAsync(account, userId, count, cursor, filterToOwnedLists);
         }
 
-        public virtual Task<CursoredList<TwitterList>> GetMembershipsOfUser(Account account, string screenName, long count = 20, long cursor = -1, bool filterToOwnedLists = false)
+        public virtual Task<CursoredList<TwitterList>> GetMembershipsOfUserAsync(Account account, string screenName, long count = 20, long cursor = -1, bool filterToOwnedLists = false)
         {
-            return origin.GetMembershipsOfUser(account, screenName, count, cursor, filterToOwnedLists);
+            return origin.GetMembershipsOfUserAsync(account, screenName, count, cursor, filterToOwnedLists);
         }
 
-        public virtual Task<List<Status>> GetMentionline(Account account, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetMentionlineAsync(Account account, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetMentionline(account, count, sinceId, maxId);
+            return origin.GetMentionlineAsync(account, count, sinceId, maxId);
         }
 
-        public virtual Task<CursoredList<long>> GetMuteIds(Account account, long cursor = -1)
+        public virtual Task<CursoredList<long>> GetMuteIdsAsync(Account account, long cursor = -1)
         {
-            return origin.GetMuteIds(account, cursor);
+            return origin.GetMuteIdsAsync(account, cursor);
         }
 
-        public virtual Task<CursoredList<User>> GetMuteUsers(Account account, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetMuteUsersAsync(Account account, long cursor = -1)
         {
-            return origin.GetMuteUsers(account, cursor);
+            return origin.GetMuteUsersAsync(account, cursor);
         }
 
-        public virtual Task<List<long>> GetNoRetweetListOfAccount(Account account)
+        public virtual Task<List<long>> GetNoRetweetListOfAccountAsync(Account account)
         {
-            return origin.GetNoRetweetListOfAccount(account);
+            return origin.GetNoRetweetListOfAccountAsync(account);
         }
 
-        public virtual Task<List<Notification>> GetNotifications(Account account, int count = 40, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Notification>> GetNotificationsAsync(Account account, int count = 40, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetNotifications(account, count, sinceId, maxId);
+            return origin.GetNotificationsAsync(account, count, sinceId, maxId);
         }
 
-        public virtual Task<CursoredList<TwitterList>> GetOwnershipsOfUser(Account account, long userId, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<TwitterList>> GetOwnershipsOfUserAsync(Account account, long userId, long count = 20, long cursor = -1)
         {
-            return origin.GetOwnershipsOfUser(account, userId, count, cursor);
+            return origin.GetOwnershipsOfUserAsync(account, userId, count, cursor);
         }
 
-        public virtual Task<CursoredList<TwitterList>> GetOwnershipsOfUser(Account account, string screenName, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<TwitterList>> GetOwnershipsOfUserAsync(Account account, string screenName, long count = 20, long cursor = -1)
         {
-            return origin.GetOwnershipsOfUser(account, screenName, count, cursor);
+            return origin.GetOwnershipsOfUserAsync(account, screenName, count, cursor);
         }
 
-        public virtual Task<CursoredList<long>> GetPendingRequestFromAccount(Account account, long cursor = -1)
+        public virtual Task<CursoredList<long>> GetPendingRequestFromAccountAsync(Account account, long cursor = -1)
         {
-            return origin.GetPendingRequestFromAccount(account, cursor);
+            return origin.GetPendingRequestFromAccountAsync(account, cursor);
         }
 
-        public virtual Task<CursoredList<long>> GetPendingRequestToAccount(Account account, long cursor = -1)
+        public virtual Task<CursoredList<long>> GetPendingRequestToAccountAsync(Account account, long cursor = -1)
         {
-            return origin.GetPendingRequestToAccount(account, cursor);
+            return origin.GetPendingRequestToAccountAsync(account, cursor);
         }
 
-        public virtual Task<Relationship> GetRelationship(Account account, long sourceId, long targetId)
+        public virtual Task<Relationship> GetRelationshipAsync(Account account, long sourceId, long targetId)
         {
-            return origin.GetRelationship(account, sourceId, targetId);
+            return origin.GetRelationshipAsync(account, sourceId, targetId);
         }
 
-        public virtual Task<Relationship> GetRelationship(Account account, string sourceScreenName, string targetScreenName)
+        public virtual Task<Relationship> GetRelationshipAsync(Account account, string sourceScreenName, string targetScreenName)
         {
-            return origin.GetRelationship(account, sourceScreenName, targetScreenName);
+            return origin.GetRelationshipAsync(account, sourceScreenName, targetScreenName);
         }
 
-        public virtual Task<List<Status>> GetRetweetedStatus(Account account, long id, long count = 100)
+        public virtual Task<List<Status>> GetRetweetedStatusAsync(Account account, long id, long count = 100)
         {
-            return origin.GetRetweetedStatus(account, id, count);
+            return origin.GetRetweetedStatusAsync(account, id, count);
         }
 
-        public virtual Task<CursoredList<long>> GetRetweeterIds(Account account, long id, long count = 100, long cursor = -1)
+        public virtual Task<CursoredList<long>> GetRetweeterIdsAsync(Account account, long id, long count = 100, long cursor = -1)
         {
-            return origin.GetRetweeterIds(account, id, count, cursor);
+            return origin.GetRetweeterIdsAsync(account, id, count, cursor);
         }
 
-        public virtual Task<SavedSearch> GetSavedSearchById(Account account, long id)
+        public virtual Task<SavedSearch> GetSavedSearchByIdAsync(Account account, long id)
         {
-            return origin.GetSavedSearchById(account, id);
+            return origin.GetSavedSearchByIdAsync(account, id);
         }
 
-        public virtual Task<List<SavedSearch>> GetSavedSearches(Account account)
+        public virtual Task<List<SavedSearch>> GetSavedSearchesAsync(Account account)
         {
-            return origin.GetSavedSearches(account);
+            return origin.GetSavedSearchesAsync(account);
         }
 
-        public virtual Task<Status> GetStatuses(Account account, long id)
+        public virtual Task<Status> GetStatusesAsync(Account account, long id)
         {
-            return origin.GetStatuses(account, id);
+            return origin.GetStatusesAsync(account, id);
         }
 
-        public virtual Task<List<Status>> GetStatuses(Account account, long[] ids)
+        public virtual Task<List<Status>> GetStatusesAsync(Account account, long[] ids)
         {
-            return origin.GetStatuses(account, ids);
+            return origin.GetStatusesAsync(account, ids);
         }
 
-        public virtual Task<User> GetSubScriberFromList(Account account, long userId, long listId)
+        public virtual Task<User> GetSubScriberFromListAsync(Account account, long userId, long listId)
         {
-            return origin.GetSubScriberFromList(account, userId, listId);
+            return origin.GetSubScriberFromListAsync(account, userId, listId);
         }
 
-        public virtual Task<User> GetSubScriberFromList(Account account, long userId, string slug, long ownerId)
+        public virtual Task<User> GetSubScriberFromListAsync(Account account, long userId, string slug, long ownerId)
         {
-            return origin.GetSubScriberFromList(account, userId, slug, ownerId);
+            return origin.GetSubScriberFromListAsync(account, userId, slug, ownerId);
         }
 
-        public virtual Task<User> GetSubScriberFromList(Account account, long userId, string slug, string ownerScreenName)
+        public virtual Task<User> GetSubScriberFromListAsync(Account account, long userId, string slug, string ownerScreenName)
         {
-            return origin.GetSubScriberFromList(account, userId, slug, ownerScreenName);
+            return origin.GetSubScriberFromListAsync(account, userId, slug, ownerScreenName);
         }
 
-        public virtual Task<User> GetSubScriberFromList(Account account, string screenName, long listId)
+        public virtual Task<User> GetSubScriberFromListAsync(Account account, string screenName, long listId)
         {
-            return origin.GetSubScriberFromList(account, screenName, listId);
+            return origin.GetSubScriberFromListAsync(account, screenName, listId);
         }
 
-        public virtual Task<User> GetSubScriberFromList(Account account, string screenName, string slug, long ownerId)
+        public virtual Task<User> GetSubScriberFromListAsync(Account account, string screenName, string slug, long ownerId)
         {
-            return origin.GetSubScriberFromList(account, screenName, slug, ownerId);
+            return origin.GetSubScriberFromListAsync(account, screenName, slug, ownerId);
         }
 
-        public virtual Task<User> GetSubScriberFromList(Account account, string screenName, string slug, string ownerScreenName)
+        public virtual Task<User> GetSubScriberFromListAsync(Account account, string screenName, string slug, string ownerScreenName)
         {
-            return origin.GetSubScriberFromList(account, screenName, slug, ownerScreenName);
+            return origin.GetSubScriberFromListAsync(account, screenName, slug, ownerScreenName);
         }
 
-        public virtual Task<CursoredList<User>> GetSubScribersFromList(Account account, long listId, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetSubScribersFromListAsync(Account account, long listId, long count = 20, long cursor = -1)
         {
-            return origin.GetSubScribersFromList(account, listId, count, cursor);
+            return origin.GetSubScribersFromListAsync(account, listId, count, cursor);
         }
 
-        public virtual Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, long ownerId, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetSubScribersFromListAsync(Account account, string slug, long ownerId, long count = 20, long cursor = -1)
         {
-            return origin.GetSubScribersFromList(account, slug, ownerId, count, cursor);
+            return origin.GetSubScribersFromListAsync(account, slug, ownerId, count, cursor);
         }
 
-        public virtual Task<CursoredList<User>> GetSubScribersFromList(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<User>> GetSubScribersFromListAsync(Account account, string slug, string ownerScreenName, long count = 20, long cursor = -1)
         {
-            return origin.GetSubScribersFromList(account, slug, ownerScreenName, count, cursor);
+            return origin.GetSubScribersFromListAsync(account, slug, ownerScreenName, count, cursor);
         }
 
-        public virtual Task<List<Status>> GetTimeline(Account account, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetTimelineAsync(Account account, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetTimeline(account, count, sinceId, maxId);
+            return origin.GetTimelineAsync(account, count, sinceId, maxId);
         }
 
-        public virtual Task<User> GetUser(Account account, long userIds)
+        public virtual Task<User> GetUserAsync(Account account, long userIds)
         {
-            return origin.GetUser(account, userIds);
+            return origin.GetUserAsync(account, userIds);
         }
 
-        public virtual Task<User> GetUser(Account account, string userScreenNames)
+        public virtual Task<User> GetUserAsync(Account account, string userScreenNames)
         {
-            return origin.GetUser(account, userScreenNames);
+            return origin.GetUserAsync(account, userScreenNames);
         }
 
-        public virtual Task<User> GetUserFromList(Account account, long userId, long listId)
+        public virtual Task<User> GetUserFromListAsync(Account account, long userId, long listId)
         {
-            return origin.GetUserFromList(account, userId, listId);
+            return origin.GetUserFromListAsync(account, userId, listId);
         }
 
-        public virtual Task<User> GetUserFromList(Account account, long userId, string slug, long ownerId)
+        public virtual Task<User> GetUserFromListAsync(Account account, long userId, string slug, long ownerId)
         {
-            return origin.GetUserFromList(account, userId, slug, ownerId);
+            return origin.GetUserFromListAsync(account, userId, slug, ownerId);
         }
 
-        public virtual Task<User> GetUserFromList(Account account, long userId, string slug, string ownerScreenName)
+        public virtual Task<User> GetUserFromListAsync(Account account, long userId, string slug, string ownerScreenName)
         {
-            return origin.GetUserFromList(account, userId, slug, ownerScreenName);
+            return origin.GetUserFromListAsync(account, userId, slug, ownerScreenName);
         }
 
-        public virtual Task<User> GetUserFromList(Account account, string screenName, long listId)
+        public virtual Task<User> GetUserFromListAsync(Account account, string screenName, long listId)
         {
-            return origin.GetUserFromList(account, screenName, listId);
+            return origin.GetUserFromListAsync(account, screenName, listId);
         }
 
-        public virtual Task<User> GetUserFromList(Account account, string screenName, string slug, long ownerId)
+        public virtual Task<User> GetUserFromListAsync(Account account, string screenName, string slug, long ownerId)
         {
-            return origin.GetUserFromList(account, screenName, slug, ownerId);
+            return origin.GetUserFromListAsync(account, screenName, slug, ownerId);
         }
 
-        public virtual Task<User> GetUserFromList(Account account, string screenName, string slug, string ownerScreenName)
+        public virtual Task<User> GetUserFromListAsync(Account account, string screenName, string slug, string ownerScreenName)
         {
-            return origin.GetUserFromList(account, screenName, slug, ownerScreenName);
+            return origin.GetUserFromListAsync(account, screenName, slug, ownerScreenName);
         }
 
-        public virtual Task<List<Status>> GetUserline(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> GetUserlineAsync(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return origin.GetUserline(account, userId, count, sinceId, maxId);
+            return origin.GetUserlineAsync(account, userId, count, sinceId, maxId);
         }
 
-        public virtual Task<List<User>> GetUsers(Account account, long[] userIds)
+        public virtual Task<List<User>> GetUsersAsync(Account account, long[] userIds)
         {
-            return origin.GetUsers(account, userIds);
+            return origin.GetUsersAsync(account, userIds);
         }
 
-        public virtual Task<List<User>> GetUsers(Account account, string[] userScreenNames)
+        public virtual Task<List<User>> GetUsersAsync(Account account, string[] userScreenNames)
         {
-            return origin.GetUsers(account, userScreenNames);
+            return origin.GetUsersAsync(account, userScreenNames);
         }
 
-        public virtual Task<CursoredList<TwitterList>> GetUserSubscriptions(Account account, long userId, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<TwitterList>> GetUserSubscriptionsAsync(Account account, long userId, long count = 20, long cursor = -1)
         {
-            return origin.GetUserSubscriptions(account, userId, count, cursor);
+            return origin.GetUserSubscriptionsAsync(account, userId, count, cursor);
         }
 
-        public virtual Task<CursoredList<TwitterList>> GetUserSubscriptions(Account account, string screenName, long count = 20, long cursor = -1)
+        public virtual Task<CursoredList<TwitterList>> GetUserSubscriptionsAsync(Account account, string screenName, long count = 20, long cursor = -1)
         {
-            return origin.GetUserSubscriptions(account, screenName, count, cursor);
+            return origin.GetUserSubscriptionsAsync(account, screenName, count, cursor);
         }
 
         public Account LoadAccount(JObject data)
@@ -580,229 +580,229 @@ namespace TwitterInterface.API
             return origin.LoadAccount(data);
         }
 
-        public virtual Task MoveTweetFromCollection(Account account, string id, long[] statusId, long relativeTo, bool above = true)
+        public virtual Task MoveTweetFromCollectionAsync(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
-            return origin.MoveTweetFromCollection(account, id, statusId, relativeTo, above);
+            return origin.MoveTweetFromCollectionAsync(account, id, statusId, relativeTo, above);
         }
 
-        public virtual Task<User> Mute(Account account, long userId)
+        public virtual Task<User> MuteAsync(Account account, long userId)
         {
-            return origin.Mute(account, userId);
+            return origin.MuteAsync(account, userId);
         }
 
-        public virtual Task<User> Mute(Account account, string screenName)
+        public virtual Task<User> MuteAsync(Account account, string screenName)
         {
-            return origin.Mute(account, screenName);
+            return origin.MuteAsync(account, screenName);
         }
 
-        public virtual Task RemoveAllTweetFromCollection(Account account, string id, long[] statusId, long relativeTo, bool above = true)
+        public virtual Task RemoveAllTweetFromCollectionAsync(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
-            return origin.RemoveAllTweetFromCollection(account, id, statusId, relativeTo, above);
+            return origin.RemoveAllTweetFromCollectionAsync(account, id, statusId, relativeTo, above);
         }
 
-        public virtual Task RemoveMembersToUser(Account account, long[] userId, long listId)
+        public virtual Task RemoveMembersToUserAsync(Account account, long[] userId, long listId)
         {
-            return origin.RemoveMembersToUser(account, userId, listId);
+            return origin.RemoveMembersToUserAsync(account, userId, listId);
         }
 
-        public virtual Task RemoveMembersToUser(Account account, long[] userId, string slug, long ownerId)
+        public virtual Task RemoveMembersToUserAsync(Account account, long[] userId, string slug, long ownerId)
         {
-            return origin.RemoveMembersToUser(account, userId, slug, ownerId);
+            return origin.RemoveMembersToUserAsync(account, userId, slug, ownerId);
         }
 
-        public virtual Task RemoveMembersToUser(Account account, long[] userId, string slug, string ownerScreenName)
+        public virtual Task RemoveMembersToUserAsync(Account account, long[] userId, string slug, string ownerScreenName)
         {
-            return origin.RemoveMembersToUser(account, userId, slug, ownerScreenName);
+            return origin.RemoveMembersToUserAsync(account, userId, slug, ownerScreenName);
         }
 
-        public virtual Task RemoveMembersToUser(Account account, string[] screenName, long listId)
+        public virtual Task RemoveMembersToUserAsync(Account account, string[] screenName, long listId)
         {
-            return origin.RemoveMembersToUser(account, screenName, listId);
+            return origin.RemoveMembersToUserAsync(account, screenName, listId);
         }
 
-        public virtual Task RemoveMembersToUser(Account account, string[] screenName, string slug, long ownerId)
+        public virtual Task RemoveMembersToUserAsync(Account account, string[] screenName, string slug, long ownerId)
         {
-            return origin.RemoveMembersToUser(account, screenName, slug, ownerId);
+            return origin.RemoveMembersToUserAsync(account, screenName, slug, ownerId);
         }
 
-        public virtual Task RemoveMembersToUser(Account account, string[] screenName, string slug, string ownerScreenName)
+        public virtual Task RemoveMembersToUserAsync(Account account, string[] screenName, string slug, string ownerScreenName)
         {
-            return origin.RemoveMembersToUser(account, screenName, slug, ownerScreenName);
+            return origin.RemoveMembersToUserAsync(account, screenName, slug, ownerScreenName);
         }
 
-        public virtual Task RemoveMemberToUser(Account account, long userId, long listId)
+        public virtual Task RemoveMemberToUserAsync(Account account, long userId, long listId)
         {
-            return origin.RemoveMemberToUser(account, userId, listId);
+            return origin.RemoveMemberToUserAsync(account, userId, listId);
         }
 
-        public virtual Task RemoveMemberToUser(Account account, long userId, string slug, long ownerId)
+        public virtual Task RemoveMemberToUserAsync(Account account, long userId, string slug, long ownerId)
         {
-            return origin.RemoveMemberToUser(account, userId, slug, ownerId);
+            return origin.RemoveMemberToUserAsync(account, userId, slug, ownerId);
         }
 
-        public virtual Task RemoveMemberToUser(Account account, long userId, string slug, string ownerScreenName)
+        public virtual Task RemoveMemberToUserAsync(Account account, long userId, string slug, string ownerScreenName)
         {
-            return origin.RemoveMemberToUser(account, userId, slug, ownerScreenName);
+            return origin.RemoveMemberToUserAsync(account, userId, slug, ownerScreenName);
         }
 
-        public virtual Task RemoveMemberToUser(Account account, string screenName, long listId)
+        public virtual Task RemoveMemberToUserAsync(Account account, string screenName, long listId)
         {
-            return origin.RemoveMemberToUser(account, screenName, listId);
+            return origin.RemoveMemberToUserAsync(account, screenName, listId);
         }
 
-        public virtual Task RemoveMemberToUser(Account account, string screenName, string slug, long ownerId)
+        public virtual Task RemoveMemberToUserAsync(Account account, string screenName, string slug, long ownerId)
         {
-            return origin.RemoveMemberToUser(account, screenName, slug, ownerId);
+            return origin.RemoveMemberToUserAsync(account, screenName, slug, ownerId);
         }
 
-        public virtual Task RemoveMemberToUser(Account account, string screenName, string slug, string ownerScreenName)
+        public virtual Task RemoveMemberToUserAsync(Account account, string screenName, string slug, string ownerScreenName)
         {
-            return origin.RemoveMemberToUser(account, screenName, slug, ownerScreenName);
+            return origin.RemoveMemberToUserAsync(account, screenName, slug, ownerScreenName);
         }
 
-        public virtual Task RemoveProfileBanner(Account account)
+        public virtual Task RemoveProfileBannerAsync(Account account)
         {
-            return origin.RemoveProfileBanner(account);
+            return origin.RemoveProfileBannerAsync(account);
         }
 
-        public virtual Task RemoveTweetFromCollection(Account account, string id, long statusId)
+        public virtual Task RemoveTweetFromCollectionAsync(Account account, string id, long statusId)
         {
-            return origin.RemoveTweetFromCollection(account, id, statusId);
+            return origin.RemoveTweetFromCollectionAsync(account, id, statusId);
         }
 
-        public virtual Task<User> ReportSpam(Account account, long userId, bool performBlock = true)
+        public virtual Task<User> ReportSpamAsync(Account account, long userId, bool performBlock = true)
         {
-            return origin.ReportSpam(account, userId, performBlock);
+            return origin.ReportSpamAsync(account, userId, performBlock);
         }
 
-        public virtual Task<User> ReportSpam(Account account, string screenName, bool performBlock = true)
+        public virtual Task<User> ReportSpamAsync(Account account, string screenName, bool performBlock = true)
         {
-            return origin.ReportSpam(account, screenName, performBlock);
+            return origin.ReportSpamAsync(account, screenName, performBlock);
         }
 
-        public virtual Task<Status> RetweetStatus(Account account, long id)
+        public virtual Task<Status> RetweetStatusAsync(Account account, long id)
         {
-            return origin.RetweetStatus(account, id);
+            return origin.RetweetStatusAsync(account, id);
         }
 
-        public virtual Task<List<Status>> SearchTweet(Account account, string query, bool isRecent, int count = 100, string until = null, long sinceId = -1, long maxId = -1)
+        public virtual Task<List<Status>> SearchTweetAsync(Account account, string query, bool isRecent, int count = 100, string until = null, long sinceId = -1, long maxId = -1)
         {
-            return origin.SearchTweet(account, query, isRecent, count, until, sinceId, maxId);
+            return origin.SearchTweetAsync(account, query, isRecent, count, until, sinceId, maxId);
         }
 
-        public virtual Task<List<User>> SearchUsers(Account account, string query, long page, long count = 20)
+        public virtual Task<List<User>> SearchUsersAsync(Account account, string query, long page, long count = 20)
         {
-            return origin.SearchUsers(account, query, page, count);
+            return origin.SearchUsersAsync(account, query, page, count);
         }
 
-        public virtual Task SubscribeAccountToList(Account account, long listId)
+        public virtual Task SubscribeAccountToListAsync(Account account, long listId)
         {
-            return origin.SubscribeAccountToList(account, listId);
+            return origin.SubscribeAccountToListAsync(account, listId);
         }
 
-        public virtual Task SubscribeAccountToList(Account account, string slug, long ownerId)
+        public virtual Task SubscribeAccountToListAsync(Account account, string slug, long ownerId)
         {
-            return origin.SubscribeAccountToList(account, slug, ownerId);
+            return origin.SubscribeAccountToListAsync(account, slug, ownerId);
         }
 
-        public virtual Task SubscribeAccountToList(Account account, string slug, string ownerScreenName)
+        public virtual Task SubscribeAccountToListAsync(Account account, string slug, string ownerScreenName)
         {
-            return origin.SubscribeAccountToList(account, slug, ownerScreenName);
+            return origin.SubscribeAccountToListAsync(account, slug, ownerScreenName);
         }
 
-        public virtual Task<User> Unblock(Account account, long userId)
+        public virtual Task<User> UnblockAsync(Account account, long userId)
         {
-            return origin.Unblock(account, userId);
+            return origin.UnblockAsync(account, userId);
         }
 
-        public virtual Task<User> Unblock(Account account, string screenName)
+        public virtual Task<User> UnblockAsync(Account account, string screenName)
         {
-            return origin.Unblock(account, screenName);
+            return origin.UnblockAsync(account, screenName);
         }
 
-        public virtual Task<User> Unmute(Account account, long userId)
+        public virtual Task<User> UnmuteAsync(Account account, long userId)
         {
-            return origin.Unmute(account, userId);
+            return origin.UnmuteAsync(account, userId);
         }
 
-        public virtual Task<User> Unmute(Account account, string screenName)
+        public virtual Task<User> UnmuteAsync(Account account, string screenName)
         {
-            return origin.Unmute(account, screenName);
+            return origin.UnmuteAsync(account, screenName);
         }
 
-        public virtual Task<Status> UnretweetStatus(Account account, long id)
+        public virtual Task<Status> UnretweetStatusAsync(Account account, long id)
         {
-            return origin.UnretweetStatus(account, id);
+            return origin.UnretweetStatusAsync(account, id);
         }
 
-        public virtual Task UnsubscribeAccountToList(Account account, long listId)
+        public virtual Task UnsubscribeAccountToListAsync(Account account, long listId)
         {
-            return origin.UnsubscribeAccountToList(account, listId);
+            return origin.UnsubscribeAccountToListAsync(account, listId);
         }
 
-        public virtual Task UnsubscribeAccountToList(Account account, string slug, long ownerId)
+        public virtual Task UnsubscribeAccountToListAsync(Account account, string slug, long ownerId)
         {
-            return origin.UnsubscribeAccountToList(account, slug, ownerId);
+            return origin.UnsubscribeAccountToListAsync(account, slug, ownerId);
         }
 
-        public virtual Task UnsubscribeAccountToList(Account account, string slug, string ownerScreenName)
+        public virtual Task UnsubscribeAccountToListAsync(Account account, string slug, string ownerScreenName)
         {
-            return origin.UnsubscribeAccountToList(account, slug, ownerScreenName);
+            return origin.UnsubscribeAccountToListAsync(account, slug, ownerScreenName);
         }
 
-        public virtual Task<Collection> UpdateCollection(Account account, string id, string name, string description, string url)
+        public virtual Task<Collection> UpdateCollectionAsync(Account account, string id, string name, string description, string url)
         {
-            return origin.UpdateCollection(account, id, name, description, url);
+            return origin.UpdateCollectionAsync(account, id, name, description, url);
         }
 
-        public virtual Task<User> UpdateFriendship(Account account, long userId, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
+        public virtual Task<User> UpdateFriendshipAsync(Account account, long userId, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
         {
-            return origin.UpdateFriendship(account, userId, enableDeviceNotifications, enableRetweet);
+            return origin.UpdateFriendshipAsync(account, userId, enableDeviceNotifications, enableRetweet);
         }
 
-        public virtual Task<User> UpdateFriendship(Account account, string screenName, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
+        public virtual Task<User> UpdateFriendshipAsync(Account account, string screenName, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
         {
-            return origin.UpdateFriendship(account, screenName, enableDeviceNotifications, enableRetweet);
+            return origin.UpdateFriendshipAsync(account, screenName, enableDeviceNotifications, enableRetweet);
         }
 
-        public virtual Task<TwitterList> UpdateList(Account account, long listId, string name, string mode = "public", string description = "")
+        public virtual Task<TwitterList> UpdateListAsync(Account account, long listId, string name, string mode = "public", string description = "")
         {
-            return origin.UpdateList(account, listId, name, mode, description);
+            return origin.UpdateListAsync(account, listId, name, mode, description);
         }
 
-        public virtual Task<TwitterList> UpdateList(Account account, string slug, long ownerId, string name, string mode = "public", string description = "")
+        public virtual Task<TwitterList> UpdateListAsync(Account account, string slug, long ownerId, string name, string mode = "public", string description = "")
         {
-            return origin.UpdateList(account, slug, ownerId, name, mode, description);
+            return origin.UpdateListAsync(account, slug, ownerId, name, mode, description);
         }
 
-        public virtual Task<TwitterList> UpdateList(Account account, string slug, string ownerScreenName, string name, string mode = "public", string description = "")
+        public virtual Task<TwitterList> UpdateListAsync(Account account, string slug, string ownerScreenName, string name, string mode = "public", string description = "")
         {
-            return origin.UpdateList(account, slug, ownerScreenName, name, mode, description);
+            return origin.UpdateListAsync(account, slug, ownerScreenName, name, mode, description);
         }
 
-        public virtual Task<User> UpdateProfile(Account account, string name, string url, string location, string description, string profileLinkColor)
+        public virtual Task<User> UpdateProfileAsync(Account account, string name, string url, string location, string description, string profileLinkColor)
         {
-            return origin.UpdateProfile(account, name, url, location, description, profileLinkColor);
+            return origin.UpdateProfileAsync(account, name, url, location, description, profileLinkColor);
         }
 
-        public virtual Task UpdateProfileBanner(Account account, Stream image)
+        public virtual Task UpdateProfileBannerAsync(Account account, Stream image)
         {
-            return origin.UpdateProfileBanner(account, image);
+            return origin.UpdateProfileBannerAsync(account, image);
         }
 
-        public virtual Task<User> UpdateProfileImage(Account account, Stream image)
+        public virtual Task<User> UpdateProfileImageAsync(Account account, Stream image)
         {
-            return origin.UpdateProfileImage(account, image);
+            return origin.UpdateProfileImageAsync(account, image);
         }
 
-        public virtual Task<long> uploadMedia(Account account, string fileName, Stream image)
+        public virtual Task<long> UploadMediaAsync(Account account, string fileName, Stream image)
         {
-            return origin.uploadMedia(account, fileName, image);
+            return origin.UploadMediaAsync(account, fileName, image);
         }
 
-        public virtual Task<User> VerifyCredentials(Account account)
+        public virtual Task<User> VerifyCredentialsAsync(Account account)
         {
-            return origin.VerifyCredentials(account);
+            return origin.VerifyCredentialsAsync(account);
         }
     }
 }

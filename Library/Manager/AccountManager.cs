@@ -18,20 +18,20 @@ namespace Library.Manager
         public AccountManager(TweetTail owner)
         {
             this.owner = owner;
-            savePath = Path.Combine(owner.saveDir, "accounts.json");
-            load();
+            savePath = Path.Combine(owner.SaveDir, "accounts.json");
+            Load();
 
-            TwitterDataFactory.userFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter( UpdateIfCan ) );
+            TwitterDataFactory.UserFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter( UpdateIfCan ) );
         }
 
         public User UpdateIfCan(User user)
         {
-            var group = getAccountGroup(user.id);
+            var group = GetAccountGroup(user.ID);
             if (group != null)
             {
                 foreach(var account in group.accounts)
                 {
-                    account.user = user;
+                    account.User = user;
                 }
             }
             return user;
@@ -43,17 +43,17 @@ namespace Library.Manager
         private void AddAccountGroup(AccountGroup group)
         {
             accountGroups.Add(group);
-            accountDict[group.id] = group;
+            accountDict[group.ID] = group;
         }
 
         private void RemoveAccountGroup(AccountGroup group)
         {
             accountGroups.Remove(group);
-            accountDict.Remove(group.id);
+            accountDict.Remove(group.ID);
         }
 
-        public ReadOnlyCollection<AccountGroup> readOnlyAccountGroups => accountGroups.AsReadOnly();
-        public AccountGroup SelectedAccountGroup => getAccountGroup(selectedAccountId);
+        public ReadOnlyCollection<AccountGroup> ReadOnlyAccountGroups => accountGroups.AsReadOnly();
+        public AccountGroup SelectedAccountGroup => GetAccountGroup(selectedAccountId);
 
         private long selectedAccountId;
         public long SelectedAccountId {
@@ -62,29 +62,29 @@ namespace Library.Manager
             }
             set {
                 selectedAccountId = value;
-                save();
+                Save();
             }
         }
 
-        public void addAccount(Account account)
+        public void AddAccount(Account account)
         {
-            var group = accountGroups.Find((data) => { return data.id == account.id; });
+            var group = accountGroups.Find((data) => { return data.ID == account.ID; });
             if(group == null)
             {
                 if(accountGroups.Count == 0)
                 {
-                    selectedAccountId = account.id;
+                    selectedAccountId = account.ID;
                 }
-                group = new AccountGroup(owner, account.id);
+                group = new AccountGroup(owner, account.ID);
                 AddAccountGroup(group);
             }
 
             group.accounts.Add(account);
 
-            save();
+            Save();
         }
 
-        public AccountGroup getAccountGroup(long id)
+        public AccountGroup GetAccountGroup(long id)
         {
             AccountGroup group;
             if (accountDict.TryGetValue(id, out group))
@@ -94,16 +94,16 @@ namespace Library.Manager
             return null;
         }
 
-        public void removeAccount(Account account)
+        public void RemoveAccount(Account account)
         {
-            var group = getAccountGroup(account.id);
+            var group = GetAccountGroup(account.ID);
             if (group == null) return;
 
             group.accounts.RemoveAll((data) => { return data == account; });
             if(group.accounts.Count == 0)
             {
                 RemoveAccountGroup(group);
-                if(account.id == selectedAccountId)
+                if(account.ID == selectedAccountId)
                 {
                     if(accountGroups.Count == 0)
                     {
@@ -111,12 +111,12 @@ namespace Library.Manager
                     }
                     else
                     {
-                        selectedAccountId = accountGroups[0].id;
+                        selectedAccountId = accountGroups[0].ID;
                     }
                 }
             }
 
-            save();
+            Save();
         }
 
         public async Task VerifyAccounts()
@@ -128,18 +128,18 @@ namespace Library.Manager
                 {
                     if(account.IsTweetdeck && !account.IsShadowcopy)
                     {
-                        var shadows = await owner.twitter.GetContributees(account);
+                        var shadows = await owner.TwitterAPI.GetContributeesAsync(account);
                         
                         foreach(var shadow in shadows)
                         {
-                            var check = getAccountGroup(shadow.id);
+                            var check = GetAccountGroup(shadow.ID);
                             if(check != null)
                             {
                                 check.accounts.Add(shadow);
                             }
                             else
                             {
-                                var generated = new AccountGroup(owner, shadow.id);
+                                var generated = new AccountGroup(owner, shadow.ID);
                                 generated.accounts.Add(shadow);
                                 AddAccountGroup(generated);
                             }
@@ -154,12 +154,12 @@ namespace Library.Manager
             {
                 try
                 {
-                    if (group.accounts[0].user == null)
+                    if (group.accounts[0].User == null)
                     {
-                        var user = await owner.twitter.VerifyCredentials(group.accountForRead);
+                        var user = await owner.TwitterAPI.VerifyCredentialsAsync(group.AccountForRead);
                         foreach (var account in group.accounts)
                         {
-                            account.user = user;
+                            account.User = user;
                         }
                     }
                 }
@@ -170,7 +170,7 @@ namespace Library.Manager
             }
         }
 
-        private void load()
+        private void Load()
         {
             accountGroups.Clear();
             if(!File.Exists(savePath))
@@ -189,7 +189,7 @@ namespace Library.Manager
             }
         }
 
-        private void save()
+        private void Save()
         {
             var data = new JObject();
             data["selectedAccountId"] = SelectedAccountId;
@@ -197,7 +197,7 @@ namespace Library.Manager
             var accounts = new JArray();
             foreach(var accountGroup in accountGroups)
             {
-                var save = accountGroup.save();
+                var save = accountGroup.Save();
                 if (save != null)
                 {
                     accounts.Add(save);

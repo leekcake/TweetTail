@@ -4,13 +4,13 @@
              Style="{DynamicResource backgroundStyle}"
              x:Class="TweetTail.Pages.Blend.BlendListPage">
     <ContentPage.Content>
-        <ListView x:Name="blendListView"
+        <ListView x:Name="BlendListView"
                   SelectionMode="None">
             <ListView.Header>
-                <Label Style="{DynamicResource labelStyle}" x:Name="lblHeader" Text="계정병합 사용중지"></Label>
+                <Label Style="{DynamicResource labelStyle}" x:Name="HeaderLabel" Text="계정병합 사용중지"></Label>
             </ListView.Header>
             <ListView.Footer>
-                <Label Style="{DynamicResource labelStyle}" x:Name="lblFooter" Text="계정병합 추가하기"></Label>
+                <Label Style="{DynamicResource labelStyle}" x:Name="FooterLabel" Text="계정병합 추가하기"></Label>
             </ListView.Footer>
         </ListView>
     </ContentPage.Content>

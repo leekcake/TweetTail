@@ -6,12 +6,12 @@ namespace TwitterInterface.Data
 {
     public struct Token
     {
-        public string key, secret;
+        public string Key, Secret;
 
         public Token(string key, string secret)
         {
-            this.key = key;
-            this.secret = secret;
+            Key = key;
+            Secret = secret;
         }
     }
 }

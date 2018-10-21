@@ -6,23 +6,23 @@ namespace TwitterInterface.Data
 {
     public class TwitterList
     {
-        public long id;
+        public long ID;
 
-        public string slug;
+        public string Slug;
 
-        public string name;
-        public string fullName;
+        public string Name;
+        public string FullName;
 
-        public string description;
+        public string Description;
 
-        public DateTime createdAt;
-        public string url;
+        public DateTime CreatedAt;
+        public string URL;
 
-        public long subscriberCount;
-        public long memberCount;
-        public string mode;
+        public long SubscriberCount;
+        public long MemberCount;
+        public string Mode;
 
-        public User user;
-        public bool following;
+        public User User;
+        public bool Following;
     }
 }

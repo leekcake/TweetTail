@@ -6,7 +6,7 @@
              x:Class="TweetTail.Pages.Status.StatusExpandPage">
     <ContentPage.Content>
         <StackLayout>
-            <status:StatusListView x:Name="statusLV" Footer=""></status:StatusListView>
+            <status:StatusListView x:Name="StatusListView" Footer=""></status:StatusListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

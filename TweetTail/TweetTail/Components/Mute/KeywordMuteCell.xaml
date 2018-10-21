@@ -4,7 +4,7 @@
              x:Class="TweetTail.Components.Mute.KeywordMuteCell">
   <ViewCell.View>
       <StackLayout>
-          <Label Style="{DynamicResource labelStyle}" x:Name="label" Text="Hello Xamarin.Forms!" />
+            <Label Style="{DynamicResource labelStyle}" x:Name="KeywordLabel" Text="Hello Xamarin.Forms!" />
       </StackLayout>
   </ViewCell.View>
 </ViewCell>

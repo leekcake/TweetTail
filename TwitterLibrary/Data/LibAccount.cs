@@ -10,7 +10,7 @@ namespace TwitterLibrary.Data
 {
     class LibAccount : Account
     {
-        public Token consumer, oauth;
+        public Token Consumer, Oauth;
 
         public override bool IsTweetdeck => false;
 
@@ -20,11 +20,11 @@ namespace TwitterLibrary.Data
         {
             var result = base.Save();
             result["type"] = "Lib";
-            result["consumer_key"] = consumer.key;
-            result["consumer_secret"] = consumer.secret;
+            result["consumer_key"] = Consumer.Key;
+            result["consumer_secret"] = Consumer.Secret;
 
-            result["oauth_key"] = oauth.key;
-            result["oauth_secret"] = oauth.secret;
+            result["oauth_key"] = Oauth.Key;
+            result["oauth_secret"] = Oauth.Secret;
 
             return result;
         }
@@ -32,16 +32,16 @@ namespace TwitterLibrary.Data
         public static LibAccount Load(JObject data)
         {
             var result = new LibAccount();
-            result.id = data["id"].ToObject<long>();
-            result.consumer = new Token(data["consumer_key"].ToString(), data["consumer_secret"].ToString());
-            result.oauth = new Token(data["oauth_key"].ToString(), data["oauth_secret"].ToString());
+            result.ID = data["id"].ToObject<long>();
+            result.Consumer = new Token(data["consumer_key"].ToString(), data["consumer_secret"].ToString());
+            result.Oauth = new Token(data["oauth_key"].ToString(), data["oauth_secret"].ToString());
 
             return result;
         }
 
         public override HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query)
         {
-            return Utils.generateHttpRequest(method, uri, query, consumer, oauth);
+            return Utils.GenerateHttpRequest(method, uri, query, Consumer, Oauth);
         }
     }
 }

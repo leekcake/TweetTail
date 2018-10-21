@@ -9,7 +9,7 @@
             BarTextColor="{DynamicResource textColor}"
             x:Class="TweetTail.Pages.SingleTailPage">
   <!--Pages can be added as references or inline-->
-    <status:TimelinePage x:Name="timelinePage" Title="타임라인" Icon="ic_timeline_green_300_48dp" />
-    <status:MentionPage x:Name="mentionPage" Title="멘션" Icon="ic_forum_grey_500_48dp" />
-    <notification:NotificationPage x:Name="notificationPage" Title="알림" Icon="ic_notifications_grey_500_48dp" />
+    <status:TimelinePage x:Name="TimelinePage" Title="타임라인" Icon="ic_timeline_green_300_48dp" />
+    <status:MentionPage x:Name="MentionPage" Title="멘션" Icon="ic_forum_grey_500_48dp" />
+    <notification:NotificationPage x:Name="NotificationPage" Title="알림" Icon="ic_notifications_grey_500_48dp" />
 </tabbedpageexpanded:TabbedPageEx>

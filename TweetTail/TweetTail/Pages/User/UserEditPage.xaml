@@ -5,17 +5,17 @@
              x:Class="TweetTail.Pages.User.UserEditPage">
     <ContentPage.Content>
         <StackLayout>
-            <forms:CachedImage x:Name="imgBanner"  Aspect="AspectFill" HorizontalOptions="Fill"></forms:CachedImage>
-            <forms:CachedImage x:Name="imgProfile"></forms:CachedImage>
+            <forms:CachedImage x:Name="BannerImage"  Aspect="AspectFill" HorizontalOptions="Fill"></forms:CachedImage>
+            <forms:CachedImage x:Name="ProfileImage"></forms:CachedImage>
             <Label Text="닉네임"></Label>
-            <Editor x:Name="editNickName"></Editor>
+            <Editor x:Name="NickNameEditor"></Editor>
             <Label Text="설명"></Label>
-            <Editor x:Name="editDescription"></Editor>
+            <Editor x:Name="DescriptionEditor"></Editor>
             <Label Text="위치"></Label>
-            <Editor x:Name="editLocation"></Editor>
+            <Editor x:Name="LocationEditor"></Editor>
             <Label Text="링크"></Label>
-            <Editor x:Name="editURL"></Editor>
-            <Button x:Name="btnUpdate" Text="수정하기" Clicked="btnUpdate_Clicked"></Button>
+            <Editor x:Name="URLEditor"></Editor>
+            <Button x:Name="UpdateButton" Text="수정하기" Clicked="UpdateButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

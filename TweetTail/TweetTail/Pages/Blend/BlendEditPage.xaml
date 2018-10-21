@@ -6,9 +6,9 @@
              x:Class="TweetTail.Pages.Blend.BlendEditPage">
     <ContentPage.Content>
         <StackLayout>
-            <Editor Style="{DynamicResource editorStyle}" x:Name="editName" Placeholder="이름"></Editor>
-            <checkable:CheckableAccountListView x:Name="checkableAccountListView" SelectionMode="Single"></checkable:CheckableAccountListView>
-            <Button x:Name="btnConfirm" Text="만들기" Clicked="btnConfirm_Clicked"></Button>
+            <Editor Style="{DynamicResource editorStyle}" x:Name="NameEditor" Placeholder="이름"></Editor>
+            <checkable:CheckableAccountListView x:Name="CheckableAccountListView" SelectionMode="Single"></checkable:CheckableAccountListView>
+            <Button x:Name="ConfirmButton" Text="만들기" Clicked="ConfirmButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

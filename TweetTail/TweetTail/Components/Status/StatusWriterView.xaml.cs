@@ -27,11 +27,11 @@ namespace TweetTail.Components.Status
         public void SetReplyStatus(DataStatus reply)
         {
             replyStatus = reply;
-            viewReplyStatus.IsVisible = true;
-            viewReplyStatus.BindingContext = replyStatus;
-            viewReplyStatus.Update();
+            ReplyStatusView.IsVisible = true;
+            ReplyStatusView.BindingContext = replyStatus;
+            ReplyStatusView.Update();
 
-            editText.Text = "@" + (reply.retweetedStatus != null ? reply.retweetedStatus.creater.screenName : reply.creater.screenName) + " " + editText.Text;
+            TextEditor.Text = "@" + (reply.RetweetedStatus != null ? reply.RetweetedStatus.Creater.ScreenName : reply.Creater.ScreenName) + " " + TextEditor.Text;
         }
 
         int currentImageInx = 0;
@@ -40,14 +40,14 @@ namespace TweetTail.Components.Status
 
         private void SetProgressVisible(bool visible)
         {
-            lblProgress.IsVisible = visible;
-            pbProgress.IsVisible = visible;
+            WriteProgressLabel.IsVisible = visible;
+            WriteProgressBar.IsVisible = visible;
         }
 
         public StatusWriterView(AccountGroup issuer)
         {
             InitializeComponent();
-            gridImageWrapper = new GridImageWrapper(gridMedias);
+            gridImageWrapper = new GridImageWrapper(MediaGrid);
             writer = issuer;
             SetProgressVisible(false);
 
@@ -60,7 +60,7 @@ namespace TweetTail.Components.Status
                     {
                         mediaFiles.RemoveAt(inx);
                         gridImageWrapper[inx].Source = null;
-                        gridImageWrapper.setCount(--currentImageInx);
+                        gridImageWrapper.SetCount(--currentImageInx);
                         //Shift Source Prop 
                         //removed at 0 cause
                         //[0] = [1]
@@ -74,8 +74,8 @@ namespace TweetTail.Components.Status
                 });
             }
 
-            displayWriter();
-            viewWriter.GestureRecognizers.Add(new TapGestureRecognizer()
+            DisplayWriter();
+            WriterView.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(async () =>
                 {
@@ -83,28 +83,28 @@ namespace TweetTail.Components.Status
                     if (selected == null) return;
 
                     writer = selected;
-                    displayWriter();
+                    DisplayWriter();
                 })
             });
         }
 
-        public void displayWriter()
+        public void DisplayWriter()
         {
-            var user = writer.accountForRead.user;
-            imgProfile.Source = user.profileHttpsImageURL;
-            lblName.Text = user.nickName + " @" + user.screenName;
+            var user = writer.AccountForRead.User;
+            ProfileImage.Source = user.ProfileHttpsImageURL;
+            NameLabel.Text = user.NickName + " @" + user.ScreenName;
         }
 
         private void SetInputStatus(bool enable)
         {
-            btnAddImage.IsEnabled = enable;
-            btnTweet.IsEnabled = enable;
-            editText.IsEnabled = enable;
+            AddImageButton.IsEnabled = enable;
+            TweetButton.IsEnabled = enable;
+            TextEditor.IsEnabled = enable;
         }
 
-        private async void btnTweet_Clicked(object sender, EventArgs e)
+        private async void TweetButton_Clicked(object sender, EventArgs e)
         {
-            if (editText.Text.Trim() == "" && mediaFiles.Count == 0)
+            if (TextEditor.Text.Trim() == "" && mediaFiles.Count == 0)
             {
                 await Application.Current.MainPage.DisplayAlert("트윗 실패", "트윗은 하나 이상의 미디어 혹은 글자를 포함해야 합니다", "확인");
                 return;
@@ -112,16 +112,16 @@ namespace TweetTail.Components.Status
 
             SetInputStatus(false);
             SetProgressVisible(true);
-            pbProgress.Progress = 0d;
-            lblProgress.Text = "초기화...";
+            WriteProgressBar.Progress = 0d;
+            WriteProgressLabel.Text = "초기화...";
 
             var update = new StatusUpdate();
 
-            update.text = editText.Text;
+            update.Text = TextEditor.Text;
 
             if(replyStatus != null)
             {
-                update.inReplyToStatusId = replyStatus.id;
+                update.InReplyToStatusId = replyStatus.ID;
             }
 
             try
@@ -131,15 +131,15 @@ namespace TweetTail.Components.Status
                     long[] mediaIDs = new long[mediaFiles.Count];
                     for (int i = 0; i < mediaIDs.Length; i++)
                     {
-                        pbProgress.Progress = ((double) i / mediaIDs.Length) * 0.9d;
-                        lblProgress.Text = (i+1) + "번째 미디어 업로드 중";
-                        mediaIDs[i] = await App.tail.twitter.uploadMedia(writer.accountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
+                        WriteProgressBar.Progress = ((double) i / mediaIDs.Length) * 0.9d;
+                        WriteProgressLabel.Text = (i+1) + "번째 미디어 업로드 중";
+                        mediaIDs[i] = await App.Tail.TwitterAPI.UploadMediaAsync(writer.AccountForWrite, Path.GetFileName(mediaFiles[i].Path), mediaFiles[i].GetStream());
                     }
-                    update.mediaIDs = mediaIDs;
+                    update.MediaIDs = mediaIDs;
                 }
-                pbProgress.Progress = 0.9d;
-                lblProgress.Text = "트윗 발송중...";
-                await App.tail.twitter.CreateStatus(writer.accountForWrite, update);
+                WriteProgressBar.Progress = 0.9d;
+                WriteProgressLabel.Text = "트윗 발송중...";
+                await App.Tail.TwitterAPI.CreateStatusAsync(writer.AccountForWrite, update);
             }
             catch (Exception ex)
             {
@@ -162,11 +162,11 @@ namespace TweetTail.Components.Status
                 gridImageWrapper[i].Source = null;
             }
             currentImageInx = 0;
-            gridImageWrapper.setCount(0);
-            editText.Text = "";
+            gridImageWrapper.SetCount(0);
+            TextEditor.Text = "";
         }
 
-        private async void btnAddImage_Clicked(object sender, EventArgs e)
+        private async void AddImageButton_Clicked(object sender, EventArgs e)
         {
             var mediaProxy = App.Media;
             await mediaProxy.Initialize();
@@ -187,7 +187,7 @@ namespace TweetTail.Components.Status
             mediaFiles.Add(media);
             gridImageWrapper[currentImageInx].Source = ImageSource.FromStream(() => { return media.GetStream(); });
 
-            gridImageWrapper.setCount(currentImageInx + 1);
+            gridImageWrapper.SetCount(currentImageInx + 1);
             currentImageInx++;
         }
     }

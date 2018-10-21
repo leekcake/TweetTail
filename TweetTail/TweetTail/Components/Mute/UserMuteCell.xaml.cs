@@ -25,10 +25,10 @@ namespace TweetTail.Components.Mute
             if (BindingContext == null) return;
 
             var mute = BindingContext as DataMute;
-            var target = mute.target as DataMute.UserTarget;
+            var target = mute.Target as DataMute.UserTarget;
 
-            viewUser.BindingContext = target.user;
-            viewUser.Update();
+            UserView.BindingContext = target.User;
+            UserView.Update();
         }
     }
 }

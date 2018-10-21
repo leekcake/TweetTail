@@ -5,7 +5,7 @@
           x:Class="TweetTail.Components.Account.Checkable.CheckableAccountCell">
     <ViewCell.View>
         <StackLayout Orientation="Horizontal">
-            <Switch x:Name="switchChecked" IsToggled="false" />
+            <Switch x:Name="CheckedSwitch" IsToggled="false" />
             <user:UserView x:Name="userView"></user:UserView>
         </StackLayout>
     </ViewCell.View>

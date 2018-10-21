@@ -10,10 +10,10 @@ namespace TweetTail.Components
     {
         private List<CachedImage> images;
 
-        private Grid grid;
+        private Grid Grid;
         public GridImageWrapper(Grid grid)
         {
-            this.grid = grid;
+            this.Grid = grid;
 
             images = new List<CachedImage>();
             for (int i = 0; i < 4; i++)
@@ -23,7 +23,7 @@ namespace TweetTail.Components
                 images.Add(cached);
             }
 
-            setCount(0);
+            SetCount(0);
         }
 
         public CachedImage this[int i] {
@@ -31,65 +31,65 @@ namespace TweetTail.Components
             set { images[i] = value; }
         }
 
-        public void setCount(int count)
+        public void SetCount(int count)
         {
-            grid.RowDefinitions.Clear();
-            grid.ColumnDefinitions.Clear();
-            grid.Children.Clear();
+            Grid.RowDefinitions.Clear();
+            Grid.ColumnDefinitions.Clear();
+            Grid.Children.Clear();
 
             if(count == 0)
             {
-                grid.IsVisible = false;
+                Grid.IsVisible = false;
             }
-            grid.IsVisible = true;
+            Grid.IsVisible = true;
 
             if(count > 1)
             {
                 foreach(var item in images)
                 {
-                    item.WidthRequest = grid.Width / 2;
+                    item.WidthRequest = Grid.Width / 2;
                 }
             }
             else
             {
                 foreach (var item in images)
                 {
-                    item.WidthRequest = grid.Width;
+                    item.WidthRequest = Grid.Width;
                 }
             }
 
             switch (count)
             {
                 case 1:
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.Children.Add(this[0], 0, 0);
+                    Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.Children.Add(this[0], 0, 0);
                     break;
                 case 2:
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.Children.Add(this[0], 0, 0);
-                    grid.Children.Add(this[1], 1, 0);
+                    Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.Children.Add(this[0], 0, 0);
+                    Grid.Children.Add(this[1], 1, 0);
                     break;
                 case 3:
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.Children.Add(this[0], 0, 0);
-                    grid.Children.Add(this[1], 1, 0);
-                    grid.Children.Add(this[2], 0, 1);
+                    Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.Children.Add(this[0], 0, 0);
+                    Grid.Children.Add(this[1], 1, 0);
+                    Grid.Children.Add(this[2], 0, 1);
                     break;
                 case 4:
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    grid.Children.Add(this[0], 0, 0);
-                    grid.Children.Add(this[1], 1, 0);
-                    grid.Children.Add(this[2], 0, 1);
-                    grid.Children.Add(this[3], 1, 1);
+                    Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    Grid.Children.Add(this[0], 0, 0);
+                    Grid.Children.Add(this[1], 1, 0);
+                    Grid.Children.Add(this[2], 0, 1);
+                    Grid.Children.Add(this[3], 1, 1);
                     break;
             }
         }

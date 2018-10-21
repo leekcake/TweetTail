@@ -6,7 +6,7 @@
              x:Class="TweetTail.Pages.Notification.NotificationPage">
     <ContentPage.Content>
         <StackLayout>
-            <notification:NotificationListView x:Name="notificationListView"></notification:NotificationListView>
+            <notification:NotificationListView x:Name="NotificationListView"></notification:NotificationListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

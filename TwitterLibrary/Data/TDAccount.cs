@@ -42,7 +42,7 @@ namespace TwitterLibrary.Data
             result.personalizationId = personalizationId;
             result.lang = lang;
             result.guestId = guestId;
-            result.id = id;
+            result.ID = id;
             result.isShadowCopy = true;
 
             return result;
@@ -67,7 +67,7 @@ namespace TwitterLibrary.Data
         {
             var result = new TDAccount();
 
-            result.id = data["id"].ToObject<long>();
+            result.ID = data["id"].ToObject<long>();
             result.csrfToken = data["csrfToken"].ToString();
             result.twitterSession = data["twitterSession"].ToString();
             result.authToken = data["authToken"].ToString();
@@ -94,7 +94,7 @@ namespace TwitterLibrary.Data
 
             if(IsShadowcopy)
             {
-                message.Headers.Add("x-act-as-user-id", id + "");
+                message.Headers.Add("x-act-as-user-id", ID + "");
             }
 
             //Other parameters

@@ -6,8 +6,8 @@ namespace TwitterInterface.Data.Entity
 {
     public class URL
     {
-        public Indices indices;
+        public Indices Indices;
 
-        public string url, displayURL, expandedURL;
+        public string RawURL, DisplayURL, ExpandedURL;
     }
 }

@@ -5,10 +5,10 @@
           x:Class="TweetTail.Components.Menu.MenuCell">
     <ViewCell.View>
         <StackLayout Orientation="Horizontal" HeightRequest="64" >
-            <forms:CachedImage x:Name="imgIcon" Aspect="AspectFit" WidthRequest="64" HeightRequest="64"></forms:CachedImage>
+            <forms:CachedImage x:Name="IconImage" Aspect="AspectFit" WidthRequest="64" HeightRequest="64"></forms:CachedImage>
             <StackLayout>
-                <Label x:Name="lblTitle" Style="{DynamicResource labelStyle}" LineBreakMode="TailTruncation" Text="Hello Xamarin.Forms!" />
-                <Label x:Name="lblDescription" Style="{DynamicResource labelStyle}" LineBreakMode="TailTruncation" Text="Hello Xamarin.Forms!" />
+                <Label x:Name="TitleLabel" Style="{DynamicResource labelStyle}" LineBreakMode="TailTruncation" Text="Hello Xamarin.Forms!" />
+                <Label x:Name="DescriptionLabel" Style="{DynamicResource labelStyle}" LineBreakMode="TailTruncation" Text="Hello Xamarin.Forms!" />
             </StackLayout>
         </StackLayout>
     </ViewCell.View>

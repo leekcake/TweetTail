@@ -21,8 +21,6 @@ namespace TweetTail.WPF.Hotfix.Renderers.NavigationPageFix
     {
         public class FormsLightNavigationPageFix : FormsLightNavigationPage
         {
-            NavigationPage NavigationPage;
-
             public FormsLightNavigationPageFix(NavigationPage navigationPage) : base(navigationPage)
             {
                 ContentLoader = new StackingContentLoader();
@@ -30,25 +28,25 @@ namespace TweetTail.WPF.Hotfix.Renderers.NavigationPageFix
         }
 
         //Dirty dispose of not used controls
-        private IContentLoader cleanupHelper = new FormsContentLoader();
-        private List<object> liveCache = new List<object>();
+        private IContentLoader CleanupHelper = new FormsContentLoader();
+        private List<object> LiveCache = new List<object>();
         public void CheckForChange()
         {
             if (Control == null) return;
 
-            foreach (var obj in liveCache)
+            foreach (var obj in LiveCache)
             {
                 if( !Control.InternalChildren.Any(dest => obj == dest) )
                 {
                     //Dirty Clean-Up calling
-                    cleanupHelper.LoadContentAsync(Control, obj, null, CancellationToken.None);
+                    CleanupHelper.LoadContentAsync(Control, obj, null, CancellationToken.None);
                 }
             }
 
-            liveCache.Clear();
+            LiveCache.Clear();
             foreach(var obj in Control.InternalChildren)
             {
-                liveCache.Add(obj);
+                LiveCache.Add(obj);
             }
         }
         

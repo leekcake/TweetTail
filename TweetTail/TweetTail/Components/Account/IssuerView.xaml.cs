@@ -22,7 +22,7 @@ namespace TweetTail.Components.Account
             image.WidthRequest = 16;
             image.HeightRequest = 16;
             image.Margin = new Thickness(0, 0, 4, 0);
-            viewRoot.Children.Add(image);
+            RootView.Children.Add(image);
             issuerImages.Add(image);
         }
 
@@ -47,7 +47,7 @@ namespace TweetTail.Components.Account
             {
                 return;
             }
-            image.Source = issuer.profileHttpsImageURL;
+            image.Source = issuer.ProfileHttpsImageURL;
         }
 
         public IssuerView()
@@ -66,7 +66,7 @@ namespace TweetTail.Components.Account
             var array = BindingContext as List<long>;
             for(int i = 0; i < array.Count; i++)
             {
-                ShowIssuer(i, App.tail.account.getAccountGroup(array[i]).accountForRead.user);
+                ShowIssuer(i, App.Tail.Account.GetAccountGroup(array[i]).AccountForRead.User);
             }
         }
     }

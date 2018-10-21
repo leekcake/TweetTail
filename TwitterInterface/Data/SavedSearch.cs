@@ -6,11 +6,11 @@ namespace TwitterInterface.Data
 {
     public class SavedSearch
     {
-        public long id;
+        public long ID;
 
-        public DateTime createdAt;
-        public string name;
-        public string query;
+        public DateTime CreatedAt;
+        public string Name;
+        public string Query;
         
         //TODO: position
     }

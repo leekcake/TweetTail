@@ -19,13 +19,13 @@ namespace TweetTail.Pages
         {
             InitializeComponent();
 
-            if (App.tail.blend.SelectedBlendedAccount != null)
+            if (App.Tail.Blend.SelectedBlendedAccount != null)
             {
-                Title = App.tail.blend.SelectedBlendedAccount.name + " 병합계정";
+                Title = App.Tail.Blend.SelectedBlendedAccount.Name + " 병합계정";
             }
             else
             {
-                Title = App.tail.account.SelectedAccountGroup.accountForRead.user.nickName + " 계정";
+                Title = App.Tail.Account.SelectedAccountGroup.AccountForRead.User.NickName + " 계정";
             }
 
             On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
@@ -63,18 +63,18 @@ namespace TweetTail.Pages
 
         public void Reload()
         {
-            if(App.tail.blend.SelectedBlendedAccount != null)
+            if(App.Tail.Blend.SelectedBlendedAccount != null)
             {
-                Title = App.tail.blend.SelectedBlendedAccount.name + " 병합계정";
+                Title = App.Tail.Blend.SelectedBlendedAccount.Name + " 병합계정";
             }
             else
             {
-                Title = App.tail.account.SelectedAccountGroup.accountForRead.user.nickName + " 계정";
+                Title = App.Tail.Account.SelectedAccountGroup.AccountForRead.User.NickName + " 계정";
             }
 
-            timelinePage.Reload();
-            mentionPage.Reload();
-            notificationPage.Reload();
+            TimelinePage.Reload();
+            MentionPage.Reload();
+            NotificationPage.Reload();
         }
     }
 }

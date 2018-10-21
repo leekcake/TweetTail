@@ -7,7 +7,7 @@
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
             >
-            <ListView x:Name="lv"
+            <ListView x:Name="ListView"
                       x:FieldModifier="Public"
                     RowHeight="64"
                     SelectionMode="None"
@@ -15,7 +15,7 @@
                     AbsoluteLayout.LayoutFlags="All">
             </ListView>
 
-            <Button x:Name="fabAction"
+            <Button x:Name="ActionButton"
                                         x:FieldModifier="Public"
                                         IsVisible="False"
                                            AbsoluteLayout.LayoutFlags="PositionProportional"

@@ -17,7 +17,7 @@ namespace TweetTail.Pages.Mute
 	{
         public ObservableCollection<DataMute> Items { get; set; }
 
-        public Func<IEnumerable<DataMute>> refreshFunc;
+        public Func<IEnumerable<DataMute>> RefreshFunc;
 
         public MuteListPage (Type cell)
 		{
@@ -26,14 +26,14 @@ namespace TweetTail.Pages.Mute
             Style = Application.Current.Resources["backgroundStyle"] as Style;
 
             Items = new ObservableCollection<DataMute>();
-            lv.ItemTemplate = new DataTemplate(cell);
-            lv.ItemsSource = Items;
+            ListView.ItemTemplate = new DataTemplate(cell);
+            ListView.ItemsSource = Items;
         }
 
         public void Refresh()
         {
             Items.Clear();
-            foreach(var item in refreshFunc())
+            foreach(var item in RefreshFunc())
             {
                 Items.Add(item);
             }

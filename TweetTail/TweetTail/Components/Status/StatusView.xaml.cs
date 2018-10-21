@@ -22,13 +22,13 @@ namespace TweetTail.Components.Status
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StatusView : ContentView
     {
-        private DataStatus status {
+        private DataStatus Status {
             get {
                 return BindingContext as DataStatus;
             }
         }
 
-        public ObservableCollection<DataStatus> statuses {
+        public ObservableCollection<DataStatus> Statuses {
             get {
                 if (Parent == null)
                 {
@@ -58,38 +58,38 @@ namespace TweetTail.Components.Status
         public StatusView(bool hasQuoteView)
         {
             InitializeComponent();
-            gridImageWrapper = new GridImageWrapper(gridMedias);
+            gridImageWrapper = new GridImageWrapper(MediaGrid);
 
-            viewRoot.GestureRecognizers.Add(new TapGestureRecognizer()
+            RootView.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
                 {
-                    if (status == null) return;
-                    App.Navigation.PushAsync(new StatusExpandPage( getDisplayStatus(status) ));
+                    if (Status == null) return;
+                    App.Navigation.PushAsync(new StatusExpandPage( GetDisplayStatus(Status) ));
                 })
             });
 
-            viewHeader.GestureRecognizers.Add(new TapGestureRecognizer()
+            HeaderView.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(async () => 
                 {
-                    if (status == null) return;
-                    var selected = await Util.SelectAccount("유저를 확인할 계정을 선택하세요", status.issuer);
+                    if (Status == null) return;
+                    var selected = await Util.SelectAccount("유저를 확인할 계정을 선택하세요", Status.Issuer);
                     if (selected == null)
                     {
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(status.creater, selected.accountForRead));
+                    App.Navigation.PushAsync(new UserDetailPage(Status.Creater, selected.AccountForRead));
                 })
             });
 
             if(hasQuoteView)
             {
                 quoteView = new StatusView(false);
-                viewQuoteStore.Content = (quoteView);
+                QuoteViewFrame.Content = (quoteView);
             }
 
-            imgProfile.GestureRecognizers.Add(new TapGestureRecognizer
+            ProfileImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(() =>
                 {
@@ -97,26 +97,26 @@ namespace TweetTail.Components.Status
                     if(BindingContext is DataUser)
                     {
                         var user = BindingContext as DataUser;
-                        App.Navigation.PushAsync(new UserDetailPage(user, App.tail.account.getAccountGroup(user.issuer[0]).accountForRead));
+                        App.Navigation.PushAsync(new UserDetailPage(user, App.Tail.Account.GetAccountGroup(user.Issuer[0]).AccountForRead));
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(getDisplayStatus(status).creater, App.tail.account.getAccountGroup(status.issuer[0]).accountForRead));
+                    App.Navigation.PushAsync(new UserDetailPage(GetDisplayStatus(Status).Creater, App.Tail.Account.GetAccountGroup(Status.Issuer[0]).AccountForRead));
                 }),
                 NumberOfTapsRequired = 1
             });
 
-            imgReply.GestureRecognizers.Add(new TapGestureRecognizer
+            ReplyImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async () =>
                 {
                     var page = new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"] };
-                    var selected = await Util.SelectAccount("어떤 계정으로 답글을 작성할까요?", status.issuer);
+                    var selected = await Util.SelectAccount("어떤 계정으로 답글을 작성할까요?", Status.Issuer);
                     if(selected == null)
                     {
                         return;
                     }
                     var view = new StatusWriterView( selected ) { BindingContext = page };
-                    view.SetReplyStatus(status);
+                    view.SetReplyStatus(Status);
 
                     page.Content = view;
                     page.Title = "트윗작성";
@@ -125,24 +125,24 @@ namespace TweetTail.Components.Status
                 NumberOfTapsRequired = 1
             });
 
-            imgRetweet.GestureRecognizers.Add(new TapGestureRecognizer
+            RetweetImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async () =>
                 {
                     try
                     {
-                        var selected = await Util.SelectAccount("리트윗할 계정을 선택하세요", status.issuer);
+                        var selected = await Util.SelectAccount("리트윗할 계정을 선택하세요", Status.Issuer);
                         if (selected == null)
                         {
                             return;
                         }
-                        var animation = new Animation(v => imgRetweet.Rotation = v, 0, 360);
-                        imgRetweet.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
-                        await App.tail.twitter.RetweetStatus(selected.accountForWrite, status.id);
-                        getDisplayStatus(status).isRetweetedByUser = true;
+                        var animation = new Animation(v => RetweetImage.Rotation = v, 0, 360);
+                        RetweetImage.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
+                        await App.Tail.TwitterAPI.RetweetStatusAsync(selected.AccountForWrite, Status.ID);
+                        GetDisplayStatus(Status).IsRetweetedByUser = true;
                         UpdateButton();
-                        imgRetweet.AbortAnimation("Spin");
-                        imgRetweet.RotateTo(360);
+                        RetweetImage.AbortAnimation("Spin");
+                        RetweetImage.RotateTo(360);
                     }
                     catch (Exception e)
                     {
@@ -153,27 +153,27 @@ namespace TweetTail.Components.Status
                 NumberOfTapsRequired = 1
             });
 
-            imgFavorite.GestureRecognizers.Add(new TapGestureRecognizer
+            FavoriteImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async () =>
                 {
                     try
                     {
-                        var selected = await Util.SelectAccount("관심글할 계정을 선택하세요", status.issuer);
+                        var selected = await Util.SelectAccount("관심글할 계정을 선택하세요", Status.Issuer);
                         if (selected == null)
                         {
                             return;
                         }
 
-                        var animation = new Animation(v => imgFavorite.Rotation = v, 0, 360);
-                        imgFavorite.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
+                        var animation = new Animation(v => FavoriteImage.Rotation = v, 0, 360);
+                        FavoriteImage.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
 
-                        await App.tail.twitter.CreateFavorite(selected.accountForWrite, status.id);
-                        getDisplayStatus(status).isFavortedByUser = true;
+                        await App.Tail.TwitterAPI.CreateFavoriteAsync(selected.AccountForWrite, Status.ID);
+                        GetDisplayStatus(Status).IsFavortedByUser = true;
                         UpdateButton();
 
-                        imgFavorite.AbortAnimation("Spin");
-                        imgFavorite.RotateTo(360);
+                        FavoriteImage.AbortAnimation("Spin");
+                        FavoriteImage.RotateTo(360);
                     }
                     catch (Exception e)
                     {
@@ -183,18 +183,18 @@ namespace TweetTail.Components.Status
                 NumberOfTapsRequired = 1
             });
 
-            imgDelete.GestureRecognizers.Add(new TapGestureRecognizer
+            DeleteImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async () =>
                 {
-                    var group = App.tail.account.getAccountGroup(status.creater.id);
+                    var group = App.Tail.Account.GetAccountGroup(Status.Creater.ID);
                     if (group != null)
                     {
                         if (await Application.Current.MainPage.DisplayAlert("제거 확인", "이 트윗이 제거됩니다, 진행합니까?", "네", "아니오"))
                         {
                             try
                             {
-                                await App.tail.twitter.DestroyStatus(group.accountForWrite, status.id);
+                                await App.Tail.TwitterAPI.DestroyStatusAsync(group.AccountForWrite, Status.ID);
                             }
                             catch (Exception e)
                             {
@@ -207,24 +207,24 @@ namespace TweetTail.Components.Status
                             return;
                         }
                     }
-                    statuses?.Remove(status);
+                    Statuses?.Remove(Status);
                 }),
                 NumberOfTapsRequired = 1
             });
 
-            imgMore.GestureRecognizers.Add(new TapGestureRecognizer
+            MoreImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(async () =>
                 {
                     try
                     {
-                        DataStatus target = status;
-                        if (status.retweetedStatus != null)
+                        DataStatus target = Status;
+                        if (Status.RetweetedStatus != null)
                         {
                             if (!await Application.Current.MainPage.DisplayAlert("리트윗된 트윗", "이 트윗은 다른 유저가 리트윗한 트윗입니다. 어떤 트윗을 사용합니까?" +
                                 "이 트윗을 사용해 다른 계정에서 리트윗/마음을 찍는경우 리트윗한 사람에게까지 알림이 갈 수 있습니다", "이 트윗", "원본트윗"))
                             {
-                                target = status.retweetedStatus;
+                                target = Status.RetweetedStatus;
                             }
                         }
 
@@ -244,7 +244,7 @@ namespace TweetTail.Components.Status
                                     return;
                                 }
 
-                                await App.tail.twitter.RetweetStatus(account.accountForWrite, target.id);
+                                await App.Tail.TwitterAPI.RetweetStatusAsync(account.AccountForWrite, target.ID);
                                 break;
                             case "다른 계정으로 관심글":
                                 account = await Util.SelectAccount("관심글할 계정을 선택하세요");
@@ -253,18 +253,18 @@ namespace TweetTail.Components.Status
                                     return;
                                 }
 
-                                await App.tail.twitter.CreateFavorite(account.accountForWrite, target.id);
+                                await App.Tail.TwitterAPI.CreateFavoriteAsync(account.AccountForWrite, target.ID);
                                 break;
                             case "트윗 뮤트":
-                                App.tail.mute.RegisterMute(new DataMute()
+                                App.Tail.Mute.RegisterMute(new DataMute()
                                 {
-                                    target = new DataMute.StatusTarget()
+                                    Target = new DataMute.StatusTarget()
                                     {
-                                        id = status.id,
-                                        status = status
+                                        ID = Status.ID,
+                                        Status = Status
                                     }
                                 });
-                                statuses?.Remove(status);
+                                Statuses?.Remove(Status);
                                 break;
                         }
                     }
@@ -283,7 +283,7 @@ namespace TweetTail.Components.Status
                 {
                     Command = new Command(() =>
                     {
-                        App.Navigation.PushAsync(new MediaPage(getDisplayStatus(status), inx));
+                        App.Navigation.PushAsync(new MediaPage(GetDisplayStatus(Status), inx));
                     }),
                     NumberOfTapsRequired = 1
                 });
@@ -296,11 +296,11 @@ namespace TweetTail.Components.Status
             }
         }
 
-        private DataStatus getDisplayStatus(DataStatus status)
+        private DataStatus GetDisplayStatus(DataStatus status)
         {
-            if (status.retweetedStatus != null)
+            if (status.RetweetedStatus != null)
             {
-                return status.retweetedStatus;
+                return status.RetweetedStatus;
             }
             else
             {
@@ -310,7 +310,7 @@ namespace TweetTail.Components.Status
 
         public void ClearImage()
         {
-            imgProfile.Source = null;
+            ProfileImage.Source = null;
             for (int i = 0; i < 4; i++)
             {
                 gridImageWrapper[i].Source = null;
@@ -321,58 +321,58 @@ namespace TweetTail.Components.Status
         {
             ClearImage();
 
-            var display = getDisplayStatus(status);
+            var display = GetDisplayStatus(Status);
 
-            imgProfile.Source = display.creater.profileHttpsImageURL;
+            ProfileImage.Source = display.Creater.ProfileHttpsImageURL;
 
-            if (display.extendMedias != null)
+            if (display.ExtendMedias != null)
             {
-                for (int i = 0; i < display.extendMedias.Length; i++)
+                for (int i = 0; i < display.ExtendMedias.Length; i++)
                 {
-                    gridImageWrapper[i].Source = display.extendMedias[i].mediaURLHttps + ":thumb";
+                    gridImageWrapper[i].Source = display.ExtendMedias[i].MediaURLHttps + ":thumb";
                 }
-                gridImageWrapper.setCount(display.extendMedias.Length);
+                gridImageWrapper.SetCount(display.ExtendMedias.Length);
             }
         }
 
         protected void UpdateButton()
         {
-            var display = getDisplayStatus(status);
+            var display = GetDisplayStatus(Status);
             
-            if (display.isRetweetedByUser)
+            if (display.IsRetweetedByUser)
             {
-                imgRetweet.Source = "ic_repeat_green_300_24dp";
+                RetweetImage.Source = "ic_repeat_green_300_24dp";
             }
             else
             {
-                imgRetweet.Source = "ic_repeat_grey_500_24dp";
+                RetweetImage.Source = "ic_repeat_grey_500_24dp";
             }
             
-            if (display.isFavortedByUser)
+            if (display.IsFavortedByUser)
             {
-                imgFavorite.Source = "ic_grade_yellow_light_24dp";
+                FavoriteImage.Source = "ic_grade_yellow_light_24dp";
             }
             else
             {
-                imgFavorite.Source = "ic_grade_grey_500_24dp";
+                FavoriteImage.Source = "ic_grade_grey_500_24dp";
             }
 
-            if (statuses != null)
+            if (Statuses != null)
             {
-                imgDelete.IsVisible = true;
-                var group = App.tail.account.getAccountGroup(status.creater.id);
+                DeleteImage.IsVisible = true;
+                var group = App.Tail.Account.GetAccountGroup(Status.Creater.ID);
                 if (group != null)
                 {
-                    imgDelete.Source = "ic_delete_grey_500_24dp";
+                    DeleteImage.Source = "ic_delete_grey_500_24dp";
                 }
                 else
                 {
-                    imgDelete.Source = "ic_visibility_off_grey_500_24dp";
+                    DeleteImage.Source = "ic_visibility_off_grey_500_24dp";
                 }
             }
             else
             {
-                imgDelete.IsVisible = false;
+                DeleteImage.IsVisible = false;
             }
         }
 
@@ -384,81 +384,81 @@ namespace TweetTail.Components.Status
                 return;
             }
             var status = BindingContext as DataStatus;
-            var display = getDisplayStatus(status);
+            var display = GetDisplayStatus(status);
 
             if (display != status)
             {
-                viewHeader.IsVisible = true;
-                lblHeader.Text = string.Format("{0} 님이 리트윗 하셨습니다", status.creater.nickName);
+                HeaderView.IsVisible = true;
+                HeaderLabel.Text = string.Format("{0} 님이 리트윗 하셨습니다", status.Creater.NickName);
             }
             else
             {
-                viewHeader.IsVisible = false;
+                HeaderView.IsVisible = false;
             }
 
-            imgLock.IsVisible = display.creater.isProtected;
-            lblCreatedAt.Text = display.createdAt.ToLocalTime().ToString();
-            lblName.Text = string.Format("{0} @{1}", display.creater.nickName, display.creater.screenName);
-            lblText.FormattedText = TwitterFormater.ParseFormattedString(display);
+            LockImage.IsVisible = display.Creater.IsProtected;
+            CreatedAtLabel.Text = display.CreatedAt.ToLocalTime().ToString();
+            NameLabel.Text = string.Format("{0} @{1}", display.Creater.NickName, display.Creater.ScreenName);
+            TextLabel.FormattedText = TwitterFormater.ParseFormattedString(display);
 
-            imgProfile.Source = null;
+            ProfileImage.Source = null;
             for (int i = 0; i < 4; i++)
             {
                 gridImageWrapper[i].Source = null;
             }
-            if (display.extendMedias != null)
+            if (display.ExtendMedias != null)
             {
-                gridMedias.IsVisible = true;
+                MediaGrid.IsVisible = true;
             }
             else
             {
-                gridMedias.IsVisible = false;
+                MediaGrid.IsVisible = false;
             }
 
-            viewIssuer.BindingContext = status.issuer;
-            viewIssuer.Update();
+            IssuerView.BindingContext = status.Issuer;
+            IssuerView.Update();
             UpdateImage();
             UpdateButton();
 
             if(quoteView != null)
             {
-                if (display.quotedStatus != null)
+                if (display.QuotedStatus != null)
                 {
-                    quoteView.BindingContext = display.quotedStatus;
+                    quoteView.BindingContext = display.QuotedStatus;
                     quoteView.Update();
-                    viewQuoteStore.IsVisible = true;
+                    QuoteViewFrame.IsVisible = true;
                 }
                 else
                 {
                     quoteView.ClearImage();
-                    viewQuoteStore.IsVisible = false;
+                    QuoteViewFrame.IsVisible = false;
                 }
             }
 
-            if(display.polls != null)
+            if(display.Polls != null)
             {
-                var poll = display.polls[0];
-                viewPollGroup.IsVisible = true;
-                for(int i = 0; i < poll.options.Length; i++)
+                var poll = display.Polls[0];
+                PollGroupView.IsVisible = true;
+                for(int i = 0; i < poll.Options.Length; i++)
                 {
                     pollViews[i].Update(poll, i);
-                    viewPolls.Children.Add(pollViews[i]);
+                    PollsView.Children.Add(pollViews[i]);
                 }
-                if(poll.endDateTime < DateTime.UtcNow)
+                if(poll.EndDateTime < DateTime.UtcNow)
                 {
-                    var leftTime = poll.endDateTime - DateTime.UtcNow;
-                    lblPollStatus.Text = string.Format("{0}표 • 투표가 끝났습니다", poll.totalCount);
+                    var leftTime = poll.EndDateTime - DateTime.UtcNow;
+                    PollStatusLabel.Text = string.Format("{0}표 • 투표가 끝났습니다", poll.TotalCount);
                 }
                 else
                 {
-                    var leftTime = poll.endDateTime - DateTime.UtcNow;
-                    lblPollStatus.Text = string.Format("{0}표 • {1} 남았습니다.", poll.totalCount, Util.TimespanToString(leftTime));
+                    var leftTime = poll.EndDateTime - DateTime.UtcNow;
+                    PollStatusLabel.Text = string.Format("{0}표 • {1} 남았습니다.", poll.TotalCount, Util.TimespanToString(leftTime));
                 }
             }
             else
             {
-                viewPolls.Children.Clear();
-                viewPollGroup.IsVisible = false;
+                PollsView.Children.Clear();
+                PollGroupView.IsVisible = false;
             }
         }
     }

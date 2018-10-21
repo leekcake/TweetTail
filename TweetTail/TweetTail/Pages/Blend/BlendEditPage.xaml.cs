@@ -21,25 +21,25 @@ namespace TweetTail.Pages.Blend
 
             if(editTarget != null)
             {
-                target = App.tail.blend.GetBlendedAccount(editTarget);
-                btnConfirm.Text = "수정하기";
+                target = App.Tail.Blend.GetBlendedAccount(editTarget);
+                ConfirmButton.Text = "수정하기";
             }
             else
             {
-                btnConfirm.Text = "만들기";
+                ConfirmButton.Text = "만들기";
             }
 
-            checkableAccountListView.Footer = null;
+            CheckableAccountListView.Footer = null;
 
-            foreach(var accountGroup in App.tail.account.readOnlyAccountGroups)
+            foreach(var accountGroup in App.Tail.Account.ReadOnlyAccountGroups)
             {
-                checkableAccountListView.Items.Add(new CheckableAccount(accountGroup.accountForRead));
+                CheckableAccountListView.Items.Add(new CheckableAccount(accountGroup.AccountForRead));
             }
 		}
 
         private bool VerifyName()
         {
-            if (App.tail.blend.GetBlendedAccount(editName.Text) != null)
+            if (App.Tail.Blend.GetBlendedAccount(NameEditor.Text) != null)
             {
                 Application.Current.MainPage.DisplayAlert("오류", "동일한 이름을 가진 병합계정이 있습니다", "확인");
                 return false;
@@ -47,12 +47,12 @@ namespace TweetTail.Pages.Blend
             return true;
         }
 
-        private void btnConfirm_Clicked(object sender, EventArgs e)
+        private void ConfirmButton_Clicked(object sender, EventArgs e)
         {
             var count = 0;
-            foreach (var item in checkableAccountListView.Items)
+            foreach (var item in CheckableAccountListView.Items)
             {
-                if (item.isChecked)
+                if (item.IsChecked)
                 {
                     count++;
                 }
@@ -67,22 +67,22 @@ namespace TweetTail.Pages.Blend
             {
                 if (!VerifyName()) return;
 
-                target = new BlendedAccount(App.tail);
-                target.name = editName.Text;
+                target = new BlendedAccount(App.Tail);
+                target.Name = NameEditor.Text;
 
-                App.tail.blend.registerBlendedAccount(target);
+                App.Tail.Blend.RegisterBlendedAccount(target);
             }
-            target.ids = new long[count];
+            target.IDs = new long[count];
             int i = 0;
-            foreach (var item in checkableAccountListView.Items)
+            foreach (var item in CheckableAccountListView.Items)
             {
-                if (item.isChecked)
+                if (item.IsChecked)
                 {
-                    target.ids[i++] = item.account.id;
+                    target.IDs[i++] = item.Account.ID;
                 }
             }
 
-            App.tail.blend.save();
+            App.Tail.Blend.Save();
 
             foreach(var page in App.Navigation.NavigationStack)
             {

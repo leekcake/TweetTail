@@ -7,21 +7,21 @@
     <ContentPage.Content>
         <StackLayout>
             <user:UserView x:Name="viewTarget"></user:UserView>
-            <Switch x:Name="swiGoAway"></Switch>
+            <Switch x:Name="GoAwaySwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저의 모든것을 뮤트합니다"></Label>
-            <Switch x:Name="swiTweet"></Switch>
+            <Switch x:Name="TweetSwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저의 순수트윗을 뮤트합니다"></Label>
-            <Switch x:Name="swiRetweet"></Switch>
+            <Switch x:Name="RetweetSwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저의 리트윗을 뮤트합니다"></Label>
-            <Switch x:Name="swiOutboundMention"></Switch>
+            <Switch x:Name="OutboundMentionSwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저가 다른 유저에게 보내는 멘션트윗을 차단합니다"></Label>
-            <Switch x:Name="swiSingleInboundMention"></Switch>
+            <Switch x:Name="SingleInboundMentionSwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저만 포함된 멘션트윗을 뮤트합니다"></Label>
-            <Switch x:Name="swiMultipleInboundMention"></Switch>
+            <Switch x:Name="MultipleInboundMentionSwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저가 포함된 멘션트윗에서 이 유저의 정보를 제거합니다"></Label>
-            <Switch x:Name="swiMultipleInboundMentionForcely"></Switch>
+            <Switch x:Name="MultipleInboundMentionForcelySwitch"></Switch>
             <Label Style="{DynamicResource labelStyle}" Text="이 유저가 포함된 멘션트윗을 뮤트합니다"></Label>
-            <Button x:Name="btnOK" Clicked="btnOK_Clicked" Text="확인"></Button>
+            <Button x:Name="OKButton" Clicked="OKButton_Clicked" Text="확인"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

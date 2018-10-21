@@ -60,7 +60,7 @@ namespace TweetTail.Utils
             var actionSheet = new string[group.Count];
             for (int i = 0; i < group.Count; i++)
             {
-                actionSheet[i] = group[i].accountForRead.user.nickName;
+                actionSheet[i] = group[i].AccountForRead.User.NickName;
             }
 
             var selected = await Application.Current.MainPage.DisplayActionSheet(description, "취소", null, actionSheet);
@@ -84,7 +84,7 @@ namespace TweetTail.Utils
 
         public static Task<AccountGroup> SelectAccount(string description)
         {
-            return SelectAccount(description, App.tail.account.readOnlyAccountGroups);
+            return SelectAccount(description, App.Tail.Account.ReadOnlyAccountGroups);
         }
 
         public static Task<AccountGroup> SelectAccount(string description, List<long> issuer)
@@ -92,7 +92,7 @@ namespace TweetTail.Utils
             var list = new List<AccountGroup>(issuer.Count);
             foreach(var groupId in issuer)
             {
-                list.Add(App.tail.account.getAccountGroup(groupId));
+                list.Add(App.Tail.Account.GetAccountGroup(groupId));
             }
 
             return SelectAccount(description, list.AsReadOnly());

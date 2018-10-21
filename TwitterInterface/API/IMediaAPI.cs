@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace TwitterInterface.API
 {
-    public interface MediaAPI
+    public interface IMediaAPI
     {
         //POST media/upload
-        Task<long> uploadMedia(Account account, string fileName, Stream image);
+        Task<long> UploadMediaAsync(Account account, string fileName, Stream image);
     }
 }

@@ -22,11 +22,11 @@ namespace Library.Manager
         public MuteManager(TweetTail owner)
         {
             this.owner = owner;
-            savePath = Path.Combine(owner.saveDir, "mutes.json");
+            savePath = Path.Combine(owner.SaveDir, "mutes.json");
             Load();
 
-            TwitterDataFactory.statusFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<Status>.Filter(Filter));
-            TwitterDataFactory.userFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter(Filter));
+            TwitterDataFactory.StatusFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<Status>.Filter(Filter));
+            TwitterDataFactory.UserFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter(Filter));
         }
 
         private List<Mute> keywordMutes = new List<Mute>();
@@ -54,8 +54,8 @@ namespace Library.Manager
         public Mute GetUserMute(User user)
         {
             if (user == null) return null;
-            if (!userMutes.ContainsKey(user.id)) return null;
-            return userMutes[user.id];
+            if (!userMutes.ContainsKey(user.ID)) return null;
+            return userMutes[user.ID];
         }
 
         private JArray Save(IEnumerable<Mute> mutes)
@@ -106,34 +106,34 @@ namespace Library.Manager
             userMutes.Clear();
             foreach (var mute in Load(data["users"]))
             {
-                userMutes[(mute.target as Mute.UserTarget).id] = mute;
+                userMutes[(mute.Target as Mute.UserTarget).ID] = mute;
             }
 
             statusMutes.Clear();
             foreach (var mute in Load(data["statuses"]))
             {
-                statusMutes[(mute.target as Mute.StatusTarget).id] = mute;
+                statusMutes[(mute.Target as Mute.StatusTarget).ID] = mute;
             }
         }
 
         public void RegisterMute(Mute mute)
         {
-            if (mute.target is Mute.KeywordTarget)
+            if (mute.Target is Mute.KeywordTarget)
             {
                 keywordMutes.Add(mute);
             }
-            else if (mute.target is Mute.UserTarget)
+            else if (mute.Target is Mute.UserTarget)
             {
-                var id = (mute.target as Mute.UserTarget).id;
+                var id = (mute.Target as Mute.UserTarget).ID;
                 if (userMutes.ContainsKey(id))
                 {
                     userMutes.Remove(id);
                 }
                 userMutes[id] = mute;
             }
-            else if (mute.target is Mute.StatusTarget)
+            else if (mute.Target is Mute.StatusTarget)
             {
-                var id = (mute.target as Mute.StatusTarget).id;
+                var id = (mute.Target as Mute.StatusTarget).ID;
                 if (statusMutes.ContainsKey(id))
                 {
                     statusMutes.Remove(id);
@@ -151,21 +151,21 @@ namespace Library.Manager
 
         public void UnregisterMute(Mute mute)
         {
-            if (mute.target is Mute.KeywordTarget)
+            if (mute.Target is Mute.KeywordTarget)
             {
                 keywordMutes.RemoveAll((amute) => { return amute == mute; });
             }
-            else if (mute.target is Mute.UserTarget)
+            else if (mute.Target is Mute.UserTarget)
             {
-                var id = (mute.target as Mute.UserTarget).id;
+                var id = (mute.Target as Mute.UserTarget).ID;
                 if (userMutes.ContainsKey(id))
                 {
                     userMutes.Remove(id);
                 }
             }
-            else if (mute.target is Mute.StatusTarget)
+            else if (mute.Target is Mute.StatusTarget)
             {
-                var id = (mute.target as Mute.StatusTarget).id;
+                var id = (mute.Target as Mute.StatusTarget).ID;
                 if (statusMutes.ContainsKey(id))
                 {
                     statusMutes.Remove(id);
@@ -177,12 +177,12 @@ namespace Library.Manager
         public Status Filter(Status data)
         {
             Status display = data;
-            if (data.retweetedStatus != null)
+            if (data.RetweetedStatus != null)
             {
-                display = data.retweetedStatus;
+                display = data.RetweetedStatus;
             }
 
-            if (statusMutes.ContainsKey(display.id))
+            if (statusMutes.ContainsKey(display.ID))
             {
                 return null;
             }
@@ -192,62 +192,62 @@ namespace Library.Manager
                 return null;
             }
 
-            if (display.userMentions != null)
+            if (display.UserMentions != null)
             {
                 var rebuild = new List<UserMention>();
 
-                foreach (var mention in display.userMentions)
+                foreach (var mention in display.UserMentions)
                 {
-                    if(!userMutes.ContainsKey(mention.id))
+                    if(!userMutes.ContainsKey(mention.ID))
                     {
                         rebuild.Add(mention);
                         continue;
                     }
-                    var user = userMutes[mention.id];
+                    var user = userMutes[mention.ID];
 
-                    var target = user.target as Mute.UserTarget;
+                    var target = user.Target as Mute.UserTarget;
 
-                    if (target.muteGoAway)
+                    if (target.MuteGoAway)
                     {
                         return null;
                     }
 
-                    if (target.muteSingleInboundMention && display.userMentions.Length == 1)
+                    if (target.MuteSingleInboundMention && display.UserMentions.Length == 1)
                     {
                         return null;
                     }
 
-                    if (target.muteMultipleInboundMention)
+                    if (target.MuteMultipleInboundMention)
                     {
-                        if (target.muteMultipleInboundMentionForcely)
+                        if (target.MuteMultipleInboundMentionForcely)
                         {
                             return null;
                         }
-                        CutText(display, mention.indices);
-                        ChangeLength(display, mention.indices.start, mention.indices.end - mention.indices.start, 0);
+                        CutText(display, mention.Indices);
+                        ChangeLength(display, mention.Indices.Start, mention.Indices.End - mention.Indices.Start, 0);
                         continue;
                     }
 
                     rebuild.Add(mention);
                 }
 
-                display.userMentions = rebuild.ToArray();
+                display.UserMentions = rebuild.ToArray();
             }
 
             foreach (var keyword in keywordMutes)
             {
-                var target = keyword.target as Mute.KeywordTarget;
+                var target = keyword.Target as Mute.KeywordTarget;
 
-                var inx = display.text.IndexOf(target.keyword);
+                var inx = display.Text.IndexOf(target.Keyword);
                 if (inx == -1) continue;
 
-                if (target.replace == null)
+                if (target.Replace == null)
                 {
                     return null;
                 }
 
-                CutText(display, new Indices() { start = inx, end = inx + (target.replace.Length - 1) }, target.replace);
-                ChangeLength(display, inx, target.keyword.Length, target.replace.Length);
+                CutText(display, new Indices() { Start = inx, End = inx + (target.Replace.Length - 1) }, target.Replace);
+                ChangeLength(display, inx, target.Keyword.Length, target.Replace.Length);
             }
 
             return data;
@@ -255,15 +255,15 @@ namespace Library.Manager
 
         public void CutText(Status status, Indices indices, string insert = null)
         {
-            var builder = new StringBuilder(status.text.Length);
-            builder.Append(status.text, 0, indices.start);
+            var builder = new StringBuilder(status.Text.Length);
+            builder.Append(status.Text, 0, indices.Start);
             if (insert != null)
             {
                 builder.Append(insert);
             }
-            builder.Append(status.text, indices.end, status.text.Length - (indices.end));
+            builder.Append(status.Text, indices.End, status.Text.Length - (indices.End));
 
-            status.text = builder.ToString();
+            status.Text = builder.ToString();
         }
 
         public void ChangeLength(Status status, int inx, int origLen, int newLen)
@@ -272,50 +272,50 @@ namespace Library.Manager
 
             var check = new Action<Indices>((Indices indics) =>
             {
-                if (indics.start > inx)
+                if (indics.Start > inx)
                 {
-                    indics.start -= diff;
-                    indics.end -= diff;
+                    indics.Start -= diff;
+                    indics.End -= diff;
                 }
             });
 
-            if (status.userMentions != null)
+            if (status.UserMentions != null)
             {
-                foreach (var mention in status.userMentions)
+                foreach (var mention in status.UserMentions)
                 {
-                    check(mention.indices);
+                    check(mention.Indices);
                 }
             }
 
-            if (status.extendMedias != null)
+            if (status.ExtendMedias != null)
             {
-                foreach (var media in status.extendMedias)
+                foreach (var media in status.ExtendMedias)
                 {
-                    check(media.indices);
+                    check(media.Indices);
                 }
             }
 
-            if (status.symbols != null)
+            if (status.Symbols != null)
             {
-                foreach (var symbol in status.symbols)
+                foreach (var symbol in status.Symbols)
                 {
-                    check(symbol.indices);
+                    check(symbol.Indices);
                 }
             }
 
-            if (status.hashtags != null)
+            if (status.Hashtags != null)
             {
-                foreach (var hashtag in status.hashtags)
+                foreach (var hashtag in status.Hashtags)
                 {
-                    check(hashtag.indices);
+                    check(hashtag.Indices);
                 }
             }
 
-            if (status.urls != null)
+            if (status.URLs != null)
             {
-                foreach (var url in status.urls)
+                foreach (var url in status.URLs)
                 {
-                    check(url.indices);
+                    check(url.Indices);
                 }
             }
         }
@@ -324,31 +324,31 @@ namespace Library.Manager
         {
             if (status == null) return true;
 
-            if (!userMutes.ContainsKey(status.creater.id))
+            if (!userMutes.ContainsKey(status.Creater.ID))
             {
                 return false;
             }
 
-            var mute = userMutes[status.creater.id];
+            var mute = userMutes[status.Creater.ID];
 
-            var target = mute.target as Mute.UserTarget;
+            var target = mute.Target as Mute.UserTarget;
 
-            if (target.muteGoAway)
+            if (target.MuteGoAway)
             {
                 return true;
             }
 
-            if (target.muteTweet && status.retweetedStatus == null && status.userMentions == null)
+            if (target.MuteTweet && status.RetweetedStatus == null && status.UserMentions == null)
             {
                 return true;
             }
 
-            if (target.muteRetweet && status.retweetedStatus != null)
+            if (target.MuteRetweet && status.RetweetedStatus != null)
             {
                 return true;
             }
 
-            if (target.muteOutboundMention && status.userMentions != null)
+            if (target.MuteOutboundMention && status.UserMentions != null)
             {
                 return true;
             }
@@ -358,15 +358,15 @@ namespace Library.Manager
 
         public User Filter(User user)
         {
-            if (!userMutes.ContainsKey(user.id))
+            if (!userMutes.ContainsKey(user.ID))
             {
                 return user;
             }
-            var mute = userMutes[user.id];
+            var mute = userMutes[user.ID];
 
-            var target = mute.target as Mute.UserTarget;
+            var target = mute.Target as Mute.UserTarget;
 
-            if (target.muteGoAway)
+            if (target.MuteGoAway)
             {
                 return null;
             }

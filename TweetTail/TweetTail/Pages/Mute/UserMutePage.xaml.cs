@@ -18,7 +18,7 @@ namespace TweetTail.Pages.Mute
         private DataMute mute;
         private DataMute.UserTarget target {
             get {
-                return mute.target as DataMute.UserTarget;
+                return mute.Target as DataMute.UserTarget;
             }
         }
 
@@ -31,56 +31,56 @@ namespace TweetTail.Pages.Mute
             viewTarget.BindingContext = user;
             viewTarget.Update();
 
-            mute = App.tail.mute.GetUserMute(user);
+            mute = App.Tail.Mute.GetUserMute(user);
 
             if(mute != null)
             {
-                swiGoAway.IsToggled = target.muteGoAway;
-                swiTweet.IsToggled = target.muteTweet;
-                swiRetweet.IsToggled = target.muteRetweet;
-                swiOutboundMention.IsToggled = target.muteOutboundMention;
-                swiSingleInboundMention.IsToggled = target.muteSingleInboundMention;
-                swiMultipleInboundMention.IsToggled = target.muteMultipleInboundMention;
-                swiMultipleInboundMentionForcely.IsToggled = target.muteMultipleInboundMentionForcely;
+                GoAwaySwitch.IsToggled = target.MuteGoAway;
+                TweetSwitch.IsToggled = target.MuteTweet;
+                RetweetSwitch.IsToggled = target.MuteRetweet;
+                OutboundMentionSwitch.IsToggled = target.MuteOutboundMention;
+                SingleInboundMentionSwitch.IsToggled = target.MuteSingleInboundMention;
+                MultipleInboundMentionSwitch.IsToggled = target.MuteMultipleInboundMention;
+                MultipleInboundMentionForcelySwitch.IsToggled = target.MuteMultipleInboundMentionForcely;
             }
 		}
 
-        private void btnOK_Clicked(object sender, EventArgs e)
+        private void OKButton_Clicked(object sender, EventArgs e)
         {
             var isNew = false;
             if (mute == null)
             {
                 isNew = true;
                 mute = new DataMute();
-                mute.target = new DataMute.UserTarget();
+                mute.Target = new DataMute.UserTarget();
             }
 
-            target.id = user.id;
-            target.user = user;
-            target.muteGoAway = swiGoAway.IsToggled;
-            target.muteTweet = swiTweet.IsToggled;
-            target.muteRetweet = swiRetweet.IsToggled;
-            target.muteOutboundMention = swiOutboundMention.IsToggled;
-            target.muteSingleInboundMention = swiSingleInboundMention.IsToggled;
-            target.muteMultipleInboundMention = swiMultipleInboundMention.IsToggled;
-            target.muteMultipleInboundMentionForcely = swiMultipleInboundMentionForcely.IsToggled;
+            target.ID = user.ID;
+            target.User = user;
+            target.MuteGoAway = GoAwaySwitch.IsToggled;
+            target.MuteTweet = TweetSwitch.IsToggled;
+            target.MuteRetweet = RetweetSwitch.IsToggled;
+            target.MuteOutboundMention = OutboundMentionSwitch.IsToggled;
+            target.MuteSingleInboundMention = SingleInboundMentionSwitch.IsToggled;
+            target.MuteMultipleInboundMention = MultipleInboundMentionSwitch.IsToggled;
+            target.MuteMultipleInboundMentionForcely = MultipleInboundMentionForcelySwitch.IsToggled;
 
-            if (!target.isNeedless)
+            if (!target.IsNeedless)
             {
                 if (isNew)
                 {
-                    App.tail.mute.RegisterMute(mute);
+                    App.Tail.Mute.RegisterMute(mute);
                 }
                 else
                 {
-                    App.tail.mute.UpdateMute(mute);
+                    App.Tail.Mute.UpdateMute(mute);
                 }
             }
             else
             {
                 if(!isNew)
                 {
-                    App.tail.mute.UnregisterMute(mute);
+                    App.Tail.Mute.UnregisterMute(mute);
                 }
             }
             App.Navigation.RemovePage(this);

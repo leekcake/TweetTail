@@ -6,7 +6,7 @@ namespace TwitterInterface.Data.Entity
 {
     public class Symbol
     {
-        public Indices indices;
-        public string text;
+        public Indices Indices;
+        public string Text;
     }
 }

@@ -16,7 +16,7 @@ namespace TwitterLibrary
 {
     public class Utils
     {
-        public static Dictionary<string, string> parseCookiesFromJavascript(string cookie)
+        public static Dictionary<string, string> ParseCookiesFromJavascript(string cookie)
         {
             cookie.Replace("\"", "");
             var result = new Dictionary<string, string>();
@@ -24,13 +24,13 @@ namespace TwitterLibrary
             int inx = 0;
             while(inx != -1)
             {
-                inx = parseCookieFromJavascript(cookie, inx, result);
+                inx = ParseCookieFromJavascript(cookie, inx, result);
             }
 
             return result;
         }
 
-        private static int parseCookieFromJavascript(string cookie, int inx, Dictionary<string, string> result)
+        private static int ParseCookieFromJavascript(string cookie, int inx, Dictionary<string, string> result)
         {
             int last = -1;
             try
@@ -86,7 +86,7 @@ namespace TwitterLibrary
 
         private static string GenerateNonce()
         {
-            var sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < 8; i++)
             {
                 int g = random.Next(3);
@@ -123,7 +123,7 @@ namespace TwitterLibrary
             }
             return body.ToString();
         }
-        public async static Task<string> readStringFromRequestMessage(HttpClient client, HttpRequestMessage message)
+        public async static Task<string> ReadStringFromRequestMessage(HttpClient client, HttpRequestMessage message)
         {
             var response = await client.SendAsync(message);
             VerifyTwitterResponse(response);
@@ -131,17 +131,17 @@ namespace TwitterLibrary
            return await response.Content.ReadAsStringAsync();
         }
 
-        public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Account account)
+        public async static Task<string> ReadStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Account account)
         {
-            return await readStringFromRequestMessage(client, account.GenerateRequest(method, uri, query));
+            return await ReadStringFromRequestMessage(client, account.GenerateRequest(method, uri, query));
         }
 
         public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
         {
-            return await readStringFromRequestMessage(client, generateHttpRequest(method, uri, query, consumerToken, oauthToken));
+            return await ReadStringFromRequestMessage(client, GenerateHttpRequest(method, uri, query, consumerToken, oauthToken));
         }
 
-        public static HttpRequestMessage generateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Account account)
+        public static HttpRequestMessage GenerateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Account account)
         {
             return account.GenerateRequest(method, uri, query);
         }
@@ -155,7 +155,7 @@ namespace TwitterLibrary
         /// <param name="consumerToken"></param>
         /// <param name="oauthToken"></param>
         /// <returns></returns>
-        public static HttpRequestMessage generateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
+        public static HttpRequestMessage GenerateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
         {
             HttpRequestMessage message = new HttpRequestMessage();
             message.Method = method;
@@ -181,13 +181,13 @@ namespace TwitterLibrary
             }
 
             //Generate authorization keys
-            authorization.Add("oauth_consumer_key", consumerToken.key);
+            authorization.Add("oauth_consumer_key", consumerToken.Key);
             authorization.Add("oauth_nonce", GenerateNonce());
             authorization.Add("oauth_signature_method", "HMAC-SHA1");
             authorization.Add("oauth_timestamp", CreateOAuthTimestamp());
             if (oauthToken != null)
             {
-                authorization.Add("oauth_token", oauthToken.Value.key);
+                authorization.Add("oauth_token", oauthToken.Value.Key);
             }
             authorization.Add("oauth_version", "1.0");
 
@@ -212,11 +212,11 @@ namespace TwitterLibrary
 
             //Generate signing key for signture
             var signatureKey = new StringBuilder();
-            signatureKey.Append(Uri.EscapeDataString(consumerToken.secret));
+            signatureKey.Append(Uri.EscapeDataString(consumerToken.Secret));
             signatureKey.Append("&");
             if (oauthToken != null)
             {
-                signatureKey.Append(Uri.EscapeDataString(oauthToken.Value.secret));
+                signatureKey.Append(Uri.EscapeDataString(oauthToken.Value.Secret));
             }
 
             //Add signature to Oauth parameters

@@ -25,7 +25,7 @@ namespace TweetTail.Components.Status
             this.polls = polls;
             this.inx = inx;
 
-            lblText.Text = string.Format("{0}: {1}표", polls.options[inx].name, polls.options[inx].count);
+            StatusLabel.Text = string.Format("{0}: {1}표", polls.Options[inx].Name, polls.Options[inx].Count);
         }
 	}
 }

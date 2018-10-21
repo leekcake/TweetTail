@@ -20,10 +20,10 @@ namespace Library.Container.Fetch
         private BlendAccountFetch(BlendedAccount account)
         {
             tail = account.tail;
-            fetchables = new Fetchable<Data>[account.ids.Length];
+            fetchables = new Fetchable<Data>[account.IDs.Length];
             for (int i = 0; i < fetchables.Length; i++)
             {
-                fetchables[i] = GetFetchable(account.ids[i]);
+                fetchables[i] = GetFetchable(account.IDs[i]);
             }
         }
 
@@ -73,17 +73,17 @@ namespace Library.Container.Fetch
 
             protected override List<Status> GetBlendedData(List<Status>[] datas)
             {
-                return BlendedAccount.blendStatus(datas);
+                return BlendedAccount.BlendStatus(datas);
             }
 
             protected override Fetchable<Status> GetFetchable(long id)
             {
-                return new AccountFetch.Timeline(tail, tail.account.getAccountGroup(id).accountForRead);
+                return new AccountFetch.Timeline(tail, tail.Account.GetAccountGroup(id).AccountForRead);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
@@ -95,17 +95,17 @@ namespace Library.Container.Fetch
 
             protected override List<Status> GetBlendedData(List<Status>[] datas)
             {
-                return BlendedAccount.blendStatus(datas);
+                return BlendedAccount.BlendStatus(datas);
             }
 
             protected override Fetchable<Status> GetFetchable(long id)
             {
-                return new AccountFetch.Mentionline(tail, tail.account.getAccountGroup(id).accountForRead);
+                return new AccountFetch.Mentionline(tail, tail.Account.GetAccountGroup(id).AccountForRead);
             }
 
             protected override long GetID(Status data)
             {
-                return data.id;
+                return data.ID;
             }
         }
 
@@ -117,17 +117,17 @@ namespace Library.Container.Fetch
 
             protected override List<Notification> GetBlendedData(List<Notification>[] datas)
             {
-                return BlendedAccount.blendNotification(datas);
+                return BlendedAccount.BlendNotification(datas);
             }
 
             protected override Fetchable<Notification> GetFetchable(long id)
             {
-                return new AccountFetch.Notifications(tail, tail.account.getAccountGroup(id).accountForRead);
+                return new AccountFetch.Notifications(tail, tail.Account.GetAccountGroup(id).AccountForRead);
             }
 
             protected override long GetID(Notification data)
             {
-                return data.maxPosition;
+                return data.MaxPosition;
             }
         }
     }

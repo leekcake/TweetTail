@@ -22,9 +22,9 @@ namespace TweetTail.Pages.Status
             this.issuer = issuer;
         }
 
-        private void btnSearch_Clicked(object sender, EventArgs e)
+        private void SearchButton_Clicked(object sender, EventArgs e)
         {
-            statusLV.Fetchable = new AccountFetch.Search(App.tail, issuer.accountForRead, editKeyword.Text, true);
+            StatusListView.Fetchable = new AccountFetch.Search(App.Tail, issuer.AccountForRead, editKeyword.Text, true);
         }
     }
 }

@@ -18,10 +18,10 @@ namespace TweetTail.Pages.Login
 			InitializeComponent ();
 		}
 
-        private async void btnExtract_Clicked(object sender, EventArgs e)
+        private async void ExtractButton_Clicked(object sender, EventArgs e)
         {
-            var account = await App.tail.twitter.GetAccountFromTweetdeckCookie(webTD.Cookies);
-            App.tail.account.addAccount(account);
+            var account = await App.Tail.TwitterAPI.GetAccountFromTweetdeckCookieAsync(TDCookieWebView.Cookies);
+            App.Tail.Account.AddAccount(account);
 
             if (App.Navigation.NavigationStack[0] == this)
             {

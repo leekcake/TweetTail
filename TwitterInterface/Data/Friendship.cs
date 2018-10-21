@@ -6,15 +6,15 @@ namespace TwitterInterface.Data
 {
     public class Friendship
     {
-        public long id;
+        public long ID;
 
-        public string name;
-        public string screenName;
+        public string Name;
+        public string ScreenName;
 
-        public bool isFollowing;
-        public bool isFollowingRequested;
-        public bool isFollowedBy;
-        public bool isBlocking;
-        public bool isMuting;
+        public bool IsFollowing;
+        public bool IsFollowingRequested;
+        public bool IsFollowedBy;
+        public bool IsBlocking;
+        public bool IsMuting;
     }
 }

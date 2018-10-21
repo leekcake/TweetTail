@@ -6,47 +6,47 @@ namespace TwitterInterface.Data
 {
     public class AccountSetting
     {
-        public class SleepTime
+        public class SleepTimeData
         {
-            public bool isEnabled;
+            public bool IsEnabled;
             //TODO: Replace with (custom) class
-            public string startTime, endTime;
+            public string StartTime, EndTime;
         }
 
-        public class TrendLocation
+        public class TrendLocationData
         {
-            public string country;
-            public string countryCode;
-            public string name;
+            public string Country;
+            public string CountryCode;
+            public string Name;
 
-            public long parentId;
+            public long ParentId;
 
             //placeType {
-            public long placeTypeCode;
-            public string placeTypeName;
+            public long PlaceTypeCode;
+            public string PlaceTypeName;
             //}
 
-            public string url;
-            public long woeid;
+            public string URL;
+            public long Woeid;
         }
 
-        public bool isAlwaysUseHttps;
-        public bool isDiscoverableByEmail;
-        public bool isGeoEnabled;
+        public bool IsAlwaysUseHttps;
+        public bool IsDiscoverableByEmail;
+        public bool IsGeoEnabled;
 
-        public string language;
+        public string Language;
 
-        public bool isProtected;
+        public bool IsProtected;
 
-        public string screenName;
+        public string ScreenName;
 
-        public bool showAllInlineMedia;
+        public bool ShowAllInlineMedia;
 
-        public SleepTime sleepTime;
-        public TimeZoneInfo timeZone;
-        public TrendLocation trendLocation;
+        public SleepTimeData SleepTime;
+        public TimeZoneInfo TimeZone;
+        public TrendLocationData TrendLocation;
 
-        public bool useCookiePersonalization;
-        public string allowContributorRequest;
+        public bool UseCookiePersonalization;
+        public string AllowContributorRequest;
     }
 }

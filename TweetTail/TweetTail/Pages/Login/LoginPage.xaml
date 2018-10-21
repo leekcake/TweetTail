@@ -8,12 +8,12 @@
         <StackLayout>
             <Label Style="{DynamicResource labelStyle}" Text="트위터에 로그인 합니다">
             </Label>
-            <Button x:Name="btnLoginTD" Clicked="btnLoginTD_Clicked" Text="트윗덱 후킹방식으로 로그인하기" />
-            <Button x:Name="btnLoginTry" Clicked="btnLoginTry_Clicked" Text="로그인 시도하기" />
+            <Button x:Name="LoginTDButton" Clicked="LoginTDButton_Clicked" Text="트윗덱 후킹방식으로 로그인하기" />
+            <Button x:Name="LoginTryButton" Clicked="LoginTryButton_Clicked" Text="로그인 시도하기" />
             <Label Style="{DynamicResource labelStyle}" Text="만들어진 로그인 링크에서 생긴 핀을 입력하세요" />
-            <Editor x:Name="editPin"/>
-            <Button x:Name="btnLoginComplete" Clicked="btnLoginComplete_Clicked" Text="로그인 완료하기" />
-            <Label Style="{DynamicResource labelStyle}" x:Name="lblStatus" />
+            <Editor x:Name="PinEditor"/>
+            <Button x:Name="LoginCompleteButton" Clicked="LoginCompleteButton_Clicked" Text="로그인 완료하기" />
+            <Label Style="{DynamicResource labelStyle}" x:Name="StatusLabel" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

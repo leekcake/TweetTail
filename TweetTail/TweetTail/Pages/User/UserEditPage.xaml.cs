@@ -24,22 +24,22 @@ namespace TweetTail.Pages.User
             this.issuer = issuer;
             this.parent = parent;
 
-            imgBanner.Source = issuer.user.profileBannerURL;
-            imgProfile.Source = issuer.user.profileHttpsImageURL;
-            editNickName.Text = issuer.user.nickName;
-            editDescription.Text = issuer.user.description;
-            editLocation.Text = issuer.user.location;
-            if (issuer.user.urlURLEntity != null && issuer.user.urlURLEntity.Length != 0)
+            BannerImage.Source = issuer.User.ProfileBannerURL;
+            ProfileImage.Source = issuer.User.ProfileHttpsImageURL;
+            NickNameEditor.Text = issuer.User.NickName;
+            DescriptionEditor.Text = issuer.User.Description;
+            LocationEditor.Text = issuer.User.Location;
+            if (issuer.User.URLEntities != null && issuer.User.URLEntities.Length != 0)
             {
-                editURL.Text = issuer.user.urlURLEntity[0].displayURL;
+                URLEditor.Text = issuer.User.URLEntities[0].DisplayURL;
             }
             else
             {
-                editURL.Text = issuer.user.url;
+                URLEditor.Text = issuer.User.URL;
             }
 
 
-            imgBanner.GestureRecognizers.Add(new TapGestureRecognizer()
+            BannerImage.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(async () =>
                 {
@@ -59,14 +59,14 @@ namespace TweetTail.Pages.User
                         return;
                     }
 
-                    await App.tail.twitter.UpdateProfileBanner(issuer, media.GetStream());
+                    await App.Tail.TwitterAPI.UpdateProfileBannerAsync(issuer, media.GetStream());
 
-                    var user = await App.tail.twitter.GetUser(issuer, issuer.id);
-                    imgBanner.Source = user.profileBannerURL;
+                    var user = await App.Tail.TwitterAPI.GetUserAsync(issuer, issuer.ID);
+                    BannerImage.Source = user.ProfileBannerURL;
                     parent.UpdateBinding(user);
                 })
             });
-            imgProfile.GestureRecognizers.Add(new TapGestureRecognizer()
+            ProfileImage.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(async () =>
                 {
@@ -86,19 +86,19 @@ namespace TweetTail.Pages.User
                         return;
                     }
 
-                    var user = await App.tail.twitter.UpdateProfileImage(issuer, media.GetStream());
+                    var user = await App.Tail.TwitterAPI.UpdateProfileImageAsync(issuer, media.GetStream());
                     
-                    imgProfile.Source = user.profileHttpsImageURL;
+                    ProfileImage.Source = user.ProfileHttpsImageURL;
                     parent.UpdateBinding(user);
                 })
             });
         }
 
-        private async void btnUpdate_Clicked(object sender, EventArgs e)
+        private async void UpdateButton_Clicked(object sender, EventArgs e)
         {
             try
             {
-                var user = await App.tail.twitter.UpdateProfile(issuer, editNickName.Text, editURL.Text, editLocation.Text, editDescription.Text, null);
+                var user = await App.Tail.TwitterAPI.UpdateProfileAsync(issuer, NickNameEditor.Text, URLEditor.Text, LocationEditor.Text, DescriptionEditor.Text, null);
                 parent.UpdateBinding(user);
                 await App.Navigation.PopAsync();
             }

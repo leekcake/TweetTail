@@ -20,8 +20,8 @@ namespace TweetTail.Components.Notification
 		public NotificationCell ()
 		{
 			InitializeComponent ();
-            statusView.viewHeader.GestureRecognizers.Clear();
-            statusView.viewHeader.GestureRecognizers.Add(new TapGestureRecognizer()
+            StatusView.HeaderView.GestureRecognizers.Clear();
+            StatusView.HeaderView.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
                 {
@@ -62,7 +62,7 @@ namespace TweetTail.Components.Notification
                     {
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(performer, App.tail.account.getAccountGroup(performer.issuer[0]).accountForRead));
+                    App.Navigation.PushAsync(new UserDetailPage(performer, App.Tail.Account.GetAccountGroup(performer.Issuer[0]).AccountForRead));
                 })
             });
 		}
@@ -75,17 +75,17 @@ namespace TweetTail.Components.Notification
             if(notification is DataNotification.Follow)
             {
                 var follow = notification as DataNotification.Follow;
-                statusView.viewButtons.IsVisible = false;
-                statusView.gridMedias.IsVisible = false;
-                statusView.viewHeader.IsVisible = true;
+                StatusView.ButtonsView.IsVisible = false;
+                StatusView.MediaGrid.IsVisible = false;
+                StatusView.HeaderView.IsVisible = true;
 
-                statusView.BindingContext = follow.Performer;
-                statusView.imgHeader.Source = "ic_person_add_light_green_500_24dp";
-                statusView.lblHeader.Text = follow.Performer.nickName + " 님이 팔로우 하셨습니다.";
+                StatusView.BindingContext = follow.Performer;
+                StatusView.HeaderImage.Source = "ic_person_add_light_green_500_24dp";
+                StatusView.HeaderLabel.Text = follow.Performer.NickName + " 님이 팔로우 하셨습니다.";
 
-                statusView.imgProfile.Source = follow.Performer.profileHttpsImageURL;
-                statusView.lblName.Text = follow.Performer.nickName + " @" + follow.Performer.screenName;
-                statusView.lblText.Text = follow.Performer.description;
+                StatusView.ProfileImage.Source = follow.Performer.ProfileHttpsImageURL;
+                StatusView.NameLabel.Text = follow.Performer.NickName + " @" + follow.Performer.ScreenName;
+                StatusView.TextLabel.Text = follow.Performer.Description;
 
                 return;
             }
@@ -93,40 +93,40 @@ namespace TweetTail.Components.Notification
             {
                 var data = notification as DataNotification.Retweet;
                 DisplayNotification(data.RetweetTargetTweet, "ic_repeat_green_300_24dp",
-                    data.Performer.nickName + " 님이 리트윗 하였습니다");
+                    data.Performer.NickName + " 님이 리트윗 하였습니다");
             }
             else if(notification is DataNotification.RetweetedMention)
             {
                 var data = notification as DataNotification.RetweetedMention;
                 DisplayNotification(data.RetweetedTweet, "ic_repeat_green_300_24dp",
-                    data.Performer.nickName + " 님이 내가 멘션된 트윗을 리트윗 하였습니다");
+                    data.Performer.NickName + " 님이 내가 멘션된 트윗을 리트윗 하였습니다");
             }
             else if(notification is DataNotification.RetweetedRetweet)
             {
                 var data = notification as DataNotification.RetweetedRetweet;
                 DisplayNotification(data.RetweetedTweet, "ic_repeat_green_300_24dp",
-                    data.Performer.nickName + " 님이 내가 리트윗한 트윗을 리트윗 하였습니다");
+                    data.Performer.NickName + " 님이 내가 리트윗한 트윗을 리트윗 하였습니다");
             }
             else if(notification is DataNotification.Favorited)
             {
                 var data = notification as DataNotification.Favorited;
                 DisplayNotification(data.FavoritedTweet, "ic_grade_yellow_light_24dp",
-                    data.Performer.nickName + " 님이 마음에 들어합니다");
+                    data.Performer.NickName + " 님이 마음에 들어합니다");
             }
             else if (notification is DataNotification.FavoritedMention)
             {
                 var data = notification as DataNotification.FavoritedMention;
                 DisplayNotification(data.RetweetedTweet, "ic_grade_yellow_light_24dp",
-                    data.Performer.nickName + " 님이 내가 멘션된 트윗을 좋아합니다");
+                    data.Performer.NickName + " 님이 내가 멘션된 트윗을 좋아합니다");
             }
             else if (notification is DataNotification.FavoritedRetweet)
             {
                 var data = notification as DataNotification.FavoritedRetweet;
                 DisplayNotification(data.FavoritedTweet, "ic_grade_yellow_light_24dp",
-                    data.Performer.nickName + " 님이 내가 리트윗 한 트윗을 마음에 들어합니다");
+                    data.Performer.NickName + " 님이 내가 리트윗 한 트윗을 마음에 들어합니다");
             }
-            statusView.viewButtons.IsVisible = true;
-            statusView.viewHeader.IsVisible = true;
+            StatusView.ButtonsView.IsVisible = true;
+            StatusView.HeaderView.IsVisible = true;
 
             if (notification is DataNotification.Mention)
             {
@@ -149,17 +149,17 @@ namespace TweetTail.Components.Notification
 
         private void DisplayNotification(DataStatus status, string headerIcon, string headerText)
         {
-            statusView.BindingContext = status;
-            statusView.Update();
+            StatusView.BindingContext = status;
+            StatusView.Update();
 
             if(headerIcon != null)
             {
-                statusView.imgHeader.Source = headerIcon;
+                StatusView.HeaderImage.Source = headerIcon;
             }
 
             if (headerText != null)
             {
-                statusView.lblHeader.Text = headerText;
+                StatusView.HeaderLabel.Text = headerText;
             }
         }
 

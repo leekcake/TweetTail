@@ -4,6 +4,6 @@
           xmlns:status="clr-namespace:TweetTail.Components.Status"
           x:Class="TweetTail.Components.Notification.NotificationCell">
   <ViewCell.View>
-        <status:StatusView x:Name="statusView"></status:StatusView>
+        <status:StatusView x:Name="StatusView"></status:StatusView>
   </ViewCell.View>
 </ViewCell>

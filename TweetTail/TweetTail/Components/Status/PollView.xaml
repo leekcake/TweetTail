@@ -9,7 +9,7 @@
             BackgroundColor="Transparent"
             CornerRadius="5"
             OutlineColor="White" >
-            <Label x:Name="lblText" Style="{DynamicResource labelStyle}" Text="Hello Xamarin.Forms!" />
+            <Label x:Name="StatusLabel" Style="{DynamicResource labelStyle}" Text="Hello Xamarin.Forms!" />
         </Frame>
     </ContentView.Content>
 </ContentView>

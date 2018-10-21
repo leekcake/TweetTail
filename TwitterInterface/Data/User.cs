@@ -11,42 +11,42 @@ namespace TwitterInterface.Data
     public class User
     {
         //이 유저정보를 얻기 위해 사용된 계정 아이디
-        public List<long> issuer;
+        public List<long> Issuer;
 
-        public long id;
-        public string nickName;
-        public string screenName;
+        public long ID;
+        public string NickName;
+        public string ScreenName;
 
-        public string location;
-        public string url;
-        public string description;
+        public string Location;
+        public string URL;
+        public string Description;
 
-        public URL[] urlURLEntity;
+        public URL[] URLEntities;
         public BasicEntitiesGroup descriptionEntities;
 
         //TODO: derived
 
-        public bool isProtected;
-        public bool isVerified;
+        public bool IsProtected;
+        public bool IsVerified;
 
-        public long followerCount;
-        public long followingCount;
-        public long listedCount;
+        public long FollowerCount;
+        public long FollowingCount;
+        public long ListedCount;
 
-        public long favouritesCount;
-        public long statusesCount;
-        public DateTime createdAt;
+        public long FavouritesCount;
+        public long StatusesCount;
+        public DateTime CreatedAt;
 
-        public bool geoEnabled;
-        public string language;
+        public bool GeoEnabled;
+        public string Language;
 
-        public string profileBackgroundColor; //TODO: make Color Class
-        public string profileBackgroundImageURL;
-        public string profileHttpsBackgroundImageURL;
-        public bool profileBackgroundTile;
+        public string ProfileBackgroundColor; //TODO: make Color Class
+        public string ProfileBackgroundImageURL;
+        public string ProfileHttpsBackgroundImageURL;
+        public bool ProfileBackgroundTile;
 
-        public string profileBannerURL;
-        public string profileImageURL;
-        public string profileHttpsImageURL;
+        public string ProfileBannerURL;
+        public string ProfileImageURL;
+        public string ProfileHttpsImageURL;
     }
 }

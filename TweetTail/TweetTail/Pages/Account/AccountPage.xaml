@@ -6,7 +6,7 @@
              x:Class="TweetTail.Pages.Account.AccountPage">
     <ContentPage.Content>
         <StackLayout>
-            <account:AccountListView x:Name="accountListView"
+            <account:AccountListView x:Name="AccountListView"
                                      SelectionMode="None">
                 <account:AccountListView.Footer>
                     <StackLayout MinimumWidthRequest="32">

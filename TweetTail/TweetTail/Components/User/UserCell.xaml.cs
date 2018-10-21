@@ -19,8 +19,8 @@ namespace TweetTail.Components.User
 
         protected override void OnBindingContextChanged()
         {
-            userView.BindingContext = BindingContext;
-            userView.Update();
+            UserView.BindingContext = BindingContext;
+            UserView.Update();
             base.OnBindingContextChanged();
         }
     }

@@ -8,12 +8,12 @@ namespace TwitterInterface.Container
     /// <summary>
     /// Helper class for login to twitter
     /// </summary>
-    public interface LoginToken
+    public interface ILoginToken
     {
-        string loginURL {
+        string LoginURL {
             get;
         }
 
-        Task<Account> login(string pin);
+        Task<Account> LoginAsync(string pin);
     }
 }

@@ -6,14 +6,14 @@
              x:Class="TweetTail.Pages.Login.TDLoginPage">
     <ContentPage.Content>
         <AbsoluteLayout>
-            <cookieswebview:CookieWebView x:Name="webTD"
+            <cookieswebview:CookieWebView x:Name="TDCookieWebView"
                 AbsoluteLayout.LayoutBounds="0,0,1,0.9"
                 AbsoluteLayout.LayoutFlags="All"
                 Source="https://tweetdeck.twitter.com" />
             <Button 
                 Style="{DynamicResource buttonStyle}"
                 AbsoluteLayout.LayoutBounds="0,1,1,0.1"
-                AbsoluteLayout.LayoutFlags="All" x:Name="btnExtract" Text="추출후 로그인" Clicked="btnExtract_Clicked"></Button>
+                AbsoluteLayout.LayoutFlags="All" x:Name="ExtractButton" Text="추출후 로그인" Clicked="ExtractButton_Clicked"></Button>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

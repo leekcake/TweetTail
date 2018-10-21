@@ -17,49 +17,49 @@ namespace Library.Manager
         private string savePath;
 
         private List<BlendedAccount> blendeds = new List<BlendedAccount>();
-        public ReadOnlyCollection<BlendedAccount> readOnlyBlendedAccounts => blendeds.AsReadOnly();
+        public ReadOnlyCollection<BlendedAccount> ReadOnlyBlendedAccounts => blendeds.AsReadOnly();
         public BlendedAccount SelectedBlendedAccount {
             get {
                 if (selectedBlendName == null) return null;
-                return blendeds.Find((data) => { return data.name == selectedBlendName; });
+                return blendeds.Find((data) => { return data.Name == selectedBlendName; });
             }
         }
+        private string selectedBlendName;
         public string SelectedBlendName {
             get {
                 return selectedBlendName;
             }
             set {
                 selectedBlendName = value;
-                save();
+                Save();
             }
         }
-        private string selectedBlendName;
         
         public BlendManager(TweetTail owner)
         {
             this.owner = owner;
-            savePath = Path.Combine(owner.saveDir, "blends.json");
-            load();
+            savePath = Path.Combine(owner.SaveDir, "blends.json");
+            Load();
         }
 
-        public void registerBlendedAccount(BlendedAccount blendedAccount)
+        public void RegisterBlendedAccount(BlendedAccount blendedAccount)
         {
             blendeds.Add(blendedAccount);
-            save();
+            Save();
         }
 
         public BlendedAccount GetBlendedAccount(string name)
         {
-            return blendeds.Find((data) => { return data.name == name; });
+            return blendeds.Find((data) => { return data.Name == name; });
         }
 
-        public void unregisterBlendedAccount(BlendedAccount blendedAccount)
+        public void UnregisterBlendedAccount(BlendedAccount blendedAccount)
         {
-            blendeds.RemoveAll((data) => { return data.name == blendedAccount.name; });
-            save();
+            blendeds.RemoveAll((data) => { return data.Name == blendedAccount.Name; });
+            Save();
         }
 
-        private void load()
+        private void Load()
         {
             if( !File.Exists(savePath) )
             {
@@ -71,11 +71,11 @@ namespace Library.Manager
 
             foreach(var blendJson in json["blendeds"].ToObject<JArray>())
             {
-                blendeds.Add(BlendedAccount.load(owner, blendJson.ToObject<JObject>()));
+                blendeds.Add(BlendedAccount.Load(owner, blendJson.ToObject<JObject>()));
             }
         }
 
-        public void save()
+        public void Save()
         {
             var json = new JObject();
             json["selectedBlendName"] = selectedBlendName;
@@ -84,7 +84,7 @@ namespace Library.Manager
             
             foreach(var blended in blendeds)
             {
-                blendArray.Add(blended.save());
+                blendArray.Add(blended.Save());
             }
             json["blendeds"] = blendArray;
 

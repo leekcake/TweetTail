@@ -10,33 +10,33 @@ using TwitterLibrary.Data;
 
 namespace TwitterLibrary.Container
 {
-    class LoginTokenImpl : LoginToken
+    class LoginToken : ILoginToken
     {
-        private APIImpl owner;
+        private API owner;
         private Token consumer, oauth;
 
-        public LoginTokenImpl(APIImpl owner, Token consumer, Token oauth)
+        public LoginToken(API owner, Token consumer, Token oauth)
         {
             this.owner = owner;
             this.consumer = consumer;
             this.oauth = oauth;
-            loginURL = "https://api.twitter.com/oauth/authenticate?oauth_token=" + oauth.key;
+            LoginURL = "https://api.twitter.com/oauth/authenticate?oauth_token=" + oauth.Key;
         }
-        public string loginURL { get; }
+        public string LoginURL { get; }
 
-        public async Task<Account> login(string pin)
+        public async Task<Account> LoginAsync(string pin)
         {
             var query = new List<KeyValuePair<string, string>>();
             query.Add(new KeyValuePair<string, string>("oauth_verifier", pin));
-            var response = await owner.Post("https://api.twitter.com/oauth/access_token", consumer, oauth, query);
+            var response = await owner.PostAsync("https://api.twitter.com/oauth/access_token", consumer, oauth, query);
             var data = HttpUtility.ParseQueryString(response);
 
             var account = new LibAccount();
-            account.consumer = consumer;
-            account.oauth = new Token(data["oauth_token"], data["oauth_token_secret"]);
-            account.id = long.Parse(data["user_id"]);
+            account.Consumer = consumer;
+            account.Oauth = new Token(data["oauth_token"], data["oauth_token_secret"]);
+            account.ID = long.Parse(data["user_id"]);
 
-            account.user = await owner.VerifyCredentials(account);
+            account.User = await owner.VerifyCredentialsAsync(account);
 
             return account;
         }

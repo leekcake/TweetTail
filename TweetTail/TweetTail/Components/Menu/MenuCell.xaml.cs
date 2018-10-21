@@ -27,26 +27,26 @@ namespace TweetTail.Components.Menu
 
             try
             {
-                lblTitle.Text = data.Title;
+                TitleLabel.Text = data.Title;
                 if (data.Description != null)
                 {
-                    lblDescription.IsVisible = true;
-                    lblDescription.Text = data.Description;
+                    DescriptionLabel.IsVisible = true;
+                    DescriptionLabel.Text = data.Description;
                 }
                 else
                 {
-                    lblDescription.IsVisible = false;
+                    DescriptionLabel.IsVisible = false;
                 }
                 
                 if (data.Icon != null)
                 {
-                    imgIcon.IsVisible = true;
-                    imgIcon.Source = data.Icon;
+                    IconImage.IsVisible = true;
+                    IconImage.Source = data.Icon;
                 }
                 else
                 {
-                    imgIcon.Source = null;
-                    imgIcon.IsVisible = false;
+                    IconImage.Source = null;
+                    IconImage.IsVisible = false;
                 }
             }
             catch

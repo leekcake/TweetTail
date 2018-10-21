@@ -25,26 +25,26 @@ namespace TweetTail.Components.Status
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            statusView.UpdateImage();
+            StatusView.UpdateImage();
         }
 
         protected override void OnBindingContextChanged()
         {
-            statusView.BindingContext = BindingContext;
-            statusView.Update();
+            StatusView.BindingContext = BindingContext;
+            StatusView.Update();
             base.OnBindingContextChanged();
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            statusView.ClearImage();
+            StatusView.ClearImage();
         }
 
         protected override void OnParentSet()
         {
             base.OnParentSet();
-            statusView.Update();
+            StatusView.Update();
         }
     }
 }

@@ -8,11 +8,11 @@ namespace TwitterInterface.Data
     {
         public CursoredList(long previousCursor, long nextCursor)
         {
-            this.previousCursor = previousCursor;
-            this.nextCursor = nextCursor;
+            this.PreviousCursor = previousCursor;
+            this.NextCursor = nextCursor;
         }
 
-        public long previousCursor;
-        public long nextCursor;
+        public long PreviousCursor;
+        public long NextCursor;
     }
 }

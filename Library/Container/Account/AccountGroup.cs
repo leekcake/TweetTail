@@ -15,43 +15,43 @@ namespace Library.Container.Account
 {
     public class AccountGroup
     {
-        private TweetTail owner;
+        private readonly TweetTail tail;
 
-        public long id;
-        public AccountGroup(TweetTail owner, long id)
+        public long ID;
+        public AccountGroup(TweetTail tail, long id)
         {
-            this.owner = owner;
-            this.id = id;
+            this.tail = tail;
+            this.ID = id;
         }
 
-        public AccountGroup(TweetTail owner, JObject data)
+        public AccountGroup(TweetTail tail, JObject data)
         {
-            this.owner = owner;
-            id = data["id"].ToObject<long>();
+            this.tail = tail;
+            ID = data["id"].ToObject<long>();
 
             foreach (var account in data["accounts"].ToObject<JArray>())
             {
-                accounts.Add(owner.twitter.LoadAccount(account.ToObject<JObject>()));
+                accounts.Add(tail.TwitterAPI.LoadAccount(account.ToObject<JObject>()));
             }
         }
 
         internal List<DataAccount> accounts = new List<DataAccount>();
-        public DataAccount accountForRead {
+        public DataAccount AccountForRead {
             get {
                 return accounts[0];
             }
         }
 
-        public DataAccount accountForWrite {
+        public DataAccount AccountForWrite {
             get {
                 return accounts.Count != 1 ? accounts[1] : accounts[0];
             }
         }
 
-        public JObject save()
+        public JObject Save()
         {
             var result = new JObject();
-            result["id"] = id;
+            result["id"] = ID;
 
             var accounts = new JArray();
             foreach (var account in this.accounts)

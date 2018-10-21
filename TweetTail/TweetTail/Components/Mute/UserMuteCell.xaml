@@ -4,6 +4,6 @@
           xmlns:user="clr-namespace:TweetTail.Components.User"
           x:Class="TweetTail.Components.Mute.UserMuteCell">
     <ViewCell.View>
-        <user:UserView x:Name="viewUser"></user:UserView>
+        <user:UserView x:Name="UserView"></user:UserView>
     </ViewCell.View>
 </ViewCell>

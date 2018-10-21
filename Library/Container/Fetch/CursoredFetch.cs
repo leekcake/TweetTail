@@ -27,7 +27,7 @@ namespace Library.Container.Fetch
         {
             var datas = await GetDatas(nextCursor);
 
-            nextCursor = datas.nextCursor;
+            nextCursor = datas.NextCursor;
 
             return datas;
         }

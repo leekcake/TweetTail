@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TwitterInterface.API
 {
-    public interface API : AccountAPI, CollectionAPI, MediaAPI, StatusAPI, TwitterListAPI, UserAPI
+    public interface IAPI : IAccountAPI, ICollectionAPI, IMediaAPI, IStatusAPI, ITwitterListAPI, IUserAPI
     {
     }
 }

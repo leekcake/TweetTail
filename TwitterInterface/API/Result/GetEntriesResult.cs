@@ -7,11 +7,11 @@ namespace TwitterInterface.API.Result
 {
     public struct GetEntriesResult
     {
-        public Collection collection;
-        public List<Status> tweet;
-        public List<Collection.CollectionTweet> collectionTweets;
+        public Collection Collection;
+        public List<Status> Tweet;
+        public List<Collection.CollectionTweet> CollectionTweets;
 
-        public long maxPosition;
-        public long minPosition;
+        public long MaxPosition;
+        public long MinPosition;
     }
 }

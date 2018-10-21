@@ -5,50 +5,50 @@
              xmlns:account="clr-namespace:TweetTail.Components.Account"
              x:Class="TweetTail.Components.Status.StatusView">
   <ContentView.Content>
-        <StackLayout Margin="4" x:Name="viewRoot">
-            <StackLayout x:Name="viewHeader" x:FieldModifier="Public" Orientation="Horizontal" >
-                <ffimageloading:CachedImage  x:Name="imgHeader" x:FieldModifier="Public" Source="ic_repeat_green_300_24dp" WidthRequest="16" HeightRequest="16" />
-                <Label  Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="lblHeader" Text="잉여님이 리트윗 하셨습니다"></Label>
+        <StackLayout Margin="4" x:Name="RootView">
+            <StackLayout x:Name="HeaderView" x:FieldModifier="Public" Orientation="Horizontal" >
+                <ffimageloading:CachedImage  x:Name="HeaderImage" x:FieldModifier="Public" Source="ic_repeat_green_300_24dp" WidthRequest="16" HeightRequest="16" />
+                <Label Style="{DynamicResource labelStyle}" x:FieldModifier="Public" x:Name="HeaderLabel" Text="잉여님이 리트윗 하셨습니다"></Label>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <ffimageloading:CachedImage x:Name="imgProfile"
+                <ffimageloading:CachedImage x:Name="ProfileImage"
                                              x:FieldModifier="Public"
                        VerticalOptions="Start"
                        WidthRequest="48"
                        HeightRequest="48"></ffimageloading:CachedImage>
                 <StackLayout HorizontalOptions="FillAndExpand">
                     <StackLayout Orientation="Horizontal">
-                        <Label Style="{DynamicResource labelStyle}" x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
-                        <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
+                        <Label Style="{DynamicResource labelStyle}" x:Name="NameLabel" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
+                        <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="LockImage" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
 
                         </ffimageloading:CachedImage>
                     </StackLayout>
 
-                    <Label Style="{DynamicResource labelStyle}" WidthRequest="300" x:FieldModifier="Public" LineBreakMode="WordWrap" x:Name="lblText" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
-                    <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
+                    <Label Style="{DynamicResource labelStyle}" WidthRequest="300" x:FieldModifier="Public" LineBreakMode="WordWrap" x:Name="TextLabel" Text="개발을 하는게 귀찮다고요? 당연한겁니다!"></Label>
+                    <Grid x:Name="MediaGrid" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
 
                     </Grid>
-                    <StackLayout x:Name="viewPollGroup">
-                        <StackLayout x:Name="viewPolls">
+                    <StackLayout x:Name="PollGroupView">
+                        <StackLayout x:Name="PollsView">
 
                         </StackLayout>
-                        <Label x:Name="lblPollStatus" Style="{DynamicResource labelStyle}"></Label>
+                        <Label x:Name="PollStatusLabel" Style="{DynamicResource labelStyle}"></Label>
                     </StackLayout>
-                    <Frame x:Name="viewQuoteStore"
+                    <Frame x:Name="QuoteViewFrame"
                             Padding="0"
                             BackgroundColor="Transparent"
                             CornerRadius="5"
                             IsVisible="False"
                             OutlineColor="White"
                            ></Frame>
-                    <Label Style="{DynamicResource labelStyle}" x:Name="lblCreatedAt" Text="2018년 9월 18일"></Label>
-                    <StackLayout x:Name="viewButtons" x:FieldModifier="Public" Orientation="Horizontal">
-                        <ffimageloading:CachedImage x:Name="imgReply" Source="ic_reply_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgRetweet" Source="ic_repeat_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgFavorite" Source="ic_grade_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgDelete" Source="ic_delete_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <ffimageloading:CachedImage x:Name="imgMore" Source="ic_more_horiz_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
-                        <account:IssuerView x:Name="viewIssuer" HorizontalOptions="End"></account:IssuerView>
+                    <Label Style="{DynamicResource labelStyle}" x:Name="CreatedAtLabel" Text="2018년 9월 18일"></Label>
+                    <StackLayout x:Name="ButtonsView" x:FieldModifier="Public" Orientation="Horizontal">
+                        <ffimageloading:CachedImage x:Name="ReplyImage" Source="ic_reply_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="RetweetImage" Source="ic_repeat_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="FavoriteImage" Source="ic_grade_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="DeleteImage" Source="ic_delete_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <ffimageloading:CachedImage x:Name="MoreImage" Source="ic_more_horiz_grey_500_24dp" WidthRequest="24" HeightRequest="24"></ffimageloading:CachedImage>
+                        <account:IssuerView x:Name="IssuerView" HorizontalOptions="End"></account:IssuerView>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

@@ -12,8 +12,8 @@ namespace TwitterInterface.Data
     /// </summary>
     public abstract class Account
     {
-        public long id;
-        public User user;
+        public long ID;
+        public User User;
 
         public abstract HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query);
 
@@ -37,7 +37,7 @@ namespace TwitterInterface.Data
         {
             var result = new JObject();
 
-            result["id"] = id;
+            result["id"] = ID;
 
             return result;
         }

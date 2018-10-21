@@ -6,8 +6,8 @@ namespace TwitterInterface.Data.Entity
 {
     public class UserMention
     {
-        public Indices indices;
-        public string name, screenNane;
-        public long id;
+        public Indices Indices;
+        public string Name, ScreenNane;
+        public long ID;
     }
 }

@@ -7,9 +7,9 @@ namespace TwitterInterface.Data
 {
     public class BasicEntitiesGroup
     {
-        public HashTag[] hashtags;
-        public URL[] urls;
-        public UserMention[] userMentions;
-        public Symbol[] symbols;
+        public HashTag[] Hashtags;
+        public URL[] URLs;
+        public UserMention[] UserMentions;
+        public Symbol[] Symbols;
     }
 }

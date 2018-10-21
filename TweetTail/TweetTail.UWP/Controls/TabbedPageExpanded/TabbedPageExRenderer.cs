@@ -13,14 +13,14 @@ namespace TweetTail.UWP.Controls.TabbedPageExpanded
 {
     public class TabbedPageExRenderer : TabbedPageRenderer
     {
-        private Xamarin.Forms.Page _prevPage;
+        private Xamarin.Forms.Page prevPage;
 
         protected override void OnElementChanged(VisualElementChangedEventArgs e)
         {
             base.OnElementChanged(e);
 
             Control.Tapped += Control_Tapped;
-            _prevPage = Control.SelectedItem as Xamarin.Forms.Page;
+            prevPage = Control.SelectedItem as Xamarin.Forms.Page;
         }
 
         private void Control_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
@@ -29,11 +29,11 @@ namespace TweetTail.UWP.Controls.TabbedPageExpanded
             if (src != null && src.Name == "TabbedPageHeaderTextBlock")
             {
                 var newPage = src.DataContext as Xamarin.Forms.Page;
-                if (newPage == _prevPage)
+                if (newPage == prevPage)
                 {
                     (Element as TabbedPageEx).OnTabReselected();
                 }
-                _prevPage = newPage;
+                prevPage = newPage;
             }
         }
     }

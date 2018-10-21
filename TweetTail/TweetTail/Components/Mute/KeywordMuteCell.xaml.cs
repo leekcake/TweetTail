@@ -25,17 +25,17 @@ namespace TweetTail.Components.Mute
             if (BindingContext == null) return;
 
             var mute = BindingContext as DataMute;
-            var target = mute.target as DataMute.KeywordTarget;
+            var target = mute.Target as DataMute.KeywordTarget;
 
             var builder = new StringBuilder();
-            builder.Append(target.keyword);
-            if (target.replace != null)
+            builder.Append(target.Keyword);
+            if (target.Replace != null)
             {
                 builder.Append(" => ");
-                builder.Append(target.replace);
+                builder.Append(target.Replace);
             }
 
-            label.Text = builder.ToString();
+            KeywordLabel.Text = builder.ToString();
         }
     }
 }

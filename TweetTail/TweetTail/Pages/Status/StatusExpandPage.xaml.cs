@@ -22,7 +22,7 @@ namespace TweetTail.Pages.Status
 		{
             this.parent = parent;
 			InitializeComponent();
-            statusLV.Items.Add(parent);
+            StatusListView.Items.Add(parent);
 
             Fetch();
 		}
@@ -31,20 +31,20 @@ namespace TweetTail.Pages.Status
         {
             try
             {
-                var fetch = await App.tail.twitter.GetConversation(App.tail.account.getAccountGroup(parent.issuer[0]).accountForRead, parent.id);
+                var fetch = await App.Tail.TwitterAPI.GetConversationAsync(App.Tail.Account.GetAccountGroup(parent.Issuer[0]).AccountForRead, parent.ID);
 
-                statusLV.Items.Clear();
+                StatusListView.Items.Clear();
                 DataStatus orig = null;
                 foreach(var status in fetch)
                 {
-                    if(status.id == parent.id)
+                    if(status.ID == parent.ID)
                     {
                         orig = status;
                     }
-                    statusLV.Items.Add(status);
+                    StatusListView.Items.Add(status);
                 }
                 if (orig != null) {
-                    statusLV.ScrollTo(orig, ScrollToPosition.MakeVisible, true);
+                    StatusListView.ScrollTo(orig, ScrollToPosition.MakeVisible, true);
                 }
             }
             catch(Exception e)

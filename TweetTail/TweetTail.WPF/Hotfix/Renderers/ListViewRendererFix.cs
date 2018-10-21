@@ -240,7 +240,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
             base.Dispose(disposing);
         }
 
-        private CancellationTokenSource token;
+        private CancellationTokenSource Token;
 
         //Dirty Refresh of Width
         protected override void UpdateWidth()
@@ -249,13 +249,13 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
             if (Control == null || Element == null)
                 return;
 
-            if (token != null)
+            if (Token != null)
             {
-                token.Cancel();
-                token = null;
+                Token.Cancel();
+                Token = null;
             }
-            token = new CancellationTokenSource();
-            var holder = token;
+            Token = new CancellationTokenSource();
+            var holder = Token;
 
             Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
             {
@@ -280,7 +280,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                 TemplatedItemsView.TemplatedItems.GroupedCollectionChanged += TemplatedItems_GroupedCollectionChanged;
                 
                 UpdateItemSource();
-                token = null;
+                Token = null;
             }));
         }
     }

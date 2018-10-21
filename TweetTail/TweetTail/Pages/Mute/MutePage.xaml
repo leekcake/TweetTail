@@ -4,7 +4,7 @@
              Style="{DynamicResource backgroundStyle}"
              x:Class="TweetTail.Pages.Mute.MutePage">
     <ContentPage.Content>
-        <ListView x:Name="lvMenu"                      
+        <ListView x:Name="MenuListView"                      
                   RowHeight="64"
                       SelectionMode="None">
 

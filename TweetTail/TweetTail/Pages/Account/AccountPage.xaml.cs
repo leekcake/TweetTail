@@ -18,13 +18,13 @@ namespace TweetTail.Pages.Account
 		{
 			InitializeComponent ();
 
-            foreach(var accountGroup in App.tail.account.readOnlyAccountGroups)
+            foreach(var accountGroup in App.Tail.Account.ReadOnlyAccountGroups)
             {
-                accountListView.Items.Add(accountGroup.accountForRead);
+                AccountListView.Items.Add(accountGroup.AccountForRead);
             }
-            accountListView.ItemTapped += AccountListView_ItemTapped;
+            AccountListView.ItemTapped += AccountListView_ItemTapped;
 
-            var view = accountListView.Footer as StackLayout;
+            var view = AccountListView.Footer as StackLayout;
             view.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() =>
@@ -37,9 +37,9 @@ namespace TweetTail.Pages.Account
         private void AccountListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             var item = e.Item as DataAccount;
-            if(item.id != App.tail.account.SelectedAccountId)
+            if(item.ID != App.Tail.Account.SelectedAccountId)
             {
-                App.tail.account.SelectedAccountId = item.id;
+                App.Tail.Account.SelectedAccountId = item.ID;
                 SingleTailPage.ReloadInNavigationStack();
                 App.Navigation.RemovePage(this);
             }

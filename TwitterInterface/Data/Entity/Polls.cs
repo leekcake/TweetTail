@@ -8,16 +8,16 @@ namespace TwitterInterface.Data.Entity
     {
         public class Option
         {
-            public int position;
-            public string name;
-            public int count;
+            public int Position;
+            public string Name;
+            public int Count;
         }
 
-        public DateTime endDateTime;
-        public int durationMinutes;
-        public Option[] options;
-        public string url; //If it parsed in card, card url
+        public DateTime EndDateTime;
+        public int DurationMinutes;
+        public Option[] Options;
+        public string URL; //If it parsed in card, card url
 
-        public int totalCount;
+        public int TotalCount;
     }
 }

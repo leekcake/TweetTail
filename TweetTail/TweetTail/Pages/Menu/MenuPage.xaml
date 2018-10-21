@@ -5,11 +5,11 @@
              x:Class="TweetTail.Pages.Menu.MenuPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Style="{DynamicResource labelStyle}" x:Name="lblBlendStatus"
+            <Label Style="{DynamicResource labelStyle}" x:Name="BlendStatusLabel"
                 Text="잉여 병합계정 사용중"
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand" />
-            <ListView x:Name="listView"
+            <ListView x:Name="ListView"
                       RowHeight="64"
                       SelectionMode="None">
             </ListView>

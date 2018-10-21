@@ -8,9 +8,9 @@
         <AbsoluteLayout             
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand">
-            <status:StatusListView AbsoluteLayout.LayoutBounds="0,0,1,0.9" AbsoluteLayout.LayoutFlags="All" x:Name="statusLV"></status:StatusListView>
+            <status:StatusListView AbsoluteLayout.LayoutBounds="0,0,1,0.9" AbsoluteLayout.LayoutFlags="All" x:Name="StatusListView"></status:StatusListView>
             <Editor Placeholder="검색어" Style="{DynamicResource editorStyle}" AbsoluteLayout.LayoutBounds="0,1,0.8,0.1" AbsoluteLayout.LayoutFlags="All" x:Name="editKeyword"></Editor>
-            <Button Text="검색" AbsoluteLayout.LayoutBounds="1,1,0.2,0.1" AbsoluteLayout.LayoutFlags="All" x:Name="btnSearch" Clicked="btnSearch_Clicked"></Button>
+            <Button Text="검색" AbsoluteLayout.LayoutBounds="1,1,0.2,0.1" AbsoluteLayout.LayoutFlags="All" x:Name="SearchButton" Clicked="SearchButton_Clicked"></Button>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

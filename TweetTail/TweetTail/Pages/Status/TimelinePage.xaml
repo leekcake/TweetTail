@@ -15,12 +15,12 @@
                                AbsoluteLayout.LayoutFlags="All">
             </status:StatusListView>
 
-            <Button x:Name="fabTweet"
+            <Button x:Name="TweetButton"
                                            AbsoluteLayout.LayoutFlags="PositionProportional"
                                            Margin="8"
                                            Image="ic_create_black_48dp"
                                        AbsoluteLayout.LayoutBounds=".0,1,100,100"
-                                       Clicked="fabTweet_Clicked"/>
+                                       Clicked="TweetButton_Clicked"/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

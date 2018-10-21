@@ -15,14 +15,14 @@ namespace TweetTail.WPF.Hotfix.Renderers.TabbedPageFix
 {
     public class TabbedPageRendererFix : TabbedPageRenderer
     {
-        private IContentLoader cleanupHelper = new FormsContentLoader();
+        private IContentLoader CleanupHelper = new FormsContentLoader();
         protected override void Dispose(bool disposing)
         {
             if (Control != null && Control.ItemsSource != null)
             {
                 foreach (var page in Control.ItemsSource)
                 {
-                    cleanupHelper.LoadContentAsync(Control, page, null, CancellationToken.None);
+                    CleanupHelper.LoadContentAsync(Control, page, null, CancellationToken.None);
                 }
             }
             base.Dispose(disposing);

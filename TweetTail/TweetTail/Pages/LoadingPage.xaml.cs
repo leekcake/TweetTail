@@ -20,7 +20,7 @@ namespace TweetTail.Pages
 
         public async Task StartVerify()
         {
-            await App.tail.account.VerifyAccounts();
+            await App.Tail.Account.VerifyAccounts();
 
             try
             {

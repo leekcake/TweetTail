@@ -5,7 +5,7 @@
           x:Class="TweetTail.Components.Account.AccountCell">
     <ViewCell.View>
         <StackLayout>
-            <user:UserView x:Name="userView"></user:UserView>
+            <user:UserView x:Name="UserView"></user:UserView>
         </StackLayout>
     </ViewCell.View>
 </ViewCell>

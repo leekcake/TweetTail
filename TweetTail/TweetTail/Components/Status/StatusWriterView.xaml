@@ -6,27 +6,27 @@
              x:Class="TweetTail.Components.Status.StatusWriterView">
     <ContentView.Content>
         <StackLayout>
-            <status:StatusView x:Name="viewReplyStatus" IsVisible="False"></status:StatusView>
-            <StackLayout Orientation="Horizontal" x:Name="viewWriter">
-                <ffimageloading:CachedImage x:Name="imgProfile"
+            <status:StatusView x:Name="ReplyStatusView" IsVisible="False"></status:StatusView>
+            <StackLayout Orientation="Horizontal" x:Name="WriterView">
+                <ffimageloading:CachedImage x:Name="ProfileImage"
                                              x:FieldModifier="Public"
                        VerticalOptions="Start"
                        WidthRequest="48"
                        HeightRequest="48"></ffimageloading:CachedImage>
-                <Label Style="{DynamicResource labelStyle}" x:Name="lblName" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
-                <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="imgLock" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
+                <Label Style="{DynamicResource labelStyle}" x:Name="NameLabel" x:FieldModifier="Public" Text="파란전기 @leekcake_smile"></Label>
+                <ffimageloading:CachedImage x:FieldModifier="Public" x:Name="LockImage" Source="ic_lock_black_24dp" WidthRequest="16" HeightRequest="16">
 
                 </ffimageloading:CachedImage>
             </StackLayout>
-            <Editor Style="{DynamicResource editorStyle}" x:Name="editText" Placeholder="무슨 잉여로운 일이 일어나고 있나요" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
-            <Grid x:Name="gridMedias" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
+            <Editor Style="{DynamicResource editorStyle}" x:Name="TextEditor" Placeholder="무슨 잉여로운 일이 일어나고 있나요" AutoSize="TextChanges" HorizontalOptions="FillAndExpand" ></Editor>
+            <Grid x:Name="MediaGrid" x:FieldModifier="Public" HeightRequest="300" HorizontalOptions="Fill">
 
             </Grid>
-            <ProgressBar x:Name="pbProgress"></ProgressBar>
-            <Label x:Name="lblProgress"></Label>
+            <ProgressBar x:Name="WriteProgressBar"></ProgressBar>
+            <Label x:Name="WriteProgressLabel"></Label>
             <StackLayout Orientation="Horizontal">
-                <Button x:Name="btnAddImage" Text="이미지" HorizontalOptions="Start" Clicked="btnAddImage_Clicked" ></Button>
-                <Button x:Name="btnTweet" Text="트윗하기" HorizontalOptions="End" Clicked="btnTweet_Clicked" ></Button>
+                <Button x:Name="AddImageButton" Text="이미지" HorizontalOptions="Start" Clicked="AddImageButton_Clicked" ></Button>
+                <Button x:Name="TweetButton" Text="트윗하기" HorizontalOptions="End" Clicked="TweetButton_Clicked" ></Button>
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

@@ -12,7 +12,7 @@ namespace TweetTail.Pages.Login
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : ContentPage
 	{
-        private LoginToken token;
+        private ILoginToken token;
 
         private bool isRegisterWrite = false;
 
@@ -21,21 +21,21 @@ namespace TweetTail.Pages.Login
 			InitializeComponent ();
 		}
 
-        private async void btnLoginComplete_Clicked(object sender, EventArgs e)
+        private async void LoginCompleteButton_Clicked(object sender, EventArgs e)
         {
             try
             {
-                var account = await token.login(editPin.Text);
-                App.tail.account.addAccount(account);
+                var account = await token.LoginAsync(PinEditor.Text);
+                App.Tail.Account.AddAccount(account);
                 if (!isRegisterWrite)
                 {
                     var answer = await DisplayAlert("쓰기용 정보 등록", "트윗테일은 트윗 작성등을 위한 쓰기용 토큰과 읽기용 토큰을 구분할 수 있습니다. 지금 등록합니까?", "예", "아니요");
                     if (answer)
                     {
                         isRegisterWrite = true;
-                        editPin.Text = "";
+                        PinEditor.Text = "";
                         token = null;
-                        btnLoginTry_Clicked(sender, e);
+                        LoginTryButton_Clicked(sender, e);
                         return;
                     }
                 }
@@ -48,29 +48,29 @@ namespace TweetTail.Pages.Login
             }
             catch (Exception ex)
             {
-                lblStatus.Text = ex.Message;
+                StatusLabel.Text = ex.Message;
             }
         }
 
-        private async void btnLoginTry_Clicked(object sender, EventArgs e)
+        private async void LoginTryButton_Clicked(object sender, EventArgs e)
         {
             if (token != null)
             {
-                Device.OpenUri(new Uri(token.loginURL));
+                Device.OpenUri(new Uri(token.LoginURL));
                 return;
             }
             if (isRegisterWrite)
             {
-                token = await App.tail.twitter.GetLoginTokenAsync(HiddenStore.consumerTokenForWrite);
+                token = await App.Tail.TwitterAPI.GetLoginTokenAsync(HiddenStore.ConsumerTokenForWrite);
             }
             else
             {
-                token = await App.tail.twitter.GetLoginTokenAsync(HiddenStore.consumerTokenForRead);
+                token = await App.Tail.TwitterAPI.GetLoginTokenAsync(HiddenStore.ConsumerTokenForRead);
             }
-            Device.OpenUri(new Uri(token.loginURL));
+            Device.OpenUri(new Uri(token.LoginURL));
         }
 
-        private void btnLoginTD_Clicked(object sender, EventArgs e)
+        private void LoginTDButton_Clicked(object sender, EventArgs e)
         {
             App.Navigation.PushAsync(new TDLoginPage());
             App.Navigation.RemovePage(this);
