@@ -235,7 +235,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     TemplatedItemsView.TemplatedItems.GroupedCollectionChanged -= TemplatedItems_GroupedCollectionChanged;
                 }
             }
-            Token.Dispose();
+            Token?.Dispose();
             _isDisposed = true;
             base.Dispose(disposing);
         }
