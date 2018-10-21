@@ -89,14 +89,14 @@ namespace TweetTail.Pages.Menu
         public void Update()
         {
             var item = Items[0];
-            try
+            var user = App.Tail.Account.SelectedAccountGroup?.AccountForRead?.User;
+            if (user != null)
             {
-                var user = App.Tail.Account.SelectedAccountGroup.AccountForRead.User;
                 item.Title = user.NickName + " @" + user.ScreenName;
                 item.Description = user.Description;
                 item.Icon = user.ProfileHttpsImageURL;
             }
-            catch(NullReferenceException)
+            else
             {
                 item.Title = "알 수 없음";
                 item.Description = "메인 유저 계정을 사용할 수 없습니다";

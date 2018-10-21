@@ -168,12 +168,13 @@ namespace TwitterLibrary
             {
                 user.descriptionEntities = new BasicEntitiesGroup();
 
-                var entities = obj["entities"];
+                var entities = obj["entities"].ToObject<JObject>();
 
                 ParseBasicEntitesGroup(user.descriptionEntities, entities["description"].ToObject<JObject>());
 
-                var urls = entities["url"]["urls"];
-                user.URLEntities = ParseArray(urls.ToObject<JArray>(), ParseURL);
+                var urls = entities["url"]?["urls"];
+                if(urls != null)
+                    user.URLEntities = ParseArray(urls.ToObject<JArray>(), ParseURL);
             }
             catch
             {
