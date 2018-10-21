@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Library.Container.Account;
 using Newtonsoft.Json.Linq;
 using TwitterInterface.Data;
+using TwitterLibrary;
 
 namespace Library.Manager
 {
@@ -19,6 +20,21 @@ namespace Library.Manager
             this.owner = owner;
             savePath = Path.Combine(owner.saveDir, "accounts.json");
             load();
+
+            TwitterDataFactory.userFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter( UpdateIfCan ) );
+        }
+
+        public User UpdateIfCan(User user)
+        {
+            var group = getAccountGroup(user.id);
+            if (group != null)
+            {
+                foreach(var account in group.accounts)
+                {
+                    account.user = user;
+                }
+            }
+            return user;
         }
 
         private List<AccountGroup> accountGroups = new List<AccountGroup>();
