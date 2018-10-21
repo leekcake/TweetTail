@@ -17,7 +17,7 @@ namespace Library.Manager
     public class MuteManager
     {
         internal TweetTail owner;
-        private string savePath;
+        private readonly string savePath;
 
         public MuteManager(TweetTail owner)
         {
@@ -78,11 +78,12 @@ namespace Library.Manager
 
         public void Save()
         {
-            var data = new JObject();
-
-            data["keywords"] = Save(keywordMutes);
-            data["users"] = Save(userMutes.Values);
-            data["statuses"] = Save(statusMutes.Values);
+            var data = new JObject
+            {
+                ["keywords"] = Save(keywordMutes),
+                ["users"] = Save(userMutes.Values),
+                ["statuses"] = Save(statusMutes.Values)
+            };
 
             File.WriteAllText(savePath, data.ToString(Formatting.None));
         }

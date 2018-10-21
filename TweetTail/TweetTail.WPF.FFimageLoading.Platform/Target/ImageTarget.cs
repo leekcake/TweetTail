@@ -59,13 +59,14 @@ namespace FFImageLoading.Targets
             if (animated)
             {
                 // fade animation
-                int fadeDuration = parameters.FadeAnimationDuration.HasValue ?
-                    parameters.FadeAnimationDuration.Value : ImageService.Instance.Config.FadeAnimationDuration;
-                DoubleAnimation fade = new DoubleAnimation();
-                fade.Duration = TimeSpan.FromMilliseconds(fadeDuration);
-                fade.From = 0f;
-                fade.To = 1f;
-                fade.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut };
+                int fadeDuration = parameters.FadeAnimationDuration ?? ImageService.Instance.Config.FadeAnimationDuration;
+                DoubleAnimation fade = new DoubleAnimation
+                {
+                    Duration = TimeSpan.FromMilliseconds(fadeDuration),
+                    From = 0f,
+                    To = 1f,
+                    EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut }
+                };
 
                 Storyboard fadeInStoryboard = new Storyboard();
                 Storyboard.SetTargetProperty(fade, new System.Windows.PropertyPath("Opacity"));
@@ -101,8 +102,7 @@ namespace FFImageLoading.Targets
 
         public override Image Control {
             get {
-                Image control;
-                if (!_controlWeakReference.TryGetTarget(out control))
+                if (!_controlWeakReference.TryGetTarget(out Image control))
                     return null;
 
                 if (control == null)

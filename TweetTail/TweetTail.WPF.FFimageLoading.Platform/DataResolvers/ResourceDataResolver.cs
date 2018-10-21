@@ -17,7 +17,7 @@ namespace FFImageLoading.DataResolvers
         {
             var asm = Assembly.GetEntryAssembly();
             string resName = asm.GetName().Name + ".g.resources";
-            using (var stream = asm.GetManifestResourceStream(resName))
+            var stream = asm.GetManifestResourceStream(resName);
             using (var reader = new System.Resources.ResourceReader(stream))
             {
                 return reader.Cast<DictionaryEntry>().Select(entry => (string)entry.Key).ToArray();
@@ -34,7 +34,9 @@ namespace FFImageLoading.DataResolvers
             }
         }
 
-        public async virtual Task<DataResolverResult> Resolve(string identifier, TaskParameter parameters, CancellationToken token)
+#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
+        public virtual async Task<DataResolverResult> Resolve(string identifier, TaskParameter parameters, CancellationToken token)
+#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         {
             try
             {

@@ -34,23 +34,13 @@ namespace TweetTail.Controls.CookiesWebView
 
         public virtual void OnNavigated(CookieNavigatedEventArgs args)
         {
-            var eventHandler = Navigated;
-
-            if (eventHandler != null)
-            {
-                eventHandler(this, args);
-            }
+            Navigated?.Invoke(this, args);
             Cookies = args.Cookies;
         }
 
         public virtual void OnNavigating(CookieNavigationEventArgs args)
         {
-            var eventHandler = Navigating;
-
-            if (eventHandler != null)
-            {
-                eventHandler(this, args);
-            }
+            Navigating?.Invoke(this, args);
         }
     }
 

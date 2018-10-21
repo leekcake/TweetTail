@@ -196,43 +196,55 @@ namespace TweetTail.Pages.User
 
         private void TweetButton_Clicked(object sender, EventArgs e)
         {
-            var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Userline(App.Tail, issuer, binding);
+            var listview = new StatusListView
+            {
+                Fetchable = new AccountFetch.Userline(App.Tail, issuer, binding)
+            };
             App.Navigation.PushAsync(new ContentPage() { Style = (Style) Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 트윗" });
         }
 
         private void MediaButton_Clicked(object sender, EventArgs e)
         {
-            var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Medialine(App.Tail, issuer, binding);
+            var listview = new StatusListView
+            {
+                Fetchable = new AccountFetch.Medialine(App.Tail, issuer, binding)
+            };
             App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 미디어" });
         }
 
         private void MentionButton_Clicked(object sender, EventArgs e)
         {
-            var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Search(App.Tail, issuer, "to:@" + binding.ScreenName, true);
+            var listview = new StatusListView
+            {
+                Fetchable = new AccountFetch.Search(App.Tail, issuer, "to:@" + binding.ScreenName, true)
+            };
             App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님에게 가고있는 멘션" });
         }
 
         private void FavoriteButton_Clicked(object sender, EventArgs e)
         {
-            var listview = new StatusListView();
-            listview.Fetchable = new AccountFetch.Favorites(App.Tail, issuer, binding);
+            var listview = new StatusListView
+            {
+                Fetchable = new AccountFetch.Favorites(App.Tail, issuer, binding)
+            };
             App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 관심글" });
         }
 
         private void FollowerButton_Clicked(object sender, EventArgs e)
         {
-            var listview = new UserListView();
-            listview.Fetchable = new AccountFetch.Followers(App.Tail, issuer, binding);
+            var listview = new UserListView
+            {
+                Fetchable = new AccountFetch.Followers(App.Tail, issuer, binding)
+            };
             App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 팔로워" });
         }
 
         private void FollowingButton_Clicked(object sender, EventArgs e)
         {
-            var listview = new UserListView();
-            listview.Fetchable = new AccountFetch.Followings(App.Tail, issuer, binding);
+            var listview = new UserListView
+            {
+                Fetchable = new AccountFetch.Followings(App.Tail, issuer, binding)
+            };
             App.Navigation.PushAsync(new ContentPage() { Style = (Style)Application.Current.Resources["backgroundStyle"], Content = listview, Title = binding.NickName + "님의 팔로잉" });
         }
 

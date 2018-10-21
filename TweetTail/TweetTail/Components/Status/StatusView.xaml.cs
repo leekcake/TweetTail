@@ -79,7 +79,7 @@ namespace TweetTail.Components.Status
                     {
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(Status.Creater, selected.AccountForRead));
+                    await App.Navigation.PushAsync(new UserDetailPage(Status.Creater, selected.AccountForRead));
                 })
             });
 
@@ -120,7 +120,9 @@ namespace TweetTail.Components.Status
 
                     page.Content = view;
                     page.Title = "트윗작성";
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                     App.Navigation.PushAsync(page);
+#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -142,7 +144,9 @@ namespace TweetTail.Components.Status
                         GetDisplayStatus(Status).IsRetweetedByUser = true;
                         UpdateButton();
                         RetweetImage.AbortAnimation("Spin");
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                         RetweetImage.RotateTo(360);
+#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                     }
                     catch (Exception e)
                     {
@@ -173,7 +177,9 @@ namespace TweetTail.Components.Status
                         UpdateButton();
 
                         FavoriteImage.AbortAnimation("Spin");
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                         FavoriteImage.RotateTo(360);
+#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                     }
                     catch (Exception e)
                     {

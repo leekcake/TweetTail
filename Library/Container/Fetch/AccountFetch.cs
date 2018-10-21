@@ -175,20 +175,20 @@ namespace Library.Container.Fetch
 
         public class Search : AccountSinceFetch<Status>
         {
-            private string Query;
-            private bool IsRecent;
-            private string Until;
+            private readonly string query;
+            private readonly bool isRecent;
+            private readonly string until;
 
             public Search(TweetTail tail, DataAccount account, string query, bool isRecent, string until = null) : base(tail, account)
             {
-                Query = query;
-                IsRecent = isRecent;
-                Until = until;
+                this.query = query;
+                this.isRecent = isRecent;
+                this.until = until;
             }
 
             protected override Task<List<Status>> GetDatas(long sinceId, long maxId)
             {
-                return tail.TwitterAPI.SearchTweetAsync(account, Query, IsRecent, 100, Until, sinceId, maxId);
+                return tail.TwitterAPI.SearchTweetAsync(account, query, isRecent, 100, until, sinceId, maxId);
             }
 
             protected override long GetID(Status data)

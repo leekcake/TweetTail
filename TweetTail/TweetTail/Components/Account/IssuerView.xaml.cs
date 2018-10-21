@@ -18,10 +18,12 @@ namespace TweetTail.Components.Account
         private List<CachedImage> issuerImages = new List<CachedImage>();
         private void AddNewIssuer()
         {
-            var image = new CachedImage();
-            image.WidthRequest = 16;
-            image.HeightRequest = 16;
-            image.Margin = new Thickness(0, 0, 4, 0);
+            var image = new CachedImage
+            {
+                WidthRequest = 16,
+                HeightRequest = 16,
+                Margin = new Thickness(0, 0, 4, 0)
+            };
             RootView.Children.Add(image);
             issuerImages.Add(image);
         }

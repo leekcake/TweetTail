@@ -25,48 +25,50 @@ namespace TweetTail.Pages.Menu
             Title = "Menu";
 			InitializeComponent ();
 
-            Items = new ObservableCollection<MenuData>();
-
-            Items.Add(new MenuData() {
-                Action = new Action(() =>
+            Items = new ObservableCollection<MenuData>
+            {
+                new MenuData()
                 {
-                    App.Navigation.PushAsync(new AccountPage());
-                })
-            });
+                    Action = new Action(() =>
+                    {
+                        App.Navigation.PushAsync(new AccountPage());
+                    })
+                },
+
+                new MenuData()
+                {
+                    Title = "계정 전환",
+                    Description = "계정을 전환합니다",
+                    Icon = "ic_account_box_grey_500_48dp",
+                    Action = new Action(() =>
+                    {
+                        App.Navigation.PushAsync(new BlendListPage());
+                    })
+                },
+
+                new MenuData()
+                {
+                    Title = "검색 하기",
+                    Description = "트위터를 검색합니다",
+                    Icon = "ic_search_grey_500_48dp",
+                    Action = new Action(() =>
+                    {
+                        App.Navigation.PushAsync(new SearchPage(App.Tail.Account.SelectedAccountGroup));
+                    })
+                },
+
+                new MenuData()
+                {
+                    Title = "뮤트목록",
+                    Description = "뮤트된 대상들을 확인하고 관리합니다",
+                    Icon = "ic_visibility_off_grey_500_24dp",
+                    Action = new Action(() =>
+                    {
+                        App.Navigation.PushAsync(new MutePage());
+                    })
+                }
+            };
             Update();
-
-            Items.Add(new MenuData()
-            {
-                Title = "계정 전환",
-                Description = "계정을 전환합니다",
-                Icon = "ic_account_box_grey_500_48dp",
-                Action = new Action(() =>
-                {
-                    App.Navigation.PushAsync(new BlendListPage());
-                })
-            });
-
-            Items.Add(new MenuData()
-            {
-                Title = "검색 하기",
-                Description = "트위터를 검색합니다",
-                Icon = "ic_search_grey_500_48dp",
-                Action = new Action(() =>
-                {
-                    App.Navigation.PushAsync(new SearchPage(App.Tail.Account.SelectedAccountGroup));
-                })
-            });
-
-            Items.Add(new MenuData()
-            {
-                Title = "뮤트목록",
-                Description = "뮤트된 대상들을 확인하고 관리합니다",
-                Icon = "ic_visibility_off_grey_500_24dp",
-                Action = new Action(() =>
-                {
-                    App.Navigation.PushAsync(new MutePage());
-                })
-            });
 
             ListView.ItemTemplate = new DataTemplate(typeof(MenuCell));
             ListView.ItemsSource = Items;
@@ -94,7 +96,7 @@ namespace TweetTail.Pages.Menu
                 item.Description = user.Description;
                 item.Icon = user.ProfileHttpsImageURL;
             }
-            catch(NullReferenceException nre)
+            catch(NullReferenceException)
             {
                 item.Title = "알 수 없음";
                 item.Description = "메인 유저 계정을 사용할 수 없습니다";

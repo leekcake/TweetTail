@@ -84,6 +84,9 @@ namespace TweetTail.Droid.Controls.FormsVideoLibrary
                 Element.UpdateStatus -= OnUpdateStatus;
             }
 
+            mediaController?.Dispose();
+            videoView?.Dispose();
+
             base.Dispose(disposing);
         }
 

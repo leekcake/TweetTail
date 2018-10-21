@@ -136,7 +136,7 @@ namespace TwitterLibrary
             return await ReadStringFromRequestMessage(client, account.GenerateRequest(method, uri, query));
         }
 
-        public async static Task<string> readStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
+        public async static Task<string> ReadStringFromTwitter(HttpClient client, HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
         {
             return await ReadStringFromRequestMessage(client, GenerateHttpRequest(method, uri, query, consumerToken, oauthToken));
         }
@@ -157,9 +157,11 @@ namespace TwitterLibrary
         /// <returns></returns>
         public static HttpRequestMessage GenerateHttpRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query, Token consumerToken, Token? oauthToken)
         {
-            HttpRequestMessage message = new HttpRequestMessage();
-            message.Method = method;
-            message.RequestUri = uri;
+            HttpRequestMessage message = new HttpRequestMessage
+            {
+                Method = method,
+                RequestUri = uri
+            };
 
             //Oauth Parameters
             var authorization = new SortedDictionary<string, string>();

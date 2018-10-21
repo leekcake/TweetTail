@@ -77,8 +77,7 @@ namespace TweetTail.WPF
                     if (iPos > 0)
                         strVal = strVal.Substring(0, iPos);
 
-                    int res = 0;
-                    if (int.TryParse(strVal, out res))
+                    if (int.TryParse(strVal, out int res))
                         maxVer = Math.Max(maxVer, res);
                 } // End if (strVal != null)
 

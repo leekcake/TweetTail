@@ -41,8 +41,7 @@ namespace FFImageLoading.Cache
 
         public ImageInformation GetInfo(string key)
         {
-            Tuple<BitmapSource, ImageInformation> cacheEntry;
-            if (_reusableBitmaps.TryGetValue(key, out cacheEntry))
+            if (_reusableBitmaps.TryGetValue(key, out Tuple<BitmapSource, ImageInformation> cacheEntry))
             {
                 return cacheEntry.Item2;
             }
@@ -55,9 +54,8 @@ namespace FFImageLoading.Cache
             if (string.IsNullOrWhiteSpace(key))
                 return null;
 
-            Tuple<BitmapSource, ImageInformation> cacheEntry;
 
-            if (_reusableBitmaps.TryGetValue(key, out cacheEntry) && cacheEntry.Item1 != null)
+            if (_reusableBitmaps.TryGetValue(key, out Tuple<BitmapSource, ImageInformation> cacheEntry) && cacheEntry.Item1 != null)
             {
                 return new Tuple<BitmapSource, ImageInformation>(cacheEntry.Item1, cacheEntry.Item2);
             }

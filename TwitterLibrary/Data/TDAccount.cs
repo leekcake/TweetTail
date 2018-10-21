@@ -35,17 +35,17 @@ namespace TwitterLibrary.Data
 
         public TDAccount MakeShadowCopy(long id)
         {
-            var result = new TDAccount();
-            result.csrfToken = csrfToken;
-            result.twitterSession = twitterSession;
-            result.authToken = authToken;
-            result.personalizationId = personalizationId;
-            result.lang = lang;
-            result.guestId = guestId;
-            result.ID = id;
-            result.isShadowCopy = true;
-
-            return result;
+            return new TDAccount
+            {
+                csrfToken = csrfToken,
+                twitterSession = twitterSession,
+                authToken = authToken,
+                personalizationId = personalizationId,
+                lang = lang,
+                guestId = guestId,
+                ID = id,
+                isShadowCopy = true
+            };
         }
 
         public override JObject Save()
@@ -65,24 +65,27 @@ namespace TwitterLibrary.Data
 
         public static TDAccount Load(JObject data)
         {
-            var result = new TDAccount();
-
-            result.ID = data["id"].ToObject<long>();
-            result.csrfToken = data["csrfToken"].ToString();
-            result.twitterSession = data["twitterSession"].ToString();
-            result.authToken = data["authToken"].ToString();
-            result.personalizationId = data["personalizationId"].ToString();
-            result.lang = data["lang"].ToString();
-            result.guestId = data["guestId"].ToString();
+            var result = new TDAccount
+            {
+                ID = data["id"].ToObject<long>(),
+                csrfToken = data["csrfToken"].ToString(),
+                twitterSession = data["twitterSession"].ToString(),
+                authToken = data["authToken"].ToString(),
+                personalizationId = data["personalizationId"].ToString(),
+                lang = data["lang"].ToString(),
+                guestId = data["guestId"].ToString()
+            };
 
             return result;
         }
 
         public override HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query)
         {
-            HttpRequestMessage message = new HttpRequestMessage();
-            message.Method = method;
-            message.RequestUri = uri;
+            HttpRequestMessage message = new HttpRequestMessage
+            {
+                Method = method,
+                RequestUri = uri
+            };
 
             message.Headers.Add("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAF7aAAAAAAAASCiRjWvh7R5wxaKkFp7MM%2BhYBqM%3DbQ0JPmjU9F6ZoMhDfI4uTNAaQuTDm2uO9x3WFVr2xBZ2nhjdP0");
 

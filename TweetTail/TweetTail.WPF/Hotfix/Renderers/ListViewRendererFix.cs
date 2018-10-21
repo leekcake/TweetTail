@@ -235,7 +235,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     TemplatedItemsView.TemplatedItems.GroupedCollectionChanged -= TemplatedItems_GroupedCollectionChanged;
                 }
             }
-
+            Token.Dispose();
             _isDisposed = true;
             base.Dispose(disposing);
         }
@@ -245,6 +245,9 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
         //Dirty Refresh of Width
         protected override void UpdateWidth()
         {
+            if (_isDisposed)
+                return;
+
             base.UpdateWidth();
             if (Control == null || Element == null)
                 return;

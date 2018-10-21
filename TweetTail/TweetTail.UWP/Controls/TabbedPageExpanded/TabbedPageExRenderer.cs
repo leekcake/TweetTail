@@ -25,8 +25,7 @@ namespace TweetTail.UWP.Controls.TabbedPageExpanded
 
         private void Control_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            var src = e.OriginalSource as TextBlock;
-            if (src != null && src.Name == "TabbedPageHeaderTextBlock")
+            if (e.OriginalSource is TextBlock src && src.Name == "TabbedPageHeaderTextBlock")
             {
                 var newPage = src.DataContext as Xamarin.Forms.Page;
                 if (newPage == prevPage)

@@ -56,9 +56,11 @@ namespace TweetTail
                 NavigationPage = new NavigationPage( new LoginPage() );
             }
 
-            var rootPage = new RootPage();
-            rootPage.Master = new MenuPage();
-            rootPage.Detail = NavigationPage;
+            var rootPage = new RootPage
+            {
+                Master = new MenuPage(),
+                Detail = NavigationPage
+            };
 
             MainPage = rootPage;
         }

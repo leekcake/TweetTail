@@ -123,15 +123,46 @@ namespace TwitterLibrary
 
         public static User ParseUser(JObject obj, long issuer, bool useFilter)
         {
-            var user = new User();
-            user.Issuer = new List<long> { issuer };
+            var user = new User
+            {
+                Issuer = new List<long> { issuer },
 
-            user.ID = obj["id"].ToObject<long>();
-            user.NickName = obj["name"].ToString();
-            user.ScreenName = obj["screen_name"].ToString();
-            user.Location = SafeGetString(obj, "location");
-            user.URL = SafeGetString(obj, "url");
-            user.Description = SafeGetString(obj, "description");
+                ID = obj["id"].ToObject<long>(),
+                NickName = obj["name"].ToString(),
+                ScreenName = obj["screen_name"].ToString(),
+                Location = SafeGetString(obj, "location"),
+                URL = SafeGetString(obj, "url"),
+                Description = SafeGetString(obj, "description"),
+
+                //TOOD: derived
+                IsProtected = obj["protected"].ToObject<bool>(),
+                IsVerified = obj["verified"].ToObject<bool>(),
+                FollowerCount = obj["followers_count"].ToObject<long>(),
+                FollowingCount = obj["friends_count"].ToObject<long>(),
+                ListedCount = obj["listed_count"].ToObject<long>(),
+                FavouritesCount = obj["favourites_count"].ToObject<long>(),
+                StatusesCount = obj["statuses_count"].ToObject<long>(),
+                CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString()),
+                GeoEnabled = obj["geo_enabled"].ToObject<bool>(),
+                Language = SafeGetString(obj, "lang"),
+                //TODO: contributors_enabled
+                ProfileBackgroundColor = obj["profile_background_color"].ToString(),
+                ProfileBackgroundImageURL = obj["profile_background_image_url"].ToString(),
+                ProfileHttpsBackgroundImageURL = obj["profile_background_image_url_https"].ToString(),
+                ProfileBackgroundTile = obj["profile_background_tile"].ToObject<bool>(),
+                ProfileBannerURL = SafeGetString(obj, "profile_banner_url"),
+                ProfileImageURL = obj["profile_image_url"].ToString(),
+                ProfileHttpsImageURL = obj["profile_image_url_https"].ToString()
+            };
+            //TODO: profile_link_color
+            //TODO: profile_sidebar_border_color
+            //TODO: profile_sidebar_fill_color
+            //TODO: profile_text_color
+            //TODO: profile_use_background_image
+            //TODO: default_profile
+            //TODO: default_profile_image
+            //TODO: withheld_in_countries
+            //TODO: withheld_scope
 
             try
             {
@@ -148,35 +179,6 @@ namespace TwitterLibrary
             {
 
             }
-
-            //TOOD: derived
-            user.IsProtected = obj["protected"].ToObject<bool>();
-            user.IsVerified = obj["verified"].ToObject<bool>();
-            user.FollowerCount = obj["followers_count"].ToObject<long>();
-            user.FollowingCount = obj["friends_count"].ToObject<long>();
-            user.ListedCount = obj["listed_count"].ToObject<long>();
-            user.FavouritesCount = obj["favourites_count"].ToObject<long>();
-            user.StatusesCount = obj["statuses_count"].ToObject<long>();
-            user.CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString());
-            user.GeoEnabled = obj["geo_enabled"].ToObject<bool>();
-            user.Language = SafeGetString(obj, "lang");
-            //TODO: contributors_enabled
-            user.ProfileBackgroundColor = obj["profile_background_color"].ToString();
-            user.ProfileBackgroundImageURL = obj["profile_background_image_url"].ToString();
-            user.ProfileHttpsBackgroundImageURL = obj["profile_background_image_url_https"].ToString();
-            user.ProfileBackgroundTile = obj["profile_background_tile"].ToObject<bool>();
-            user.ProfileBannerURL = SafeGetString(obj, "profile_banner_url");
-            user.ProfileImageURL = obj["profile_image_url"].ToString();
-            user.ProfileHttpsImageURL = obj["profile_image_url_https"].ToString();
-            //TODO: profile_link_color
-            //TODO: profile_sidebar_border_color
-            //TODO: profile_sidebar_fill_color
-            //TODO: profile_text_color
-            //TODO: profile_use_background_image
-            //TODO: default_profile
-            //TODO: default_profile_image
-            //TODO: withheld_in_countries
-            //TODO: withheld_scope
 
             if(!useFilter)
             {
@@ -208,31 +210,34 @@ namespace TwitterLibrary
 
         public static Status ParseStatus(JObject obj, long issuer, User creater)
         {
-            var status = new Status();
+            var status = new Status
+            {
+                Issuer = new List<long> { issuer },
+                CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString()),
+                ID = obj["id"].ToObject<long>(),
+                Text = SafeGetString(obj, "full_text"),
+                Source = obj["source"].ToString(),
+                Truncated = obj["truncated"].ToObject<bool>(),
+                ReplyToStatusId = SafeGetLong(obj, "in_reply_to_status_id"),
+                ReplyToUserId = SafeGetLong(obj, "in_reply_to_user_id"),
+                ReplyToScreenName = SafeGetString(obj, "in_reply_to_screen_name"),
+                Creater = creater,
+                //TODO: coordinates
+                //TODO: place
+                QuotedStatusId = SafeGetLong(obj, "quoted_status_id"),
+                IsQuote = obj["is_quote_status"].ToObject<bool>(),
+                QuotedStatus = SafeGetStatus(obj, "quoted_status", issuer),
+                RetweetedStatus = SafeGetStatus(obj, "retweeted_status", issuer),
+                RetweetCount = obj["retweet_count"].ToObject<int>(),
+                FavoriteCount = obj["favorite_count"].ToObject<int>()
+            };
+            var entities = obj["entities"].ToObject<JObject>();
 
-            status.Issuer = new List<long> { issuer };
-            status.CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString());
-            status.ID = obj["id"].ToObject<long>();
-            status.Text = SafeGetString(obj, "full_text");
             if (status.Text == null)
             {
                 status.Text = obj["text"].ToString();
             }
-            status.Source = obj["source"].ToString();
-            status.Truncated = obj["truncated"].ToObject<bool>();
-            status.ReplyToStatusId = SafeGetLong(obj, "in_reply_to_status_id");
-            status.ReplyToUserId = SafeGetLong(obj, "in_reply_to_user_id");
-            status.ReplyToScreenName = SafeGetString(obj, "in_reply_to_screen_name");
-            status.Creater = creater;
-            //TODO: coordinates
-            //TODO: place
-            status.QuotedStatusId = SafeGetLong(obj, "quoted_status_id");
-            status.IsQuote = obj["is_quote_status"].ToObject<bool>();
-            status.QuotedStatus = SafeGetStatus(obj, "quoted_status", issuer);
-            status.RetweetedStatus = SafeGetStatus(obj, "retweeted_status", issuer);
-            status.RetweetCount = obj["retweet_count"].ToObject<int>();
-            status.FavoriteCount = obj["favorite_count"].ToObject<int>();
-            var entities = obj["entities"].ToObject<JObject>();
+            
 
             ParseBasicEntitesGroup(status, entities);
             if (entities.ContainsKey("polls"))
@@ -295,61 +300,70 @@ namespace TwitterLibrary
 
         public static Indices ParseIndices(JArray obj)
         {
-            var indices = new Indices();
-
-            indices.Start = obj[0].ToObject<int>();
-            indices.End = obj[1].ToObject<int>();
+            var indices = new Indices
+            {
+                Start = obj[0].ToObject<int>(),
+                End = obj[1].ToObject<int>()
+            };
 
             return indices;
         }
 
         public static HashTag ParseHashTag(JObject obj)
         {
-            var hashtag = new HashTag();
-            hashtag.Indices = ParseIndices(obj["indices"].ToObject<JArray>());
-            hashtag.Text = obj["text"].ToString();
+            var hashtag = new HashTag
+            {
+                Indices = ParseIndices(obj["indices"].ToObject<JArray>()),
+                Text = obj["text"].ToString()
+            };
 
             return hashtag;
         }
 
         public static URL ParseURL(JObject obj)
         {
-            var url = new URL();
-            url.Indices = ParseIndices(obj["indices"].ToObject<JArray>());
-            url.RawURL = obj["url"].ToString();
-            url.DisplayURL = obj["display_url"].ToString();
-            url.ExpandedURL = obj["expanded_url"].ToString();
+            var url = new URL
+            {
+                Indices = ParseIndices(obj["indices"].ToObject<JArray>()),
+                RawURL = obj["url"].ToString(),
+                DisplayURL = obj["display_url"].ToString(),
+                ExpandedURL = obj["expanded_url"].ToString()
+            };
 
             return url;
         }
 
         public static UserMention ParseUserMention(JObject obj)
         {
-            var userMention = new UserMention();
-
-            userMention.Indices = ParseIndices(obj["indices"].ToObject<JArray>());
-            userMention.Name = obj["name"].ToString();
-            userMention.ScreenNane = obj["screen_name"].ToString();
-            userMention.ID = obj["id"].ToObject<long>();
+            var userMention = new UserMention
+            {
+                Indices = ParseIndices(obj["indices"].ToObject<JArray>()),
+                Name = obj["name"].ToString(),
+                ScreenNane = obj["screen_name"].ToString(),
+                ID = obj["id"].ToObject<long>()
+            };
 
             return userMention;
         }
 
         public static Symbol ParseSymbol(JObject obj)
         {
-            var symbol = new Symbol();
-            symbol.Indices = ParseIndices(obj["indices"].ToObject<JArray>());
-            symbol.Text = obj["text"].ToString();
+            var symbol = new Symbol
+            {
+                Indices = ParseIndices(obj["indices"].ToObject<JArray>()),
+                Text = obj["text"].ToString()
+            };
 
             return symbol;
         }
 
         public static Polls ParsePolls(JObject obj)
         {
-            var polls = new Polls();
-
-            polls.EndDateTime = ParseTwitterDateTime(obj["end_datetime"].ToString());
-            polls.DurationMinutes = obj["duration_minutes"].ToObject<int>();
+            var polls = new Polls
+            {
+                EndDateTime = ParseTwitterDateTime(obj["end_datetime"].ToString()),
+                DurationMinutes = obj["duration_minutes"].ToObject<int>()
+            };
 
             var options = obj["options"].ToObject<JArray>();
             polls.Options = ParseArray(options, ParsePollsOption);
@@ -359,31 +373,35 @@ namespace TwitterLibrary
 
         public static Polls.Option ParsePollsOption(JObject obj)
         {
-            var option = new Polls.Option();
-
-            option.Position = obj["position"].ToObject<int>();
-            option.Name = obj["text"].ToString();
+            var option = new Polls.Option
+            {
+                Position = obj["position"].ToObject<int>(),
+                Name = obj["text"].ToString()
+            };
 
             return option;
         }
 
         public static ExtendMedia ParseExtendMedia(JObject obj)
         {
-            var extendMedia = new ExtendMedia();
-
-            extendMedia.ID = obj["id"].ToObject<long>();
-            extendMedia.Indices = ParseIndices(obj["indices"].ToObject<JArray>());
-            extendMedia.MediaURL = obj["media_url"].ToString();
-            extendMedia.MediaURLHttps = obj["media_url_https"].ToString();
-            extendMedia.URL = ParseURL(obj);
-            extendMedia.Type = obj["type"].ToString();
+            var extendMedia = new ExtendMedia
+            {
+                ID = obj["id"].ToObject<long>(),
+                Indices = ParseIndices(obj["indices"].ToObject<JArray>()),
+                MediaURL = obj["media_url"].ToString(),
+                MediaURLHttps = obj["media_url_https"].ToString(),
+                URL = ParseURL(obj),
+                Type = obj["type"].ToString()
+            };
             if (obj.ContainsKey("video_info"))
             {
                 var infoObj = obj["video_info"].ToObject<JObject>();
-                var info = new VideoInformation();
-                info.AspectRatio = ParseIndices( infoObj["aspect_ratio"].ToObject<JArray>() );
-                //animated_gif doesn't have duration_millis data
-                info.Duration = SafeGetLong(infoObj, "duration_millis");
+                var info = new VideoInformation
+                {
+                    AspectRatio = ParseIndices(infoObj["aspect_ratio"].ToObject<JArray>()),
+                    //animated_gif doesn't have duration_millis data
+                    Duration = SafeGetLong(infoObj, "duration_millis")
+                };
                 var variantArray = infoObj["variants"].ToObject<JArray>();
                 info.Variants = ParseArray(variantArray, ParseVideoVariant);
 
@@ -395,34 +413,38 @@ namespace TwitterLibrary
 
         public static VideoVariant ParseVideoVariant(JObject obj)
         {
-            var variant = new VideoVariant();
-            variant.URL = obj["url"].ToString();
-            variant.Bitrate = (int) SafeGetLong(obj, "bitrate");
-            variant.ContentType = obj["content_type"].ToString();
+            var variant = new VideoVariant
+            {
+                URL = obj["url"].ToString(),
+                Bitrate = (int)SafeGetLong(obj, "bitrate"),
+                ContentType = obj["content_type"].ToString()
+            };
 
             return variant;
         }
 
         public static SavedSearch ParseSavedSearch(JObject obj)
         {
-            var savedSearch = new SavedSearch();
-
-            savedSearch.CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString());
-            savedSearch.ID = obj["id"].ToObject<long>();
-            savedSearch.Name = obj["name"].ToString();
-            savedSearch.Query = obj["query"].ToString();
+            var savedSearch = new SavedSearch
+            {
+                CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString()),
+                ID = obj["id"].ToObject<long>(),
+                Name = obj["name"].ToString(),
+                Query = obj["query"].ToString()
+            };
 
             return savedSearch;
         }
 
         public static Collection ParseCollection(JObject obj)
         {
-            var collection = new Collection();
-
-            collection.Type = obj["collection_type"].ToString();
-            collection.URL = obj["collection_url"].ToString();
-            collection.Description = obj["description"].ToString();
-            collection.Name = obj["name"].ToString();
+            var collection = new Collection
+            {
+                Type = obj["collection_type"].ToString(),
+                URL = obj["collection_url"].ToString(),
+                Description = obj["description"].ToString(),
+                Name = obj["name"].ToString()
+            };
             var order = obj["timeline_order"].ToString();
             if (order == "curation_reverse_chron")
             {
@@ -444,8 +466,10 @@ namespace TwitterLibrary
 
         public static Collection.CollectionTweet ParseCollectionTweet(JObject obj)
         {
-            var collectionTweet = new Collection.CollectionTweet();
-            collectionTweet.FeatureContext = obj["feature_context"].ToString();
+            var collectionTweet = new Collection.CollectionTweet
+            {
+                FeatureContext = obj["feature_context"].ToString()
+            };
             var tweet = obj["tweet"];
             collectionTweet.TweetId = tweet["id"].ToObject<long>();
             collectionTweet.TweetSortIndex = tweet["sort_index"].ToObject<long>();
@@ -455,32 +479,34 @@ namespace TwitterLibrary
 
         public static TwitterList ParseTwitterList(JObject obj, long issuer)
         {
-            var twitterList = new TwitterList();
-
-            twitterList.Slug = obj["slug"].ToString();
-            twitterList.Name = obj["name"].ToString();
-            twitterList.CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString());
-            twitterList.URL = obj["url"].ToString();
-            twitterList.SubscriberCount = obj["subscriber_count"].ToObject<long>();
-            twitterList.MemberCount = obj["member_count"].ToObject<long>();
-            twitterList.Mode = obj["mode"].ToString();
-            twitterList.ID = obj["id"].ToObject<long>();
-            twitterList.FullName = obj["full_name"].ToString();
-            twitterList.Description = obj["description"].ToString();
-            twitterList.User = ParseUser(obj["user"].ToObject<JObject>(), issuer);
+            var twitterList = new TwitterList
+            {
+                Slug = obj["slug"].ToString(),
+                Name = obj["name"].ToString(),
+                CreatedAt = ParseTwitterDateTime(obj["created_at"].ToString()),
+                URL = obj["url"].ToString(),
+                SubscriberCount = obj["subscriber_count"].ToObject<long>(),
+                MemberCount = obj["member_count"].ToObject<long>(),
+                Mode = obj["mode"].ToString(),
+                ID = obj["id"].ToObject<long>(),
+                FullName = obj["full_name"].ToString(),
+                Description = obj["description"].ToString(),
+                User = ParseUser(obj["user"].ToObject<JObject>(), issuer)
+            };
 
             return twitterList;
         }
 
         public static Friendship ParseFriendship(JObject obj)
         {
-            var friendship = new Friendship();
+            var friendship = new Friendship
+            {
+                ID = obj["id"].ToObject<long>(),
+                ScreenName = obj["screen_name"].ToString(),
+                Name = obj["name"].ToString()
+            };
 
-            friendship.ID = obj["id"].ToObject<long>();
-            friendship.ScreenName = obj["screen_name"].ToString();
-            friendship.Name = obj["name"].ToString();
-
-            foreach(var connection in obj["connections"])
+            foreach (var connection in obj["connections"])
             {
                 switch(connection.ToString())
                 {

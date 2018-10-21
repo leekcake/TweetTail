@@ -24,16 +24,14 @@ namespace FFImageLoading.Cache
 
         public bool ContainsKey(TKey key)
         {
-            TValue dummy;
-            return TryGetValue(key, out dummy);
+            return TryGetValue(key, out TValue dummy);
         }
 
         public TValue Get(TKey key)
         {
             lock (_lockObj)
             {
-                LinkedListNode<LRUCacheItem<TKey, TValue>> node;
-                if (_cacheMap.TryGetValue(key, out node))
+                if (_cacheMap.TryGetValue(key, out LinkedListNode<LRUCacheItem<TKey, TValue>> node))
                 {
                     TValue value = node.Value.Value;
                     _lruList.Remove(node);
@@ -69,8 +67,7 @@ namespace FFImageLoading.Cache
         {
             lock (_lockObj)
             {
-                LinkedListNode<LRUCacheItem<TKey, TValue>> node;
-                if (_cacheMap.TryGetValue(key, out node))
+                if (_cacheMap.TryGetValue(key, out LinkedListNode<LRUCacheItem<TKey, TValue>> node))
                 {
                     value = node.Value.Value;
 
@@ -136,8 +133,7 @@ namespace FFImageLoading.Cache
 
         public void Remove(TKey key)
         {
-            LinkedListNode<LRUCacheItem<TKey, TValue>> node;
-            if (_cacheMap.TryGetValue(key, out node))
+            if (_cacheMap.TryGetValue(key, out LinkedListNode<LRUCacheItem<TKey, TValue>> node))
             {
                 _lruList.Remove(node);
             }

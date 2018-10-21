@@ -16,7 +16,7 @@ namespace TweetTail.Pages.Mute
 	public partial class UserMutePage : ContentPage
 	{
         private DataMute mute;
-        private DataMute.UserTarget target {
+        private DataMute.UserTarget Target {
             get {
                 return mute.Target as DataMute.UserTarget;
             }
@@ -35,13 +35,13 @@ namespace TweetTail.Pages.Mute
 
             if(mute != null)
             {
-                GoAwaySwitch.IsToggled = target.MuteGoAway;
-                TweetSwitch.IsToggled = target.MuteTweet;
-                RetweetSwitch.IsToggled = target.MuteRetweet;
-                OutboundMentionSwitch.IsToggled = target.MuteOutboundMention;
-                SingleInboundMentionSwitch.IsToggled = target.MuteSingleInboundMention;
-                MultipleInboundMentionSwitch.IsToggled = target.MuteMultipleInboundMention;
-                MultipleInboundMentionForcelySwitch.IsToggled = target.MuteMultipleInboundMentionForcely;
+                GoAwaySwitch.IsToggled = Target.MuteGoAway;
+                TweetSwitch.IsToggled = Target.MuteTweet;
+                RetweetSwitch.IsToggled = Target.MuteRetweet;
+                OutboundMentionSwitch.IsToggled = Target.MuteOutboundMention;
+                SingleInboundMentionSwitch.IsToggled = Target.MuteSingleInboundMention;
+                MultipleInboundMentionSwitch.IsToggled = Target.MuteMultipleInboundMention;
+                MultipleInboundMentionForcelySwitch.IsToggled = Target.MuteMultipleInboundMentionForcely;
             }
 		}
 
@@ -51,21 +51,23 @@ namespace TweetTail.Pages.Mute
             if (mute == null)
             {
                 isNew = true;
-                mute = new DataMute();
-                mute.Target = new DataMute.UserTarget();
+                mute = new DataMute
+                {
+                    Target = new DataMute.UserTarget()
+                };
             }
 
-            target.ID = user.ID;
-            target.User = user;
-            target.MuteGoAway = GoAwaySwitch.IsToggled;
-            target.MuteTweet = TweetSwitch.IsToggled;
-            target.MuteRetweet = RetweetSwitch.IsToggled;
-            target.MuteOutboundMention = OutboundMentionSwitch.IsToggled;
-            target.MuteSingleInboundMention = SingleInboundMentionSwitch.IsToggled;
-            target.MuteMultipleInboundMention = MultipleInboundMentionSwitch.IsToggled;
-            target.MuteMultipleInboundMentionForcely = MultipleInboundMentionForcelySwitch.IsToggled;
+            Target.ID = user.ID;
+            Target.User = user;
+            Target.MuteGoAway = GoAwaySwitch.IsToggled;
+            Target.MuteTweet = TweetSwitch.IsToggled;
+            Target.MuteRetweet = RetweetSwitch.IsToggled;
+            Target.MuteOutboundMention = OutboundMentionSwitch.IsToggled;
+            Target.MuteSingleInboundMention = SingleInboundMentionSwitch.IsToggled;
+            Target.MuteMultipleInboundMention = MultipleInboundMentionSwitch.IsToggled;
+            Target.MuteMultipleInboundMentionForcely = MultipleInboundMentionForcelySwitch.IsToggled;
 
-            if (!target.IsNeedless)
+            if (!Target.IsNeedless)
             {
                 if (isNew)
                 {

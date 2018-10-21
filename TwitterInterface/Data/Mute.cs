@@ -19,9 +19,10 @@ namespace TwitterInterface.Data
 
         public static Mute Load(JObject obj)
         {
-            var mute = new Mute();
-            mute.Target = MuteTarget.Load(obj);
-            return mute;
+            return new Mute
+            {
+                Target = MuteTarget.Load(obj)
+            }; ;
         }
 
         public abstract class MuteTarget {

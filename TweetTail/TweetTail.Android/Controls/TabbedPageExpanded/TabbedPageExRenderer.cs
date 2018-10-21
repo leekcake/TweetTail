@@ -12,7 +12,7 @@ using System.Reflection;
 [assembly: ExportRenderer(typeof(TabbedPageEx), typeof(TabbedPageExRenderer))]
 namespace TweetTail.Droid.Controls.TabbedPageExpanded
 {
-    public class TabbedPageExRenderer : TabbedPageRenderer, TabLayout.IOnTabSelectedListener, BottomNavigationView.IOnNavigationItemReselectedListener
+    public sealed class TabbedPageExRenderer : TabbedPageRenderer, TabLayout.IOnTabSelectedListener, BottomNavigationView.IOnNavigationItemReselectedListener
     {
         public TabbedPageExRenderer(Context context) : base(context)
         {

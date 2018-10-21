@@ -18,8 +18,8 @@ namespace FFImageLoading.Cache
         readonly SemaphoreSlim fileWriteLock = new SemaphoreSlim(1, 1);
         readonly SemaphoreSlim _currentWriteLock = new SemaphoreSlim(1, 1);
         Task initTask = null;
-        string cacheFolderName;
-        string rootFolder;
+        readonly string cacheFolderName;
+        readonly string rootFolder;
         string cacheFolder;
         ConcurrentDictionary<string, byte> fileWritePendingTasks = new ConcurrentDictionary<string, byte>();
         ConcurrentDictionary<string, CacheEntry> entries = new ConcurrentDictionary<string, CacheEntry>();
@@ -56,21 +56,23 @@ namespace FFImageLoading.Cache
         protected Configuration Configuration { get; private set; }
         protected IMiniLogger Logger { get { return Configuration.Logger; } }
 
+#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         protected virtual async Task Init()
+#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         {
             cacheFolder = Path.Combine(rootFolder, cacheFolderName);
             Directory.CreateDirectory(cacheFolder);
-            await InitializeEntries().ConfigureAwait(false);
+            InitializeEntries();
             var task = CleanCallback();
         }
 
-        protected virtual async Task InitializeEntries()
+        protected virtual void InitializeEntries()
         {
             foreach (var file in Directory.GetFiles(cacheFolder))
             {
                 string key = Path.GetFileNameWithoutExtension(file);
-                var duration = GetDuration( Path.GetExtension(file) );
-                entries.TryAdd(key, new CacheEntry( File.GetCreationTimeUtc(file), duration, Path.GetFileName(file)));
+                var duration = GetDuration(Path.GetExtension(file));
+                entries.TryAdd(key, new CacheEntry(File.GetCreationTimeUtc(file), duration, Path.GetFileName(file)));
             }
         }
 
@@ -80,11 +82,12 @@ namespace FFImageLoading.Cache
             if (string.IsNullOrWhiteSpace(textToParse))
                 return Configuration.DiskCacheDuration;
 
-            int duration;
-            return int.TryParse(textToParse, out duration) ? TimeSpan.FromSeconds(duration) : Configuration.DiskCacheDuration;
+            return int.TryParse(textToParse, out int duration) ? TimeSpan.FromSeconds(duration) : Configuration.DiskCacheDuration;
         }
 
+#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         protected virtual async Task CleanCallback()
+#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         {
             KeyValuePair<string, CacheEntry>[] kvps;
             var now = DateTime.UtcNow;
@@ -92,8 +95,7 @@ namespace FFImageLoading.Cache
 
             foreach (var kvp in kvps)
             {
-                CacheEntry oldCacheEntry;
-                if (entries.TryRemove(kvp.Key, out oldCacheEntry))
+                if (entries.TryRemove(kvp.Key, out CacheEntry oldCacheEntry))
                 {
                     try
                     {
@@ -116,8 +118,7 @@ namespace FFImageLoading.Cache
         {
             await initTask.ConfigureAwait(false);
 
-            CacheEntry entry;
-            if (!entries.TryGetValue(key, out entry))
+            if (!entries.TryGetValue(key, out CacheEntry entry))
                 return null;
 
             return Path.Combine(cacheFolder, entry.FileName);
@@ -183,8 +184,7 @@ namespace FFImageLoading.Cache
                     }
                     finally
                     {
-                        byte finishedTask;
-                        fileWritePendingTasks.TryRemove(key, out finishedTask);
+                        fileWritePendingTasks.TryRemove(key, out byte finishedTask);
                         fileWriteLock.Release();
                     }
                 });
@@ -208,8 +208,7 @@ namespace FFImageLoading.Cache
 
             try
             {
-                CacheEntry entry;
-                if (!entries.TryGetValue(key, out entry))
+                if (!entries.TryGetValue(key, out CacheEntry entry))
                     return null;
 
                 return new FileStream(Path.Combine(cacheFolder, entry.FileName), FileMode.Open);
@@ -230,8 +229,7 @@ namespace FFImageLoading.Cache
 
             await WaitForPendingWriteIfExists(key).ConfigureAwait(false);
 
-            CacheEntry oldCacheEntry;
-            if (entries.TryRemove(key, out oldCacheEntry))
+            if (entries.TryRemove(key, out CacheEntry oldCacheEntry))
             {
                 try
                 {

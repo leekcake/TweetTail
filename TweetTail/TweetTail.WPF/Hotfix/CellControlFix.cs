@@ -17,8 +17,7 @@ namespace TweetTail.WPF.Hotfix
         
         private void CellControlFix_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            ICellController cell = DataContext as ICellController;
-            if (cell != null)
+            if (DataContext is ICellController cell)
             {
                 cell.SendAppearing();
             }

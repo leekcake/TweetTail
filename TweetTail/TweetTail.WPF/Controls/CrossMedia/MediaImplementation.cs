@@ -21,16 +21,17 @@ namespace TweetTail.WPF.Controls.CrossMedia
 
         public bool IsPickVideoSupported => true;
 
-        public async Task<bool> Initialize()
-        {
-            return true;
-        }
+#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
+        public async Task<bool> Initialize() => true;
+#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
 
         private Task<OpenFileDialog> PickFile(string title)
         {
             return Task.Run(() => {
-                var openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = title;
+                var openFileDialog = new OpenFileDialog
+                {
+                    Title = title
+                };
                 if (openFileDialog.ShowDialog() == false)
                 {
                     return null;
@@ -65,12 +66,16 @@ namespace TweetTail.WPF.Controls.CrossMedia
             }
         }
 
+#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         public async Task<MediaFile> TakePhotoAsync(StoreCameraMediaOptions options)
+#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         {
             return null;
         }
 
+#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         public async Task<MediaFile> TakeVideoAsync(StoreVideoOptions options)
+#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         {
             return null;
         }

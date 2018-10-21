@@ -58,8 +58,10 @@ namespace TwitterLibrary
 
             imageContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
 
-            var multipartContent = new MultipartFormDataContent();
-            multipartContent.Add(imageContent, name);
+            var multipartContent = new MultipartFormDataContent
+            {
+                { imageContent, name }
+            };
 
             message.Content = multipartContent;
         }
@@ -77,7 +79,7 @@ namespace TwitterLibrary
 
         internal async Task<string> GetAsync(string uri, Token consumer, Token? oauth, List<KeyValuePair<string, string>> query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query.ToArray(), consumer, oauth);
+            return await Utils.ReadStringFromTwitter(httpClient, HttpMethod.Get, new Uri(uri), query.ToArray(), consumer, oauth);
         }
 
         internal async Task<string> PostAsync(string uri, Account account, List<KeyValuePair<string, string>> query)
@@ -93,15 +95,17 @@ namespace TwitterLibrary
 
         internal async Task<string> PostAsync(string uri, Token consumer, Token? oauth, List<KeyValuePair<string, string>> query)
         {
-            return await Utils.readStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query.ToArray(), consumer, oauth);
+            return await Utils.ReadStringFromTwitter(httpClient, HttpMethod.Post, new Uri(uri), query.ToArray(), consumer, oauth);
         }
 
         internal readonly HttpClient httpClient;
 
         public API()
         {
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.UseCookies = false;
+            HttpClientHandler handler = new HttpClientHandler
+            {
+                UseCookies = false
+            };
 
             httpClient = new HttpClient(handler);
         }
@@ -126,30 +130,33 @@ namespace TwitterLibrary
             var response = await GetAsync("https://api.twitter.com/1.1/account/settings.json", account, MakeQuery());
 
             var obj = JObject.Parse(response);
-            var result = new AccountSetting();
-
-            result.IsAlwaysUseHttps = obj["always_use_https"].ToObject<bool>();
-            result.IsDiscoverableByEmail = obj["discoverable_by_email"].ToObject<bool>();
-            result.IsGeoEnabled = obj["geo_enabled"].ToObject<bool>();
-            result.Language = obj["language"].ToString();
-            result.IsProtected = obj["protected"].ToObject<bool>();
-            result.ScreenName = obj["screen_name"].ToString();
-            result.ShowAllInlineMedia = obj["show_all_inline_media"].ToObject<bool>();
-            result.SleepTime = new AccountSetting.SleepTimeData();
+            var result = new AccountSetting
+            {
+                IsAlwaysUseHttps = obj["always_use_https"].ToObject<bool>(),
+                IsDiscoverableByEmail = obj["discoverable_by_email"].ToObject<bool>(),
+                IsGeoEnabled = obj["geo_enabled"].ToObject<bool>(),
+                Language = obj["language"].ToString(),
+                IsProtected = obj["protected"].ToObject<bool>(),
+                ScreenName = obj["screen_name"].ToString(),
+                ShowAllInlineMedia = obj["show_all_inline_media"].ToObject<bool>(),
+                SleepTime = new AccountSetting.SleepTimeData()
+            };
             var sleepTime = obj["sleep_time"].ToObject<JObject>();
             result.SleepTime.IsEnabled = sleepTime["enabled"].ToObject<bool>();
             //TODO: startTime / endTime
             //TODO: timeZone
-            result.TrendLocation = new AccountSetting.TrendLocationData();
             var trendLocation = obj["trend_location"].ToObject<JObject>();
-            result.TrendLocation.Country = trendLocation["country"].ToString();
-            result.TrendLocation.CountryCode = trendLocation["countryCode"].ToString();
-            result.TrendLocation.Name = trendLocation["name"].ToString();
-            result.TrendLocation.ParentId = trendLocation["parentid"].ToObject<long>();
-            result.TrendLocation.PlaceTypeCode = trendLocation["placeType"]["code"].ToObject<long>();
-            result.TrendLocation.PlaceTypeName = trendLocation["placeType"]["name"].ToString();
-            result.TrendLocation.URL = trendLocation["url"].ToString();
-            result.TrendLocation.Woeid = trendLocation["woeid"].ToObject<long>();
+            result.TrendLocation = new AccountSetting.TrendLocationData
+            {
+                Country = trendLocation["country"].ToString(),
+                CountryCode = trendLocation["countryCode"].ToString(),
+                Name = trendLocation["name"].ToString(),
+                ParentId = trendLocation["parentid"].ToObject<long>(),
+                PlaceTypeCode = trendLocation["placeType"]["code"].ToObject<long>(),
+                PlaceTypeName = trendLocation["placeType"]["name"].ToString(),
+                URL = trendLocation["url"].ToString(),
+                Woeid = trendLocation["woeid"].ToObject<long>()
+            };
 
             result.UseCookiePersonalization = obj["use_cookie_personalization"].ToObject<bool>();
             result.AllowContributorRequest = obj["allow_contributor_request"].ToString();
@@ -162,9 +169,11 @@ namespace TwitterLibrary
             var response = await PostAsync("https://api.twitter.com/oauth/request_token", consumerToken, null, MakeQuery());
             var data = HttpUtility.ParseQueryString(response);
 
-            var token = new Token();
-            token.Key = data["oauth_token"];
-            token.Secret = data["oauth_token_secret"];
+            var token = new Token
+            {
+                Key = data["oauth_token"],
+                Secret = data["oauth_token_secret"]
+            };
 
             return new LoginToken(this, consumerToken, token);
         }
@@ -290,10 +299,11 @@ namespace TwitterLibrary
         private FindListResult FindList(string response)
         {
             var json = JObject.Parse(response);
-            var result = new FindListResult();
-
-            result.NextCursor = json["response"]["cursors"]["next_cursor"].ToString();
-            result.Collections = new List<Collection>();
+            var result = new FindListResult
+            {
+                NextCursor = json["response"]["cursors"]["next_cursor"].ToString(),
+                Collections = new List<Collection>()
+            };
 
             var results = json["response"]["result"].ToObject<JArray>();
             foreach (var timeline in results)
@@ -378,17 +388,21 @@ namespace TwitterLibrary
                 MakeQuery("id", id, "tweet_id", statusId.ToString()));
         }
 
-        private JObject makeCurateJson(string op, string id, long[] statusId)
+        private JObject MakeCurateJson(string op, string id, long[] statusId)
         {
-            var json = new JObject();
-            json["id"] = id;
+            var json = new JObject
+            {
+                ["id"] = id
+            };
             var changes = new JArray();
 
             foreach (var sid in statusId)
             {
-                var operationJson = new JObject();
-                operationJson["op"] = op;
-                operationJson["tweet_id"] = sid;
+                var operationJson = new JObject
+                {
+                    ["op"] = op,
+                    ["tweet_id"] = sid
+                };
                 changes.Add(operationJson);
             }
 
@@ -397,7 +411,7 @@ namespace TwitterLibrary
             return json;
         }
 
-        private async Task handleCurate(HttpRequestMessage message, JObject operation)
+        private async Task HandleCurate(HttpRequestMessage message, JObject operation)
         {
             message.Content = new StringContent(operation.ToString(), Encoding.UTF8, "application/json");
 
@@ -407,15 +421,15 @@ namespace TwitterLibrary
         public async Task AddAllTweetToCollectionAsync(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
             //TODO: Error handleing
-            await handleCurate(Utils.GenerateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
-            , account), makeCurateJson("add", id, statusId));
+            await HandleCurate(Utils.GenerateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
+            , account), MakeCurateJson("add", id, statusId));
         }
 
         public async Task RemoveAllTweetFromCollectionAsync(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
             //TODO: Error handleing
-            await handleCurate(Utils.GenerateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
-            , account), makeCurateJson("remove", id, statusId));
+            await HandleCurate(Utils.GenerateHttpRequest(HttpMethod.Post, new Uri("https://api.twitter.com/1.1/collections/entries/curate.json"), new KeyValuePair<string, string>[] { }
+            , account), MakeCurateJson("remove", id, statusId));
         }
 
         public async Task<long> UploadMediaAsync(Account account, string fileName, Stream image)
@@ -1512,8 +1526,8 @@ namespace TwitterLibrary
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/update.json", account,
                     MakeQuery("user_id", userId.ToString(),
-                    "device", enableDeviceNotifications != null ? enableDeviceNotifications.Value.ToString() : null,
-                    "retweets", enableRetweet != null ? enableRetweet.Value.ToString() : null)
+                    "device", enableDeviceNotifications?.ToString(),
+                    "retweets", enableRetweet?.ToString())
                 )), account.ID);
         }
 
@@ -1523,8 +1537,8 @@ namespace TwitterLibrary
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/update.json", account,
                     MakeQuery("screen_name", screenName,
-                    "device", enableDeviceNotifications != null ? enableDeviceNotifications.Value.ToString() : null,
-                    "retweets", enableRetweet != null ? enableRetweet.Value.ToString() : null)
+                    "device", enableDeviceNotifications?.ToString(),
+                    "retweets", enableRetweet?.ToString())
                 )), account.ID);
         }
 
@@ -1741,7 +1755,7 @@ namespace TwitterLibrary
             return TwitterDataFactory.ParseArray(result["statuses"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseStatus).ToList(); 
         }
 
-        private static User parseContributeesUser(JObject obj, long issuer)
+        private static User ParseContributeesUser(JObject obj, long issuer)
         {
             return TwitterDataFactory.ParseUser(obj["user"].ToObject<JObject>(), issuer);
         }
@@ -1756,7 +1770,7 @@ namespace TwitterLibrary
             var users = TwitterDataFactory.ParseArray(
                 JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/users/contributees.json", account, MakeQuery())
-            ), account.ID, parseContributeesUser);
+            ), account.ID, ParseContributeesUser);
 
             var result = new List<Account>();
 

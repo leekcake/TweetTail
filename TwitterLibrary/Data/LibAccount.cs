@@ -31,12 +31,12 @@ namespace TwitterLibrary.Data
 
         public static LibAccount Load(JObject data)
         {
-            var result = new LibAccount();
-            result.ID = data["id"].ToObject<long>();
-            result.Consumer = new Token(data["consumer_key"].ToString(), data["consumer_secret"].ToString());
-            result.Oauth = new Token(data["oauth_key"].ToString(), data["oauth_secret"].ToString());
-
-            return result;
+            return new LibAccount
+            {
+                ID = data["id"].ToObject<long>(),
+                Consumer = new Token(data["consumer_key"].ToString(), data["consumer_secret"].ToString()),
+                Oauth = new Token(data["oauth_key"].ToString(), data["oauth_secret"].ToString())
+            };
         }
 
         public override HttpRequestMessage GenerateRequest(HttpMethod method, Uri uri, KeyValuePair<string, string>[] query)

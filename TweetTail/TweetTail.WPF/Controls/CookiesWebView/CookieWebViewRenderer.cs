@@ -15,14 +15,17 @@ namespace TweetTail.WPF.Controls.CookiesWebView
 {
     public class CookieWebViewRenderer : WebViewRenderer
     {
-        [DllImport("wininet.dll", SetLastError = true)]
-        public static extern bool InternetGetCookieEx(
+        internal static class NativeMethods
+        {
+            [DllImport("wininet.dll", SetLastError = true)]
+            public static extern bool InternetGetCookieEx(
     string url,
     string cookieName,
     StringBuilder cookieData,
     ref int size,
     Int32 dwFlags,
     IntPtr lpReserved);
+        }
 
         private const Int32 InternetCookieHttponly = 0x2000;
 
@@ -37,13 +40,13 @@ namespace TweetTail.WPF.Controls.CookiesWebView
             // Determine the size of the cookie
             int datasize = 8192 * 16;
             StringBuilder cookieData = new StringBuilder(datasize);
-            if (!InternetGetCookieEx(uri.ToString(), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero))
+            if (!NativeMethods.InternetGetCookieEx(uri.ToString(), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero))
             {
                 if (datasize < 0)
                     return null;
                 // Allocate stringbuilder large enough to hold the cookie
                 cookieData = new StringBuilder(datasize);
-                if (!InternetGetCookieEx(
+                if (!NativeMethods.InternetGetCookieEx(
                     uri.ToString(),
                     null, cookieData,
                     ref datasize,

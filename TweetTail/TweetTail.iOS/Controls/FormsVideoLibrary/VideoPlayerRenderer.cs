@@ -72,6 +72,9 @@ namespace FormsVideoLibrary.iOS
             {
                 player.ReplaceCurrentItemWithPlayerItem(null);
             }
+            player?.Dispose();
+            playerItem?.Dispose();
+            _playerViewController?.Dispose();
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args)

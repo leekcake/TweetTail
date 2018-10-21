@@ -18,8 +18,10 @@ namespace TweetTail.Components
             images = new List<CachedImage>();
             for (int i = 0; i < 4; i++)
             {
-                var cached = new CachedImage();
-                cached.Aspect = Aspect.AspectFill;
+                var cached = new CachedImage
+                {
+                    Aspect = Aspect.AspectFill
+                };
                 images.Add(cached);
             }
 

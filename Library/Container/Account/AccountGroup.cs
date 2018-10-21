@@ -50,8 +50,10 @@ namespace Library.Container.Account
 
         public JObject Save()
         {
-            var result = new JObject();
-            result["id"] = ID;
+            var result = new JObject
+            {
+                ["id"] = ID
+            };
 
             var accounts = new JArray();
             foreach (var account in this.accounts)

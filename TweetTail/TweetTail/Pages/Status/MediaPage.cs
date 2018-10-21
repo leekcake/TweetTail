@@ -19,7 +19,7 @@ namespace TweetTail.Pages.Status
     {
         private class MediaView
         {
-            private MediaPage parent;
+            private readonly MediaPage parent;
             public AbsoluteLayout Layout = new AbsoluteLayout();
             public CachedImage Image = new CachedImage();
             public ProgressBar ImageProgressBar = new ProgressBar();

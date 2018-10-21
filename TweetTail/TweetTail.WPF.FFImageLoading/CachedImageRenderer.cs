@@ -103,8 +103,7 @@ namespace FFImageLoading.Forms.Platform
             var placeholderSource = await ImageSourceBinding.GetImageSourceBinding(image.LoadingPlaceholder, image).ConfigureAwait(false);
             var errorPlaceholderSource = await ImageSourceBinding.GetImageSourceBinding(image.ErrorPlaceholder, image).ConfigureAwait(false);
 
-            TaskParameter imageLoader;
-            image.SetupOnBeforeImageLoading(out imageLoader, ffSource, placeholderSource, errorPlaceholderSource);
+            image.SetupOnBeforeImageLoading(out TaskParameter imageLoader, ffSource, placeholderSource, errorPlaceholderSource);
 
             if (imageLoader != null)
             {

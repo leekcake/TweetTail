@@ -14,7 +14,7 @@ namespace Library.Manager
     public class BlendManager
     {
         internal TweetTail owner;
-        private string savePath;
+        private readonly string savePath;
 
         private List<BlendedAccount> blendeds = new List<BlendedAccount>();
         public ReadOnlyCollection<BlendedAccount> ReadOnlyBlendedAccounts => blendeds.AsReadOnly();
@@ -77,8 +77,10 @@ namespace Library.Manager
 
         public void Save()
         {
-            var json = new JObject();
-            json["selectedBlendName"] = selectedBlendName;
+            var json = new JObject
+            {
+                ["selectedBlendName"] = selectedBlendName
+            };
 
             var blendArray = new JArray();
             

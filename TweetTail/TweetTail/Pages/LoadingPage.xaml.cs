@@ -15,8 +15,10 @@ namespace TweetTail.Pages
 		public LoadingPage ()
 		{
 			InitializeComponent ();
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
             StartVerify();
-		}
+#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
+        }
 
         public async Task StartVerify()
         {

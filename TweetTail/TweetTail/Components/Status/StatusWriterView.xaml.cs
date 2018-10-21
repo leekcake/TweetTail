@@ -115,11 +115,12 @@ namespace TweetTail.Components.Status
             WriteProgressBar.Progress = 0d;
             WriteProgressLabel.Text = "초기화...";
 
-            var update = new StatusUpdate();
+            var update = new StatusUpdate
+            {
+                Text = TextEditor.Text
+            };
 
-            update.Text = TextEditor.Text;
-
-            if(replyStatus != null)
+            if (replyStatus != null)
             {
                 update.InReplyToStatusId = replyStatus.ID;
             }

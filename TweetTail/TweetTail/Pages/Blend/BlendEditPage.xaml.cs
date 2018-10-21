@@ -67,8 +67,10 @@ namespace TweetTail.Pages.Blend
             {
                 if (!VerifyName()) return;
 
-                target = new BlendedAccount(App.Tail);
-                target.Name = NameEditor.Text;
+                target = new BlendedAccount(App.Tail)
+                {
+                    Name = NameEditor.Text
+                };
 
                 App.Tail.Blend.RegisterBlendedAccount(target);
             }

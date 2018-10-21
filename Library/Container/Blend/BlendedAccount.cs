@@ -22,8 +22,10 @@ namespace Library.Container.Blend
 
         public static BlendedAccount Load(TweetTail tail, JObject obj)
         {
-            var value = new BlendedAccount(tail);
-            value.Name = obj["name"].ToString();
+            var value = new BlendedAccount(tail)
+            {
+                Name = obj["name"].ToString()
+            };
             var ids = obj["ids"].ToObject<JArray>();
             value.IDs = new long[ids.Count];
             for (int i = 0; i < ids.Count; i++)
@@ -36,9 +38,11 @@ namespace Library.Container.Blend
 
         public JObject Save()
         {
-            var result = new JObject();
-            result["name"] = Name;
-            result["ids"] = new JArray(IDs);
+            var result = new JObject
+            {
+                ["name"] = Name,
+                ["ids"] = new JArray(IDs)
+            };
 
             return result;
         }

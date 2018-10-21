@@ -35,11 +35,10 @@ namespace TwitterInterface.Data
 
         public virtual JObject Save()
         {
-            var result = new JObject();
-
-            result["id"] = ID;
-
-            return result;
+            return new JObject
+            {
+                ["id"] = ID
+            };
         }
     }
 }

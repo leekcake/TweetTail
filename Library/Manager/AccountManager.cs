@@ -14,7 +14,7 @@ namespace Library.Manager
     public class AccountManager
     {
         internal TweetTail owner;
-        private string savePath;
+        private readonly string savePath;
         public AccountManager(TweetTail owner)
         {
             this.owner = owner;
@@ -86,8 +86,7 @@ namespace Library.Manager
 
         public AccountGroup GetAccountGroup(long id)
         {
-            AccountGroup group;
-            if (accountDict.TryGetValue(id, out group))
+            if (accountDict.TryGetValue(id, out AccountGroup group))
             {
                 return group;
             }
@@ -191,8 +190,10 @@ namespace Library.Manager
 
         private void Save()
         {
-            var data = new JObject();
-            data["selectedAccountId"] = SelectedAccountId;
+            var data = new JObject
+            {
+                ["selectedAccountId"] = SelectedAccountId
+            };
 
             var accounts = new JArray();
             foreach(var accountGroup in accountGroups)

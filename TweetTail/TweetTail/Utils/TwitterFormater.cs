@@ -86,7 +86,7 @@ namespace TweetTail.Utils
                     {
                         var span = new Span()
                         {
-                            Text = link.Replace == null ? WebUtility.HtmlDecode(text.Substring(link.Indices.Start, link.Indices.Length)) : link.Replace,
+                            Text = link.Replace ?? WebUtility.HtmlDecode(text.Substring(link.Indices.Start, link.Indices.Length)),
                             TextColor = Color.Blue
                         };
                         span.GestureRecognizers.Add(new TapGestureRecognizer()
@@ -183,7 +183,9 @@ namespace TweetTail.Utils
                     var user = await App.Tail.TwitterAPI.GetUserAsync(account, mention.ID);
                     if (user != null)
                     {
+#pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                         App.Navigation.PushAsync(new UserDetailPage(user, account));
+#pragma warning restore CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
                     }
                 }), null);
             }

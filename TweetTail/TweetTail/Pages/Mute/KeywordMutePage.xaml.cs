@@ -38,8 +38,10 @@ namespace TweetTail.Pages.Mute
             if(origin == null)
             {
                 isNew = true;
-                origin = new DataMute();
-                origin.Target = new DataMute.KeywordTarget();
+                origin = new DataMute
+                {
+                    Target = new DataMute.KeywordTarget()
+                };
             }
             var target = origin.Target as DataMute.KeywordTarget;
             target.Keyword = KeywordEditor.Text;

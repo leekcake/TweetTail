@@ -63,7 +63,7 @@ namespace TweetTail.Droid.Controls.CookiesWebView
             });
         }
 
-        public static Dictionary<string, string> parseCookiesFromHeader(string cookie)
+        public static Dictionary<string, string> ParseCookiesFromHeader(string cookie)
         {
             cookie = cookie.Replace("\"", "");
             var result = new Dictionary<string, string>();
@@ -71,13 +71,13 @@ namespace TweetTail.Droid.Controls.CookiesWebView
             int inx = 0;
             while (inx != -1)
             {
-                inx = parseCookieFromJavascript(cookie, inx, result);
+                inx = ParseCookieFromJavascript(cookie, inx, result);
             }
 
             return result;
         }
 
-        private static int parseCookieFromJavascript(string cookie, int inx, Dictionary<string, string> result)
+        private static int ParseCookieFromJavascript(string cookie, int inx, Dictionary<string, string> result)
         {
             int last = -1;
             try
@@ -97,7 +97,7 @@ namespace TweetTail.Droid.Controls.CookiesWebView
         {
             var cookieHeader = CookieManager.Instance.GetCookie(url);
             var cookies = new CookieCollection();
-            var cookiePairs = parseCookiesFromHeader(cookieHeader); //cookieHeader.Split('&');
+            var cookiePairs = ParseCookiesFromHeader(cookieHeader); //cookieHeader.Split('&');
             foreach (var cookiePair in cookiePairs)
             {
                 cookies.Add(new Cookie

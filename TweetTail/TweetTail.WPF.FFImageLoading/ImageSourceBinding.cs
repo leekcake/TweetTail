@@ -37,8 +37,7 @@ namespace FFImageLoading.Forms.Platform
                 return null;
             }
 
-            var uriImageSource = source as UriImageSource;
-            if (uriImageSource != null)
+            if (source is UriImageSource uriImageSource)
             {
                 var uri = uriImageSource.Uri?.OriginalString;
                 if (string.IsNullOrWhiteSpace(uri))
@@ -47,8 +46,7 @@ namespace FFImageLoading.Forms.Platform
                 return new ImageSourceBinding(ImageSource.Url, uri);
             }
 
-            var fileImageSource = source as FileImageSource;
-            if (fileImageSource != null)
+            if (source is FileImageSource fileImageSource)
             {
                 if (string.IsNullOrWhiteSpace(fileImageSource.File))
                     return null;
@@ -56,14 +54,12 @@ namespace FFImageLoading.Forms.Platform
                 return new ImageSourceBinding(Work.ImageSource.Filepath, fileImageSource.File);
             }
 
-            var streamImageSource = source as StreamImageSource;
-            if (streamImageSource != null)
+            if (source is StreamImageSource streamImageSource)
             {
                 return new ImageSourceBinding(streamImageSource.Stream);
             }
 
-            var embeddedResoureSource = source as EmbeddedResourceImageSource;
-            if (embeddedResoureSource != null)
+            if (source is EmbeddedResourceImageSource embeddedResoureSource)
             {
                 var uri = embeddedResoureSource.Uri?.OriginalString;
                 if (string.IsNullOrWhiteSpace(uri))
@@ -72,8 +68,7 @@ namespace FFImageLoading.Forms.Platform
                 return new ImageSourceBinding(FFImageLoading.Work.ImageSource.EmbeddedResource, uri);
             }
 
-            var dataUrlSource = source as DataUrlImageSource;
-            if (dataUrlSource != null)
+            if (source is DataUrlImageSource dataUrlSource)
             {
                 if (string.IsNullOrWhiteSpace(dataUrlSource.DataUrl))
                     return null;
@@ -81,8 +76,7 @@ namespace FFImageLoading.Forms.Platform
                 return new ImageSourceBinding(FFImageLoading.Work.ImageSource.Url, dataUrlSource.DataUrl);
             }
 
-            var vectorSource = source as IVectorImageSource;
-            if (vectorSource != null)
+            if (source is IVectorImageSource vectorSource)
             {
                 if (vectorSource.VectorHeight == 0 && vectorSource.VectorHeight == 0)
                 {
