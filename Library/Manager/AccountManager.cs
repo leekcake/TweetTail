@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.Container.Account;
 using Newtonsoft.Json.Linq;
+using TwitterInterface.Container;
 using TwitterInterface.Data;
-using TwitterLibrary;
 
 namespace Library.Manager
 {
@@ -21,7 +21,7 @@ namespace Library.Manager
             savePath = Path.Combine(owner.SaveDir, "accounts.json");
             Load();
 
-            TwitterDataFactory.UserFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter( UpdateIfCan ) );
+            owner.TwitterAPI.UserFilter.RegisterFilter(new FilterStore<User>.Filter( UpdateIfCan ) );
         }
 
         public User UpdateIfCan(User user)

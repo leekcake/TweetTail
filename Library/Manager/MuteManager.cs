@@ -11,6 +11,7 @@ using TwitterInterface.Data.Entity;
 
 using TwitterLibrary;
 using System.Collections.ObjectModel;
+using TwitterInterface.Container;
 
 namespace Library.Manager
 {
@@ -25,8 +26,8 @@ namespace Library.Manager
             savePath = Path.Combine(owner.SaveDir, "mutes.json");
             Load();
 
-            TwitterDataFactory.StatusFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<Status>.Filter(Filter));
-            TwitterDataFactory.UserFilter.RegisterFilter(new TwitterLibrary.Container.FilterStore<User>.Filter(Filter));
+            owner.TwitterAPI.StatusFilter.RegisterFilter(new FilterStore<Status>.Filter(Filter));
+            owner.TwitterAPI.UserFilter.RegisterFilter(new FilterStore<User>.Filter(Filter));
         }
 
         private List<Mute> keywordMutes = new List<Mute>();

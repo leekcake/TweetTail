@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TwitterLibrary.Container
+namespace TwitterInterface.Container
 {
     public class FilterStore<T>
     {

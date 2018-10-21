@@ -100,6 +100,12 @@ namespace TwitterLibrary
 
         internal readonly HttpClient httpClient;
 
+        private TwitterDataFactory twitterDataFactory = new TwitterDataFactory();
+
+        public FilterStore<Status> StatusFilter => twitterDataFactory.StatusFilter;
+
+        public FilterStore<User> UserFilter => twitterDataFactory.UserFilter;
+
         public API()
         {
             HttpClientHandler handler = new HttpClientHandler
@@ -115,14 +121,14 @@ namespace TwitterLibrary
             var response = await PostAsync("https://api.twitter.com/1.1/saved_searches/create.json", account,
                 MakeQuery("query", query));
 
-            return TwitterDataFactory.ParseSavedSearch(JObject.Parse(response));
+            return twitterDataFactory.ParseSavedSearch(JObject.Parse(response));
         }
 
         public async Task<SavedSearch> DestroySavedSearchAsync(Account account, long id)
         {
             var response = await PostAsync("https://api.twitter.com/1.1/saved_searches/destroy/" + id + ".json", account, MakeQuery());
 
-            return TwitterDataFactory.ParseSavedSearch(JObject.Parse(response));
+            return twitterDataFactory.ParseSavedSearch(JObject.Parse(response));
         }
 
         public async Task<AccountSetting> GetAccountSettingAsync(Account account)
@@ -190,7 +196,7 @@ namespace TwitterLibrary
 
         public async Task<SavedSearch> GetSavedSearchByIdAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseSavedSearch(
+            return twitterDataFactory.ParseSavedSearch(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/saved_searches/show/" + id + ".json", account, MakeQuery())
                 ));
@@ -198,10 +204,10 @@ namespace TwitterLibrary
 
         public async Task<List<SavedSearch>> GetSavedSearchesAsync(Account account)
         {
-            return TwitterDataFactory.ParseArray(
+            return twitterDataFactory.ParseArray(
                 JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/saved_searches/list.json", account, MakeQuery())
-                ), TwitterDataFactory.ParseSavedSearch).ToList();
+                ), twitterDataFactory.ParseSavedSearch).ToList();
         }
 
         public Account LoadAccount(JObject data)
@@ -227,7 +233,7 @@ namespace TwitterLibrary
 
         public async Task<User> UpdateProfileAsync(Account account, string name, string url, string location, string description, string profileLinkColor)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                         await PostAsync("https://api.twitter.com/1.1/account/update_profile.json", account,
                         MakeQuery("name", name, "url", url, "location", location, "description", description, "profile_link_color", profileLinkColor)
@@ -255,7 +261,7 @@ namespace TwitterLibrary
 
             Utils.VerifyTwitterResponse(response);
 
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse( await response.Content.ReadAsStringAsync() ), account.ID
                 );
         }
@@ -264,7 +270,7 @@ namespace TwitterLibrary
         {
             var response = await GetAsync("https://api.twitter.com/1.1/account/verify_credentials.json", account, MakeQuery());
 
-            return TwitterDataFactory.ParseUser(JObject.Parse(response), account.ID);
+            return twitterDataFactory.ParseUser(JObject.Parse(response), account.ID);
         }
 
         public async Task<GetEntriesResult> GetEntriesAsync(Account account, string id, long count, long maxPosition = -1, long minPosition = -1)
@@ -282,15 +288,15 @@ namespace TwitterLibrary
             result.MinPosition = position["min_position"].ToObject<long>();
             result.MaxPosition = position["max_position"].ToObject<long>();
 
-            result.CollectionTweets = TwitterDataFactory.ParseArray(json["response"]["timeline"].ToObject<JArray>(), TwitterDataFactory.ParseCollectionTweet).ToList();
-            result.Collection = TwitterDataFactory.ParseCollection(json["objects"]["timelines"][
+            result.CollectionTweets = twitterDataFactory.ParseArray(json["response"]["timeline"].ToObject<JArray>(), twitterDataFactory.ParseCollectionTweet).ToList();
+            result.Collection = twitterDataFactory.ParseCollection(json["objects"]["timelines"][
                 json["response"]["timeline-id"].ToString()
                 ].ToObject<JObject>());
 
             result.Tweet = new List<Status>();
             foreach (var cTweet in result.CollectionTweets)
             {
-                result.Tweet.Add(TwitterDataFactory.ParseStatus(json["objects"]["tweets"][cTweet.TweetId.ToString()].ToObject<JObject>(), account.ID));
+                result.Tweet.Add(twitterDataFactory.ParseStatus(json["objects"]["tweets"][cTweet.TweetId.ToString()].ToObject<JObject>(), account.ID));
             }
 
             return result;
@@ -308,7 +314,7 @@ namespace TwitterLibrary
             var results = json["response"]["result"].ToObject<JArray>();
             foreach (var timeline in results)
             {
-                result.Collections.Add(TwitterDataFactory.ParseCollection(json["objects"]["timelines"][timeline["timeline-id"].ToString()].ToObject<JObject>()));
+                result.Collections.Add(twitterDataFactory.ParseCollection(json["objects"]["timelines"][timeline["timeline-id"].ToString()].ToObject<JObject>()));
             }
 
             return result;
@@ -340,7 +346,7 @@ namespace TwitterLibrary
             var json = JObject.Parse(await GetAsync("https://api.twitter.com/1.1/collections/show.json", account,
                 MakeQuery("id", id)));
 
-            return TwitterDataFactory.ParseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
+            return twitterDataFactory.ParseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
         }
 
         public async Task<Collection> CreateCollectionAsync(Account account, string name, string description, string url, Collection.Order? order)
@@ -348,7 +354,7 @@ namespace TwitterLibrary
             var json = JObject.Parse(await PostAsync("https://api.twitter.com/1.1/collections/create.json", account,
                 MakeQuery("name", name, "description", description, "url", url, "order", order != null ? Collection.OrderToString(order.Value) : null)));
 
-            return TwitterDataFactory.ParseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
+            return twitterDataFactory.ParseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
         }
 
         public async Task<Collection> UpdateCollectionAsync(Account account, string id, string name, string description, string url)
@@ -356,7 +362,7 @@ namespace TwitterLibrary
             var json = JObject.Parse(await PostAsync("https://api.twitter.com/1.1/collections/update.json", account,
                 MakeQuery("id", id, "name", name, "description", description, "url", url)));
             //TODO: I think UpdateColllection's result collection data is incomplete?
-            return TwitterDataFactory.ParseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
+            return twitterDataFactory.ParseCollection(json["objects"]["timelines"][json["response"]["timeline_id"].ToString()].ToObject<JObject>());
         }
 
         public async Task DestroyCollectionAsync(Account account, string id)
@@ -456,7 +462,7 @@ namespace TwitterLibrary
                 )
                 );
 
-            return TwitterDataFactory.ParseArray(response, account.ID, TwitterDataFactory.ParseStatus).ToList();
+            return twitterDataFactory.ParseArray(response, account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> GetUserlineAsync(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
@@ -467,7 +473,7 @@ namespace TwitterLibrary
                 )
                 );
 
-            return TwitterDataFactory.ParseArray(response, account.ID, TwitterDataFactory.ParseStatus).ToList();
+            return twitterDataFactory.ParseArray(response, account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> GetAccountRetweetsAsync(Account account, long count = 200, long sinceId = -1, long maxId = -1)
@@ -478,7 +484,7 @@ namespace TwitterLibrary
                 )
                 );
 
-            return TwitterDataFactory.ParseArray(response, account.ID, TwitterDataFactory.ParseStatus).ToList();
+            return twitterDataFactory.ParseArray(response, account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> GetMentionlineAsync(Account account, long count = 200, long sinceId = -1, long maxId = -1)
@@ -489,12 +495,12 @@ namespace TwitterLibrary
                 )
                 );
 
-            return TwitterDataFactory.ParseArray(response, account.ID, TwitterDataFactory.ParseStatus).ToList();
+            return twitterDataFactory.ParseArray(response, account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<Status> CreateStatusAsync(Account account, StatusUpdate update)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/statuses/update.json", account,
                 MakeQuery("status", update.Text,
                 "in_reply_to_status_id", update.InReplyToStatusId != -1 ? update.InReplyToStatusId.ToString() : null,
@@ -508,14 +514,14 @@ namespace TwitterLibrary
 
         public async Task<Status> DestroyStatusAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/statuses/destroy/" + id + ".json", account, MakeQuery())
                 ), account.ID);
         }
 
         public async Task<Status> GetStatusesAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/statuses/show.json", account,
                 MakeQuery("id", id.ToString())
                 )), account.ID);
@@ -523,31 +529,31 @@ namespace TwitterLibrary
 
         public async Task<List<Status>> GetStatusesAsync(Account account, long[] ids)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/statuses/lookup.json", account,
                 MakeQuery("id", string.Join(",", ids))
-                )), account.ID, TwitterDataFactory.ParseStatus).ToList();
+                )), account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<Status> RetweetStatusAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/statuses/retweet/" + id.ToString() + ".json", account, MakeQuery())
                 ), account.ID);
         }
 
         public async Task<Status> UnretweetStatusAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/statuses/unretweet/" + id.ToString() + ".json", account, MakeQuery())
                 ), account.ID);
         }
 
         public async Task<List<Status>> GetRetweetedStatusAsync(Account account, long id, long count = 100)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/statuses/retweets/" + id + ".json", account, MakeQuery("count", count.ToString()))
-                ), account.ID, TwitterDataFactory.ParseStatus).ToList();
+                ), account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<CursoredList<long>> GetRetweeterIdsAsync(Account account, long id, long count = 100, long cursor = -1)
@@ -566,14 +572,14 @@ namespace TwitterLibrary
 
         public async Task<Status> CreateFavoriteAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/favorites/create.json", account, MakeQuery("id", id.ToString()))
                 ), account.ID);
         }
 
         public async Task<Status> DestroyFavoriteAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseStatus(JObject.Parse(
+            return twitterDataFactory.ParseStatus(JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/favorites/destroy.json", account, MakeQuery("id", id.ToString()))
                 ), account.ID);
         }
@@ -588,7 +594,7 @@ namespace TwitterLibrary
                 "max_id", maxId != -1 ? maxId.ToString() : null)
                 ));
 
-            return TwitterDataFactory.ParseArray(response, account.ID, TwitterDataFactory.ParseStatus).ToList();
+            return twitterDataFactory.ParseArray(response, account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> GetFavoritesAsync(Account account, string userScreenName, long count = 200, long sinceId = -1, long maxId = -1)
@@ -601,23 +607,23 @@ namespace TwitterLibrary
                 "max_id", maxId != -1 ? maxId.ToString() : null)
                 ));
 
-            return TwitterDataFactory.ParseArray(response, account.ID, TwitterDataFactory.ParseStatus).ToList();
+            return twitterDataFactory.ParseArray(response, account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<TwitterList>> GetListsAsync(Account account, string screenName, bool reverse = false)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/list.json", account,
                 MakeQuery("screen_name", screenName, "reverse", reverse.ToString()))), account.ID,
-                TwitterDataFactory.ParseTwitterList).ToList();
+                twitterDataFactory.ParseTwitterList).ToList();
         }
 
         public async Task<List<TwitterList>> GetListsAsync(Account account, long userId, bool reverse = false)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/list.json", account,
                 MakeQuery("user_id", userId.ToString(), "reverse", reverse.ToString()))), account.ID,
-                TwitterDataFactory.ParseTwitterList).ToList();
+                twitterDataFactory.ParseTwitterList).ToList();
         }
 
         public async Task<CursoredList<User>> GetMemberOfListAsync(Account account, long listId, long count = 20, long cursor = -1)
@@ -630,8 +636,8 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -646,8 +652,8 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -662,15 +668,15 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseUser));
 
             return result;
         }
 
         public async Task<User> GetUserFromListAsync(Account account, long userId, long listId)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/members/show.json", account,
                 MakeQuery("user_id", userId.ToString(), "list_id", listId.ToString())
                 )), account.ID);
@@ -678,7 +684,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetUserFromListAsync(Account account, long userId, string slug, long ownerId)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/members/show.json", account,
                 MakeQuery("user_id", userId.ToString(), "slug", slug, "owner_id", ownerId.ToString())
                 )), account.ID);
@@ -686,7 +692,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetUserFromListAsync(Account account, long userId, string slug, string ownerScreenName)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/members/show.json", account,
                 MakeQuery("user_id", userId.ToString(), "slug", slug, "owner_screen_name", ownerScreenName)
                 )), account.ID);
@@ -694,7 +700,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetUserFromListAsync(Account account, string screenName, long listId)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/members/show.json", account,
                 MakeQuery("screen_name", screenName, "list_id", listId.ToString())
                 )), account.ID);
@@ -702,7 +708,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetUserFromListAsync(Account account, string screenName, string slug, long ownerId)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/members/show.json", account,
                 MakeQuery("screen_name", screenName, "slug", slug, "owner_id", ownerId.ToString())
                 )), account.ID);
@@ -710,7 +716,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetUserFromListAsync(Account account, string screenName, string slug, string ownerScreenName)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/members/show.json", account,
                 MakeQuery("screen_name", screenName, "slug", slug, "owner_screen_name", ownerScreenName)
                 )), account.ID);
@@ -726,8 +732,8 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<TwitterList>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseTwitterList));
+            result.AddRange(twitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseTwitterList));
 
             return result;
         }
@@ -742,8 +748,8 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<TwitterList>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseTwitterList));
+            result.AddRange(twitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseTwitterList));
 
             return result;
         }
@@ -758,8 +764,8 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<TwitterList>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseTwitterList));
+            result.AddRange(twitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseTwitterList));
 
             return result;
         }
@@ -774,15 +780,15 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<TwitterList>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseTwitterList));
+            result.AddRange(twitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseTwitterList));
 
             return result;
         }
 
         public async Task<TwitterList> GetListAsync(Account account, long listId)
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/show.json", account,
                 MakeQuery("list_id", listId.ToString())
                 )), account.ID);
@@ -790,7 +796,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> GetListAsync(Account account, string slug, long ownerId)
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/show.json", account,
                 MakeQuery("slug", slug, "owner_id", ownerId.ToString())
                 )), account.ID);
@@ -798,7 +804,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> GetListAsync(Account account, string slug, string ownerScreenName)
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/show.json", account,
                 MakeQuery("slug", slug, "owner_screen_name", ownerScreenName)
                 )), account.ID);
@@ -806,32 +812,32 @@ namespace TwitterLibrary
 
         public async Task<List<Status>> GetListlineAsync(Account account, long listId, long sinceId, long maxId)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/statuses.json", account,
                 MakeQuery("list_id", listId.ToString(),
                 "since_id", sinceId.ToString(), "max_id", maxId.ToString()
                 ))), account.ID,
-                TwitterDataFactory.ParseStatus).ToList();
+                twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> GetListlineAsync(Account account, string slug, long ownerId, long sinceId, long maxId)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/statuses.json", account,
                 MakeQuery("slug", slug, "owner_id", ownerId.ToString(),
                 "since_id", sinceId.ToString(), "max_id", maxId.ToString()
                 ))), account.ID,
-                TwitterDataFactory.ParseStatus).ToList();
+                twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> GetListlineAsync(Account account, string slug, string ownerScreenName, long sinceId, long maxId)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/lists/statuses.json", account,
                 MakeQuery("slug", slug, "owner_screen_name", ownerScreenName,
                 "since_id", sinceId.ToString(), "max_id", maxId.ToString()
                 ))), account.ID,
-                TwitterDataFactory.ParseStatus).ToList();
+                twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<CursoredList<User>> GetSubScribersFromListAsync(Account account, long listId, long count = 20, long cursor = -1)
@@ -845,7 +851,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -861,7 +867,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -877,14 +883,14 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
 
         public async Task<User> GetSubScriberFromListAsync(Account account, long userId, long listId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     MakeQuery("user_id", userId.ToString(),
@@ -894,7 +900,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetSubScriberFromListAsync(Account account, long userId, string slug, long ownerId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     MakeQuery("user_id", userId.ToString(),
@@ -904,7 +910,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetSubScriberFromListAsync(Account account, long userId, string slug, string ownerScreenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     MakeQuery("user_id", userId.ToString(),
@@ -914,7 +920,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetSubScriberFromListAsync(Account account, string screenName, long listId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     MakeQuery("screen_name", screenName,
@@ -924,7 +930,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetSubScriberFromListAsync(Account account, string screenName, string slug, long ownerId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     MakeQuery("screen_name", screenName,
@@ -934,7 +940,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetSubScriberFromListAsync(Account account, string screenName, string slug, string ownerScreenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await GetAsync("https://api.twitter.com/1.1/lists/subscribers/show.json", account,
                     MakeQuery("screen_name", screenName,
@@ -952,8 +958,8 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<TwitterList>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseTwitterList));
+            result.AddRange(twitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseTwitterList));
 
             return result;
         }
@@ -968,15 +974,15 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<TwitterList>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
-                TwitterDataFactory.ParseTwitterList));
+            result.AddRange(twitterDataFactory.ParseArray(response["lists"].ToObject<JArray>(), account.ID,
+                twitterDataFactory.ParseTwitterList));
 
             return result;
         }
 
         public async Task<TwitterList> CreateListAsync(Account account, string name, string mode = "public", string description = "")
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/create.json", account,
                 MakeQuery("name", name, "mode", mode, "description", description)
                 )), account.ID);
@@ -984,7 +990,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> UpdateListAsync(Account account, long listId, string name, string mode = "public", string description = "")
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/update.json", account,
                 MakeQuery("list_id", listId.ToString(),
                     "name", name, "mode", mode, "description", description)
@@ -993,7 +999,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> UpdateListAsync(Account account, string slug, long ownerId, string name, string mode = "public", string description = "")
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/update.json", account,
                 MakeQuery("slug", slug, "owner_id", ownerId.ToString(),
                     "name", name, "mode", mode, "description", description)
@@ -1002,7 +1008,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> UpdateListAsync(Account account, string slug, string ownerScreenName, string name, string mode = "public", string description = "")
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/update.json", account,
                 MakeQuery("slug", slug, "owner_screen_name", ownerScreenName,
                     "name", name, "mode", mode, "description", description)
@@ -1011,7 +1017,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> DestroyListAsync(Account account, long listId)
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/destroy.json", account,
                 MakeQuery("list_id", listId.ToString())
                 )), account.ID);
@@ -1019,7 +1025,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> DestroyListAsync(Account account, string slug, long ownerId)
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/destroy.json", account,
                 MakeQuery("slug", slug, "owner_id", ownerId.ToString())
                 )), account.ID);
@@ -1027,7 +1033,7 @@ namespace TwitterLibrary
 
         public async Task<TwitterList> DestroyListAsync(Account account, string slug, string ownerScreenName)
         {
-            return TwitterDataFactory.ParseTwitterList(JObject.Parse(
+            return twitterDataFactory.ParseTwitterList(JObject.Parse(
                 await PostAsync("https://api.twitter.com/1.1/lists/destroy.json", account,
                 MakeQuery("slug", slug, "owner_screen_name", ownerScreenName)
                 )), account.ID);
@@ -1286,7 +1292,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -1302,7 +1308,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -1356,7 +1362,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -1372,7 +1378,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -1413,20 +1419,20 @@ namespace TwitterLibrary
 
         public async Task<List<Friendship>> GetFriendshipAsync(Account account, params long[] userId)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/friendships/lookup.json", account,
                 MakeQuery("user_id", string.Join(",", userId))
                 ))
-                , TwitterDataFactory.ParseFriendship).ToList();
+                , twitterDataFactory.ParseFriendship).ToList();
         }
 
         public async Task<List<Friendship>> GetFriendshipAsync(Account account, params string[] screenName)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                 await GetAsync("https://api.twitter.com/1.1/friendships/lookup.json", account,
                 MakeQuery("screen_name", string.Join(",", screenName))
                 ))
-                , TwitterDataFactory.ParseFriendship).ToList();
+                , twitterDataFactory.ParseFriendship).ToList();
         }
 
         public async Task<List<long>> GetNoRetweetListOfAccountAsync(Account account)
@@ -1448,7 +1454,7 @@ namespace TwitterLibrary
 
         public async Task<Relationship> GetRelationshipAsync(Account account, long sourceId, long targetId)
         {
-            return TwitterDataFactory.ParseRelationship(JObject.Parse(
+            return twitterDataFactory.ParseRelationship(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/friendships/show.json", account,
                 MakeQuery("source_id", sourceId.ToString(), "target_id", targetId.ToString())
                 )));
@@ -1456,7 +1462,7 @@ namespace TwitterLibrary
 
         public async Task<Relationship> GetRelationshipAsync(Account account, string sourceScreenName, string targetScreenName)
         {
-            return TwitterDataFactory.ParseRelationship(JObject.Parse(
+            return twitterDataFactory.ParseRelationship(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/friendships/show.json", account,
                 MakeQuery("source_screen_name", sourceScreenName, "target_screen_name", targetScreenName)
                 )));
@@ -1464,23 +1470,23 @@ namespace TwitterLibrary
 
         public async Task<List<User>> GetUsersAsync(Account account, long[] userIds)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/users/lookup.json", account,
                     MakeQuery("user_id", string.Join(",", userIds))
-                )), account.ID, TwitterDataFactory.ParseUser).ToList();
+                )), account.ID, twitterDataFactory.ParseUser).ToList();
         }
 
         public async Task<List<User>> GetUsersAsync(Account account, string[] userScreenNames)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/users/lookup.json", account,
                     MakeQuery("screen_name", string.Join(",", userScreenNames))
-                )), account.ID, TwitterDataFactory.ParseUser).ToList();
+                )), account.ID, twitterDataFactory.ParseUser).ToList();
         }
 
         public async Task<User> GetUserAsync(Account account, long userIds)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/users/show.json", account,
                 MakeQuery("user_id", userIds.ToString())
                 )), account.ID);
@@ -1488,7 +1494,7 @@ namespace TwitterLibrary
 
         public async Task<User> GetUserAsync(Account account, string userScreenNames)
         {
-            return TwitterDataFactory.ParseUser(JObject.Parse(
+            return twitterDataFactory.ParseUser(JObject.Parse(
                 await GetAsync("https://api.twitter.com/1.1/users/show.json", account,
                 MakeQuery("screen_name", userScreenNames)
                 )), account.ID);
@@ -1496,15 +1502,15 @@ namespace TwitterLibrary
 
         public async Task<List<User>> SearchUsersAsync(Account account, string query, long page, long count = 20)
         {
-            return TwitterDataFactory.ParseArray(JArray.Parse(
+            return twitterDataFactory.ParseArray(JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/users/search.json", account,
                     MakeQuery("q", query, "page", page.ToString(), "count", count.ToString())
-                )), account.ID, TwitterDataFactory.ParseUser).ToList();
+                )), account.ID, twitterDataFactory.ParseUser).ToList();
         }
 
         public async Task<User> CreateFriendshipAsync(Account account, long userId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/create.json", account, 
                     MakeQuery("user_id", userId.ToString())
@@ -1513,7 +1519,7 @@ namespace TwitterLibrary
 
         public async Task<User> CreateFriendshipAsync(Account account, string screenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/create.json", account,
                     MakeQuery("screen_name", screenName)
@@ -1522,7 +1528,7 @@ namespace TwitterLibrary
 
         public async Task<User> UpdateFriendshipAsync(Account account, long userId, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/update.json", account,
                     MakeQuery("user_id", userId.ToString(),
@@ -1533,7 +1539,7 @@ namespace TwitterLibrary
 
         public async Task<User> UpdateFriendshipAsync(Account account, string screenName, bool? enableDeviceNotifications = null, bool? enableRetweet = null)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/update.json", account,
                     MakeQuery("screen_name", screenName,
@@ -1544,7 +1550,7 @@ namespace TwitterLibrary
 
         public async Task<User> DestroyFriendshipAsync(Account account, long userId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/destroy.json", account,
                     MakeQuery("user_id", userId.ToString())
@@ -1553,7 +1559,7 @@ namespace TwitterLibrary
 
         public async Task<User> DestroyFriendshipAsync(Account account, string screenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/friendships/destroy.json", account,
                     MakeQuery("screen_name", screenName)
@@ -1586,7 +1592,7 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
@@ -1617,14 +1623,14 @@ namespace TwitterLibrary
 
             var result = MakeCursoredList<User>(response);
 
-            result.AddRange(TwitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseUser));
+            result.AddRange(twitterDataFactory.ParseArray(response["users"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseUser));
 
             return result;
         }
 
         public async Task<User> BlockAsync(Account account, long userId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/blocks/create.json", account,
                     MakeQuery("user_id", userId.ToString())
@@ -1633,7 +1639,7 @@ namespace TwitterLibrary
 
         public async Task<User> BlockAsync(Account account, string screenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/blocks/create.json", account,
                     MakeQuery("screen_name", screenName)
@@ -1642,7 +1648,7 @@ namespace TwitterLibrary
 
         public async Task<User> UnblockAsync(Account account, long userId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/blocks/destroy.json", account,
                     MakeQuery("user_id", userId.ToString())
@@ -1651,7 +1657,7 @@ namespace TwitterLibrary
 
         public async Task<User> UnblockAsync(Account account, string screenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/blocks/destroy.json", account,
                     MakeQuery("screen_name", screenName)
@@ -1660,7 +1666,7 @@ namespace TwitterLibrary
 
         public async Task<User> MuteAsync(Account account, long userId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/mutes/users/create.json", account,
                     MakeQuery("user_id", userId.ToString())
@@ -1669,7 +1675,7 @@ namespace TwitterLibrary
 
         public async Task<User> MuteAsync(Account account, string screenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/mutes/users/create.json", account,
                     MakeQuery("screen_name", screenName)
@@ -1678,7 +1684,7 @@ namespace TwitterLibrary
 
         public async Task<User> UnmuteAsync(Account account, long userId)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/mutes/users/destroy.json", account,
                     MakeQuery("user_id", userId.ToString())
@@ -1687,7 +1693,7 @@ namespace TwitterLibrary
 
         public async Task<User> UnmuteAsync(Account account, string screenName)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/mutes/users/destroy.json", account,
                     MakeQuery("screen_name", screenName)
@@ -1696,7 +1702,7 @@ namespace TwitterLibrary
 
         public async Task<User> ReportSpamAsync(Account account, long userId, bool performBlock = true)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/users/report_spam.json", account,
                     MakeQuery("user_id", userId.ToString(),
@@ -1706,7 +1712,7 @@ namespace TwitterLibrary
 
         public async Task<User> ReportSpamAsync(Account account, string screenName, bool performBlock = true)
         {
-            return TwitterDataFactory.ParseUser(
+            return twitterDataFactory.ParseUser(
                 JObject.Parse(
                     await PostAsync("https://api.twitter.com/1.1/users/report_spam.json", account,
                     MakeQuery("screen_name", screenName,
@@ -1716,7 +1722,7 @@ namespace TwitterLibrary
 
         public async Task<List<Notification>> GetNotificationsAsync(Account account, int count = 40, long sinceId = -1, long maxId = -1)
         {
-            return TwitterDataFactory.ParseArray(
+            return twitterDataFactory.ParseArray(
                 JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/activity/about_me.json", account, 
                     MakeQuery("count", count.ToString(),
@@ -1727,12 +1733,12 @@ namespace TwitterLibrary
                             "skip_aggregation", "true")
                     )
                     ),
-                account.ID, TwitterDataFactory.ParseNotification).ToList();
+                account.ID, twitterDataFactory.ParseNotification).ToList();
         }
 
         public async Task<List<Status>> GetMedialineAsync(Account account, long userId, long count = 200, long sinceId = -1, long maxId = -1)
         {
-            return TwitterDataFactory.ParseArray(
+            return twitterDataFactory.ParseArray(
                 JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/statuses/media_timeline.json", account,
                     MakeQuery(
@@ -1740,7 +1746,7 @@ namespace TwitterLibrary
                         "count", count.ToString(),
                         "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null
                     )
-                )), account.ID, TwitterDataFactory.ParseStatus).ToList();
+                )), account.ID, twitterDataFactory.ParseStatus).ToList();
         }
 
         public async Task<List<Status>> SearchTweetAsync(Account account, string query, bool isRecent, int count = 100, string until = null, long sinceId = -1, long maxId = -1)
@@ -1752,12 +1758,12 @@ namespace TwitterLibrary
                 "since_id", sinceId != -1 ? sinceId.ToString() : null, "max_id", maxId != -1 ? maxId.ToString() : null)
                 ));
 
-            return TwitterDataFactory.ParseArray(result["statuses"].ToObject<JArray>(), account.ID, TwitterDataFactory.ParseStatus).ToList(); 
+            return twitterDataFactory.ParseArray(result["statuses"].ToObject<JArray>(), account.ID, twitterDataFactory.ParseStatus).ToList(); 
         }
 
-        private static User ParseContributeesUser(JObject obj, long issuer)
+        private User ParseContributeesUser(JObject obj, long issuer)
         {
-            return TwitterDataFactory.ParseUser(obj["user"].ToObject<JObject>(), issuer);
+            return twitterDataFactory.ParseUser(obj["user"].ToObject<JObject>(), issuer);
         }
 
         public async Task<List<Account>> GetContributeesAsync(Account account)
@@ -1767,7 +1773,7 @@ namespace TwitterLibrary
                 throw new InvalidOperationException("GetContributees must use tweetdeck account?");
             }
 
-            var users = TwitterDataFactory.ParseArray(
+            var users = twitterDataFactory.ParseArray(
                 JArray.Parse(
                     await GetAsync("https://api.twitter.com/1.1/users/contributees.json", account, MakeQuery())
             ), account.ID, ParseContributeesUser);
@@ -1788,7 +1794,7 @@ namespace TwitterLibrary
 
         public async Task<List<Status>> GetConversationAsync(Account account, long id)
         {
-            return TwitterDataFactory.ParseConversation( 
+            return twitterDataFactory.ParseConversation( 
                 JObject.Parse(await GetAsync("https://api.twitter.com/2/timeline/conversation/" + id + ".json", account, MakeQuery()))
                 , account.ID);
         }

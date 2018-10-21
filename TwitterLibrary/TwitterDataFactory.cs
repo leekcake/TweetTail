@@ -5,7 +5,7 @@ using TwitterInterface.Data;
 using TwitterInterface.Data.Entity;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
-using TwitterLibrary.Container;
+using TwitterInterface.Container;
 
 namespace TwitterLibrary
 {
@@ -14,12 +14,12 @@ namespace TwitterLibrary
         public const string TwitterDateTemplate = "ddd MMM dd HH:mm:ss +ffff yyyy";
         public const string PollsCardDateTemplate = "yyyy-MM-dd tt h:mm:ss";
 
-        private static DateTime ParseTwitterDateTime(string date)
+        private DateTime ParseTwitterDateTime(string date)
         {
             return DateTime.ParseExact(date, TwitterDateTemplate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
         }
 
-        private static DateTime ParsePollsCardDateTime(string date)
+        private DateTime ParsePollsCardDateTime(string date)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace TwitterLibrary
             }
         }
 
-        private static string SafeGetString(JObject obj, string key)
+        private string SafeGetString(JObject obj, string key)
         {
             if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
@@ -43,7 +43,7 @@ namespace TwitterLibrary
             }
         }
 
-        private static long SafeGetLong(JObject obj, string key)
+        private long SafeGetLong(JObject obj, string key)
         {
             if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
@@ -55,7 +55,7 @@ namespace TwitterLibrary
             }
         }
 
-        private static bool SafeGetBool(JObject obj, string key)
+        private bool SafeGetBool(JObject obj, string key)
         {
             if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
@@ -67,7 +67,7 @@ namespace TwitterLibrary
             }
         }
 
-        private static Status SafeGetStatus(JObject obj, string key, long issuer)
+        private Status SafeGetStatus(JObject obj, string key, long issuer)
         {
             if (obj.ContainsKey(key) && obj[key].ToString() != "")
             {
@@ -79,12 +79,12 @@ namespace TwitterLibrary
             }
         }
 
-        public static FilterStore<Status> StatusFilter = new FilterStore<Status>();
-        public static FilterStore<User> UserFilter = new FilterStore<User>();
+        public FilterStore<Status> StatusFilter = new FilterStore<Status>();
+        public FilterStore<User> UserFilter = new FilterStore<User>();
 
         public delegate T ParseObject<T>(JObject obj);
         public delegate T ParseObjectWithIssuer<T>(JObject obj, long issuer);
-        public static T[] ParseArray<T>(JArray array, ParseObject<T> parse)
+        public T[] ParseArray<T>(JArray array, ParseObject<T> parse)
         {
             var result = new List<T>(array.Count);
 
@@ -100,7 +100,7 @@ namespace TwitterLibrary
             return result.ToArray();
         }
 
-        public static T[] ParseArray<T>(JArray array, long issuer, ParseObjectWithIssuer<T> parse)
+        public T[] ParseArray<T>(JArray array, long issuer, ParseObjectWithIssuer<T> parse)
         {
             var result = new List<T>(array.Count);
 
@@ -116,12 +116,12 @@ namespace TwitterLibrary
             return result.ToArray();
         }
 
-        public static User ParseUser(JObject obj, long issuer)
+        public User ParseUser(JObject obj, long issuer)
         {
             return ParseUser(obj, issuer, true);
         }
 
-        public static User ParseUser(JObject obj, long issuer, bool useFilter)
+        public User ParseUser(JObject obj, long issuer, bool useFilter)
         {
             var user = new User
             {
@@ -188,12 +188,12 @@ namespace TwitterLibrary
             return UserFilter.ApplyFilter(user);
         }
 
-        public static Status ParseStatus(JObject obj, long issuer)
+        public Status ParseStatus(JObject obj, long issuer)
         {
             return ParseStatus(obj, issuer, ParseUser(obj["user"].ToObject<JObject>(), issuer, false));
         }
 
-        private static void ParseBasicEntitesGroup(BasicEntitiesGroup into, JObject entities)
+        private void ParseBasicEntitesGroup(BasicEntitiesGroup into, JObject entities)
         {
             if(entities.ContainsKey("hashtags"))
                 into.Hashtags = ParseArray(entities["hashtags"].ToObject<JArray>(), ParseHashTag);
@@ -208,7 +208,7 @@ namespace TwitterLibrary
                 into.Symbols = ParseArray(entities["symbols"].ToObject<JArray>(), ParseSymbol);
         }
 
-        public static Status ParseStatus(JObject obj, long issuer, User creater)
+        public Status ParseStatus(JObject obj, long issuer, User creater)
         {
             var status = new Status
             {
@@ -288,7 +288,7 @@ namespace TwitterLibrary
             return StatusFilter.ApplyFilter(status);
         }
 
-        public static Polls.Option ParseCardPollsOption(JObject binding, int inx)
+        public Polls.Option ParseCardPollsOption(JObject binding, int inx)
         {
             return new Polls.Option()
             {
@@ -298,7 +298,7 @@ namespace TwitterLibrary
             };
         }
 
-        public static Indices ParseIndices(JArray obj)
+        public Indices ParseIndices(JArray obj)
         {
             var indices = new Indices
             {
@@ -309,7 +309,7 @@ namespace TwitterLibrary
             return indices;
         }
 
-        public static HashTag ParseHashTag(JObject obj)
+        public HashTag ParseHashTag(JObject obj)
         {
             var hashtag = new HashTag
             {
@@ -320,7 +320,7 @@ namespace TwitterLibrary
             return hashtag;
         }
 
-        public static URL ParseURL(JObject obj)
+        public URL ParseURL(JObject obj)
         {
             var url = new URL
             {
@@ -333,7 +333,7 @@ namespace TwitterLibrary
             return url;
         }
 
-        public static UserMention ParseUserMention(JObject obj)
+        public UserMention ParseUserMention(JObject obj)
         {
             var userMention = new UserMention
             {
@@ -346,7 +346,7 @@ namespace TwitterLibrary
             return userMention;
         }
 
-        public static Symbol ParseSymbol(JObject obj)
+        public Symbol ParseSymbol(JObject obj)
         {
             var symbol = new Symbol
             {
@@ -357,7 +357,7 @@ namespace TwitterLibrary
             return symbol;
         }
 
-        public static Polls ParsePolls(JObject obj)
+        public Polls ParsePolls(JObject obj)
         {
             var polls = new Polls
             {
@@ -371,7 +371,7 @@ namespace TwitterLibrary
             return polls;
         }
 
-        public static Polls.Option ParsePollsOption(JObject obj)
+        public Polls.Option ParsePollsOption(JObject obj)
         {
             var option = new Polls.Option
             {
@@ -382,7 +382,7 @@ namespace TwitterLibrary
             return option;
         }
 
-        public static ExtendMedia ParseExtendMedia(JObject obj)
+        public ExtendMedia ParseExtendMedia(JObject obj)
         {
             var extendMedia = new ExtendMedia
             {
@@ -411,7 +411,7 @@ namespace TwitterLibrary
             return extendMedia;
         }
 
-        public static VideoVariant ParseVideoVariant(JObject obj)
+        public VideoVariant ParseVideoVariant(JObject obj)
         {
             var variant = new VideoVariant
             {
@@ -423,7 +423,7 @@ namespace TwitterLibrary
             return variant;
         }
 
-        public static SavedSearch ParseSavedSearch(JObject obj)
+        public SavedSearch ParseSavedSearch(JObject obj)
         {
             var savedSearch = new SavedSearch
             {
@@ -436,7 +436,7 @@ namespace TwitterLibrary
             return savedSearch;
         }
 
-        public static Collection ParseCollection(JObject obj)
+        public Collection ParseCollection(JObject obj)
         {
             var collection = new Collection
             {
@@ -464,7 +464,7 @@ namespace TwitterLibrary
             return collection;
         }
 
-        public static Collection.CollectionTweet ParseCollectionTweet(JObject obj)
+        public Collection.CollectionTweet ParseCollectionTweet(JObject obj)
         {
             var collectionTweet = new Collection.CollectionTweet
             {
@@ -477,7 +477,7 @@ namespace TwitterLibrary
             return collectionTweet;
         }
 
-        public static TwitterList ParseTwitterList(JObject obj, long issuer)
+        public TwitterList ParseTwitterList(JObject obj, long issuer)
         {
             var twitterList = new TwitterList
             {
@@ -497,7 +497,7 @@ namespace TwitterLibrary
             return twitterList;
         }
 
-        public static Friendship ParseFriendship(JObject obj)
+        public Friendship ParseFriendship(JObject obj)
         {
             var friendship = new Friendship
             {
@@ -531,7 +531,7 @@ namespace TwitterLibrary
             return friendship;
         }
 
-        public static Relationship ParseRelationship(JObject obj)
+        public Relationship ParseRelationship(JObject obj)
         {
             var relationship = new Relationship();
 
@@ -561,7 +561,7 @@ namespace TwitterLibrary
             return relationship;
         }
 
-        public static Notification ParseNotification(JObject obj, long issuer)
+        public Notification ParseNotification(JObject obj, long issuer)
         {
             switch( obj["action"].ToString() )
             {
@@ -590,7 +590,7 @@ namespace TwitterLibrary
             return null;
         }
 
-        private static Notification ParseNotification(JObject obj, long issuer, Notification notification, Type source, Type target, Type targetObject)
+        private Notification ParseNotification(JObject obj, long issuer, Notification notification, Type source, Type target, Type targetObject)
         {
             notification.Action = obj["action"].ToString();
             notification.MaxPosition = obj["max_position"].ToObject<long>();
@@ -603,7 +603,7 @@ namespace TwitterLibrary
             return notification;          
         }
 
-        private static object[] ParseNotification(JArray array, Type type, long issuer)
+        private object[] ParseNotification(JArray array, Type type, long issuer)
         {
             if (type == null) return null;
 
@@ -621,7 +621,7 @@ namespace TwitterLibrary
             }
         }
 
-        private static Status GetStatusFromConversation(long request, long issuer, JObject global, Dictionary<long, Status> statusCache, Dictionary<long, User> userCache)
+        private Status GetStatusFromConversation(long request, long issuer, JObject global, Dictionary<long, Status> statusCache, Dictionary<long, User> userCache)
         {
             if(statusCache.ContainsKey(request))
             {
@@ -647,7 +647,7 @@ namespace TwitterLibrary
             return result;   
         }
 
-        private static User GetUserFromConversation(long request, long issuer, JObject global, Dictionary<long, User> cache)
+        private User GetUserFromConversation(long request, long issuer, JObject global, Dictionary<long, User> cache)
         {
             if (cache.ContainsKey(request))
             {
@@ -659,7 +659,7 @@ namespace TwitterLibrary
             return result;
         }
 
-        public static List<Status> ParseConversation(JObject obj, long issuer)
+        public List<Status> ParseConversation(JObject obj, long issuer)
         {
             var result = new List<Status>();
 

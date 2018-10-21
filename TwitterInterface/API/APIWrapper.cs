@@ -20,6 +20,10 @@ namespace TwitterInterface.API
             this.origin = origin;
         }
 
+        public FilterStore<Status> StatusFilter => origin.StatusFilter;
+
+        public FilterStore<User> UserFilter => origin.UserFilter;
+
         public virtual Task AddAllTweetToCollectionAsync(Account account, string id, long[] statusId, long relativeTo, bool above = true)
         {
             return origin.AddAllTweetToCollectionAsync(account, id, statusId, relativeTo, above);
