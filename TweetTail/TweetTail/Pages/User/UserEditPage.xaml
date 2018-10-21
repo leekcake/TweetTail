@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="TweetTail.Pages.User.UserEditPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <forms:CachedImage x:Name="imgBanner"  Aspect="AspectFill" HorizontalOptions="Fill"></forms:CachedImage>
+            <forms:CachedImage x:Name="imgProfile"></forms:CachedImage>
+            <Label Text="닉네임"></Label>
+            <Editor x:Name="editNickName"></Editor>
+            <Label Text="설명"></Label>
+            <Editor x:Name="editDescription"></Editor>
+            <Label Text="위치"></Label>
+            <Editor x:Name="editLocation"></Editor>
+            <Label Text="링크"></Label>
+            <Editor x:Name="editURL"></Editor>
+            <Button x:Name="btnUpdate" Text="수정하기" Clicked="btnUpdate_Clicked"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

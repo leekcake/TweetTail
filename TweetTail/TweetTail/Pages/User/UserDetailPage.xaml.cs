@@ -72,8 +72,10 @@ namespace TweetTail.Pages.User
                     SetRelationshipButtons(true);
                     viewRelationship.IsVisible = false;
                     viewFollowMe.IsVisible = false;
+                    btnEdit.IsVisible = true;
                     return;
                 }
+                btnEdit.IsVisible = false;
 
                 viewRelationship.IsVisible = true;
 
@@ -152,20 +154,24 @@ namespace TweetTail.Pages.User
             lblStatus.Text = string.Format("{0} 트윗 {1} 마음에 들어요 {2} 팔로워 {3} 팔로잉", binding.statusesCount, binding.favouritesCount, binding.followerCount, binding.followingCount);
         }
 
-		public UserDetailPage (DataUser binding, DataAccount issuer)
+        public void UpdateBinding(DataUser user)
+        {
+            binding = user;
+            Title = binding.nickName + "님의 프로필";
+            
+            updateUser();
+            updateRelationship();
+        }
+
+        public UserDetailPage (DataUser binding, DataAccount issuer)
 		{
 			InitializeComponent ();
-
-            this.binding = binding;
             this.issuer = issuer;
-
-            Title = binding.nickName + "님의 프로필";
 
             viewIssuer.BindingContext = issuer.user;
             viewIssuer.Update();
 
-            updateUser();
-            updateRelationship();
+            UpdateBinding(binding);
 
             viewIssuerGroup.GestureRecognizers.Add(new TapGestureRecognizer()
             {
@@ -301,6 +307,18 @@ namespace TweetTail.Pages.User
             try
             {
                 App.Navigation.PushAsync(new UserMutePage(binding));
+            }
+            catch (Exception ex)
+            {
+                Util.HandleException(ex);
+            }
+        }
+
+        private void btnEdit_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                App.Navigation.PushAsync(new UserEditPage(issuer, this));
             }
             catch (Exception ex)
             {

@@ -48,6 +48,7 @@
                 <Button x:Name="btnFollowing" Text="팔로잉" Clicked="btnFollowing_Clicked" Grid.Row="1" Grid.Column="2" ></Button>
             </Grid>
             <Label x:Name="lblRelationshipStatus" Style="{DynamicResource labelStyle}" Text="관계 정보를 가져오고 있습니다..."></Label>
+            <Button x:Name="btnEdit" Text="수정하기" HorizontalOptions="Fill" Clicked="btnEdit_Clicked" IsVisible="False"></Button>
             <Grid HorizontalOptions="CenterAndExpand" x:Name="viewRelationship">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using TweetTail.Pages.User;
+using TwitterInterface.Data;
 using TwitterInterface.Data.Entity;
 using Xamarin.Forms;
 
@@ -115,6 +116,25 @@ namespace TweetTail.Utils
             ParseURLEntity(builder, status.urls);
             ParseMediaEntity(builder, status.extendMedias);
             ParseMentionEntity(builder, status.userMentions, status.issuer);
+
+            return builder.ToFormattedString();
+        }
+
+        public static FormattedString ParseFormattedString(string text, URL[] urls)
+        {
+            var builder = new Builder(text);
+
+            ParseURLEntity(builder, urls);
+
+            return builder.ToFormattedString();
+        }
+
+        public static FormattedString ParseFormattedString(string text, BasicEntitiesGroup group, List<long> issuer)
+        {
+            var builder = new Builder(text);
+
+            ParseURLEntity(builder, group.urls);
+            ParseMentionEntity(builder, group.userMentions, issuer);
 
             return builder.ToFormattedString();
         }

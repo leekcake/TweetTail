@@ -168,6 +168,9 @@
     <EmbeddedResource Update="Components\User\UserView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Pages\User\UserEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
