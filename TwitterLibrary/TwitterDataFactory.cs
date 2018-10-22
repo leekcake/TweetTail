@@ -327,9 +327,14 @@ namespace TwitterLibrary
             {
                 Indices = ParseIndices(obj["indices"].ToObject<JArray>()),
                 RawURL = obj["url"].ToString(),
-                DisplayURL = obj["display_url"].ToString(),
-                ExpandedURL = obj["expanded_url"].ToString()
+                DisplayURL = obj["display_url"]?.ToString(),
+                ExpandedURL = obj["expanded_url"]?.ToString()
             };
+
+            if(url.DisplayURL == null)
+            {
+                url.DisplayURL = url.RawURL;
+            }
 
             return url;
         }
