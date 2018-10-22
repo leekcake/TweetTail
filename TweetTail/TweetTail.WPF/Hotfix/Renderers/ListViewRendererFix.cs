@@ -20,13 +20,88 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using System.ComponentModel;
 using DataTemplate = System.Windows.DataTemplate;
+using System.Collections;
+using Xamarin.Forms.Internals;
 
 [assembly: ExportRenderer(typeof(ListView), typeof(ListViewRendererFix))]
 namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
 {
     public class ListViewRendererFix : ViewRenderer<ListView, WList>
     {
-        private ObservableCollection<object> InternalItems = new ObservableCollection<object>();
+        private class TemplatedItemsListProxy : IList<Cell>, INotifyCollectionChanged
+        {
+            private ITemplatedItemsList<Cell> templated;
+
+            public TemplatedItemsListProxy(ITemplatedItemsList<Cell> templated)
+            {
+                this.templated = templated;
+
+                templated.CollectionChanged += Templated_CollectionChanged;
+            }
+
+            private void Templated_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                CollectionChanged?.Invoke(sender, e);
+            }
+
+            public Cell this[int index] { get => templated[index]; set { } }
+
+            public int Count => templated.Count;
+
+            public bool IsReadOnly => true;
+
+            public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+            public void Add(Cell item)
+            {
+                return;
+            }
+
+            public void Clear()
+            {
+                return;
+            }
+
+            public bool Contains(Cell item)
+            {
+                return true;
+            }
+
+            public void CopyTo(Cell[] array, int arrayIndex)
+            {
+                return;
+            }
+
+            public IEnumerator<Cell> GetEnumerator()
+            {
+                return templated.GetEnumerator();
+            }
+
+            public int IndexOf(Cell item)
+            {
+                return -1;
+            }
+
+            public void Insert(int index, Cell item)
+            {
+                return;
+            }
+
+            public bool Remove(Cell item)
+            {
+                return false;
+            }
+
+            public void RemoveAt(int index)
+            {
+                return;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return templated.GetEnumerator();
+            }
+        }
 
         ITemplatedItemsView<Cell> TemplatedItemsView => Element;
 
@@ -39,13 +114,6 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
 
         protected override void OnElementChanged(ElementChangedEventArgs<ListView> e)
         {
-            if (e.OldElement != null) // Clear old element event
-            {
-                var templatedItems = ((ITemplatedItemsView<Cell>)e.OldElement).TemplatedItems;
-                templatedItems.CollectionChanged -= TemplatedItems_CollectionChanged;
-                templatedItems.GroupedCollectionChanged -= TemplatedItems_GroupedCollectionChanged;
-            }
-
             if (e.NewElement != null)
             {
                 if (Control == null) // construct and SetNativeControl and suscribe control event
@@ -63,77 +131,13 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     Control.StylusUp += OnNativeStylusUp;
                 }
 
-                TemplatedItemsView.TemplatedItems.CollectionChanged += TemplatedItems_CollectionChanged;
-                TemplatedItemsView.TemplatedItems.GroupedCollectionChanged += TemplatedItems_GroupedCollectionChanged;
-
                 UpdateItemSource();
             }
-
+            
             Control.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
             base.OnElementChanged(e);
         }
-
-        private void TemplatedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    if (e.NewStartingIndex < 0)
-                        goto case NotifyCollectionChangedAction.Reset;
-
-                    // if a NewStartingIndex that's too high is passed in just add the items.
-                    // I realize this is enforcing bad behavior but prior to this synchronization
-                    // code being added it wouldn't cause the app to crash whereas now it does
-                    // so this code accounts for that in order to ensure smooth sailing for the user
-                    if (e.NewStartingIndex >= InternalItems.Count)
-                    {
-                        for (int i = 0; i < e.NewItems.Count; i++)
-                            InternalItems.Add(e.NewItems[i]);
-                    }
-                    else
-                    {
-                        for (int i = e.NewItems.Count - 1; i >= 0; i--)
-                            InternalItems.Insert(e.NewStartingIndex, e.NewItems[i]);
-                    }
-
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    for (int i = e.OldItems.Count - 1; i >= 0; i--)
-                        InternalItems.RemoveAt(e.OldStartingIndex);
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    for (var i = 0; i < e.OldItems.Count; i++)
-                    {
-                        var oldi = e.OldStartingIndex;
-                        var newi = e.NewStartingIndex;
-
-                        if (e.NewStartingIndex < e.OldStartingIndex)
-                        {
-                            oldi += i;
-                            newi += i;
-                        }
-
-                        // we know that wrapped collection is an ObservableCollection<object>
-                        InternalItems.Move(oldi, newi);
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    try
-                    {
-                        InternalItems[e.OldStartingIndex] = e.NewItems[0];
-                    }
-                    catch
-                    {
-                        goto case NotifyCollectionChangedAction.Reset;
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                default:
-                    UpdateItemSource();
-                    break;
-            }
-        }
-
+        
         private void TemplatedItems_GroupedCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //TODO: Dynamic Update of InternalItem
@@ -143,13 +147,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-
-            if (e.PropertyName == ListView.IsGroupingEnabledProperty.PropertyName)
-            {
-                //UpdateGrouping();
-            }
-
-
+            
             /*if (e.PropertyName == ListView.SelectedItemProperty.PropertyName)
 				OnItemSelected(Element.SelectedItem);
 			else if (e.PropertyName == "HeaderElement")
@@ -164,40 +162,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
         
         void UpdateItemSource()
         {
-            InternalItems.Clear();
-            if (Element.IsGroupingEnabled)
-            {
-                int index = 0;
-                foreach (var groupItem in TemplatedItemsView.TemplatedItems)
-                {
-                    var group = TemplatedItemsView.TemplatedItems.GetGroup(index);
-
-                    if (group.Count != 0)
-                    {
-                        InternalItems.Add(group.HeaderContent);
-
-                        /*if (HasHeader(group))
-							_cells.Add(GetCell(group.HeaderContent));
-						else
-							_cells.Add(CreateEmptyHeader());*/
-
-                        foreach(var item in group)
-                        {
-                            InternalItems.Add(item);
-                        }
-                    }
-
-                    index++;
-                }
-            }
-            else
-            {
-                foreach (var item in TemplatedItemsView.TemplatedItems)
-                {
-                    InternalItems.Add(item);
-                }
-            }
-            Control.ItemsSource = InternalItems;
+            Control.ItemsSource = new TemplatedItemsListProxy(TemplatedItemsView.TemplatedItems);
         }
 
         void OnNativeKeyUp(object sender, KeyEventArgs e)
@@ -227,12 +192,6 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     Control.KeyUp -= OnNativeKeyUp;
                     Control.TouchUp -= OnNativeTouchUp;
                     Control.StylusUp -= OnNativeStylusUp;
-                }
-
-                if (Element != null)
-                {
-                    TemplatedItemsView.TemplatedItems.CollectionChanged -= TemplatedItems_GroupedCollectionChanged;
-                    TemplatedItemsView.TemplatedItems.GroupedCollectionChanged -= TemplatedItems_GroupedCollectionChanged;
                 }
             }
             Token?.Dispose();
@@ -270,19 +229,11 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                 {
                     return;
                 }
-
+                
                 var source = Element.ItemsSource;
-
-                TemplatedItemsView.TemplatedItems.CollectionChanged -= TemplatedItems_CollectionChanged;
-                TemplatedItemsView.TemplatedItems.GroupedCollectionChanged -= TemplatedItems_GroupedCollectionChanged;
-
                 Element.ItemsSource = null;
                 Element.ItemsSource = source;
 
-                TemplatedItemsView.TemplatedItems.CollectionChanged += TemplatedItems_CollectionChanged;
-                TemplatedItemsView.TemplatedItems.GroupedCollectionChanged += TemplatedItems_GroupedCollectionChanged;
-                
-                UpdateItemSource();
                 Token = null;
             }));
         }
