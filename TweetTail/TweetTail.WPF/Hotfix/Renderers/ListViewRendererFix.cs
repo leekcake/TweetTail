@@ -114,6 +114,11 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
 
         protected override void OnElementChanged(ElementChangedEventArgs<ListView> e)
         {
+            if(e.OldElement != null)
+            {
+                e.OldElement.ScrollToRequested -= Element_ScrollToRequested;
+            }
+
             if (e.NewElement != null)
             {
                 if (Control == null) // construct and SetNativeControl and suscribe control event
@@ -131,11 +136,23 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     Control.StylusUp += OnNativeStylusUp;
                 }
 
+                e.NewElement.ScrollToRequested += Element_ScrollToRequested;
+                
                 UpdateItemSource();
             }
             
             Control.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
             base.OnElementChanged(e);
+        }
+
+        private void Element_ScrollToRequested(object sender, ScrollToRequestedEventArgs e)
+        {
+            //TODO: Animate Support
+            //TODO: Support Position
+
+            var scrollArgs = (ITemplatedItemsListScrollToRequestedEventArgs) e;
+
+            Control.ScrollIntoView(scrollArgs.Item);
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
