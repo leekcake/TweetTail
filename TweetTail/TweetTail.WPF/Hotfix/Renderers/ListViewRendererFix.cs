@@ -137,12 +137,6 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
             Control.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
             base.OnElementChanged(e);
         }
-        
-        private void TemplatedItems_GroupedCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            //TODO: Dynamic Update of InternalItem
-            UpdateItemSource();
-        }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -194,13 +188,10 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     Control.StylusUp -= OnNativeStylusUp;
                 }
             }
-            Token?.Dispose();
             _isDisposed = true;
             base.Dispose(disposing);
         }
-
-        private CancellationTokenSource Token;
-
+        
         //Dirty Refresh of Width
         protected override void UpdateWidth()
         {
@@ -211,31 +202,24 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
             if (Control == null || Element == null)
                 return;
 
-            if (Token != null)
+            try
             {
-                Token.Cancel();
-                Token = null;
+                foreach (var item in TemplatedItemsView.TemplatedItems)
+                {
+                    if (item is ViewCell viewCell)
+                    {
+                        var element = Platform.GetRenderer(viewCell.View)?.GetNativeElement();
+                        if (element != null)
+                        {
+                            element.Width = Control.Width - 15;
+                        }
+                    }
+                }
             }
-            Token = new CancellationTokenSource();
-            var holder = Token;
-
-            Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
+            catch
             {
-                try
-                {
-                    await Task.Delay(100, holder.Token);
-                }
-                catch
-                {
-                    return;
-                }
-                
-                var source = Element.ItemsSource;
-                Element.ItemsSource = null;
-                Element.ItemsSource = source;
 
-                Token = null;
-            }));
+            }
         }
     }
 }
