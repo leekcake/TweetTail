@@ -6,11 +6,15 @@
              xmlns:wpf="clr-namespace:Xamarin.Forms.Platform.WPF;assembly=Xamarin.Forms.Platform.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <wpf:ViewToRendererConverter x:Key="ViewToRenderer" />
         <wpf:HeightConverter x:Key="HeightConverter" />
         <DataTemplate x:Key="CellTemplateFix">
             <fix:CellControlFix Cell="{Binding}" Margin="5,0,0,0"
 						 Height="{Binding Cell.RenderHeight,RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource HeightConverter}}" >
             </fix:CellControlFix>
+        </DataTemplate>
+        <DataTemplate x:Key="View">
+            <ContentPresenter Content="{Binding Converter={StaticResource ViewToRenderer}}" />
         </DataTemplate>
     </Application.Resources>
 </Application>
