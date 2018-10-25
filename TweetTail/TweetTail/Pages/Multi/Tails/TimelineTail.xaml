@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<tails:Tail
+    xmlns:tails="clr-namespace:TweetTail.Pages.Multi.Tails"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:status="clr-namespace:TweetTail.Components.Status"
+    xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    x:Class="TweetTail.Pages.Multi.Tails.TimelineTail">
+    <ContentView.Content>
+        <StackLayout HorizontalOptions="Fill">
+            <StackLayout HeightRequest="50" HorizontalOptions="Fill" Orientation="Horizontal" VerticalOptions="StartAndExpand" >
+                <forms:CachedImage x:Name="Icon" WidthRequest="32" HeightRequest="32" Margin="5" Source="ic_timeline_green_300_48dp"></forms:CachedImage>
+                <Label x:Name="HeaderLabel" Margin="5" Text="타임라인 @?"></Label>
+            </StackLayout>
+            <status:StatusListView WidthRequest="300" HorizontalOptions="Fill" x:Name="TimelineListView" VerticalOptions="FillAndExpand"></status:StatusListView>
+        </StackLayout>
+    </ContentView.Content>
+</tails:Tail>

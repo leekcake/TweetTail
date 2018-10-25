@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TweetTail.Pages.Multi;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,7 +26,7 @@ namespace TweetTail.Pages
 
             try
             {
-                await App.Navigation.PushAsync(new SingleTailPage());
+                await App.Navigation.PushAsync(new MutliTailPage());
                 App.Navigation.RemovePage(this);
             }
             catch (Exception e)
