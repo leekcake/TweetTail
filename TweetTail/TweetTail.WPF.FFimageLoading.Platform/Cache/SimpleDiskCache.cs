@@ -209,7 +209,7 @@ namespace FFImageLoading.Cache
                 if (!entries.TryGetValue(key, out CacheEntry entry))
                     return null;
 
-                return new FileStream(Path.Combine(cacheFolder, entry.FileName), FileMode.Open);
+                return new FileStream(Path.Combine(cacheFolder, entry.FileName), FileMode.Open, FileAccess.Read, FileShare.Read);
             }
             catch
             {
