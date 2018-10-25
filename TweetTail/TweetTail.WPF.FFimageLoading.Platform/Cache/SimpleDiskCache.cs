@@ -84,10 +84,8 @@ namespace FFImageLoading.Cache
 
             return int.TryParse(textToParse, out int duration) ? TimeSpan.FromSeconds(duration) : Configuration.DiskCacheDuration;
         }
-
-#pragma warning disable CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
+        
         protected virtual async Task CleanCallback()
-#pragma warning restore CS1998 // 이 비동기 메서드에는 'await' 연산자가 없으며 메서드가 동시에 실행됩니다.
         {
             KeyValuePair<string, CacheEntry>[] kvps;
             var now = DateTime.UtcNow;

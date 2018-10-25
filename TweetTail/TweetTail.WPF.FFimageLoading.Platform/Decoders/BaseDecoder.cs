@@ -21,13 +21,14 @@ namespace FFImageLoading.Decoders
 
             if (parameters.Transformations == null || parameters.Transformations.Count == 0)
             {
-                var bitmap = await imageData.ToBitmapImageAsync(parameters.DownSampleSize, parameters.DownSampleUseDipUnits, parameters.DownSampleInterpolationMode, allowUpscale, imageInformation).ConfigureAwait(false);
-                imageIn = new BitmapHolder(bitmap);
+                //TODO
             }
             else
             {
-                imageIn = await imageData.ToBitmapHolderAsync(parameters.DownSampleSize, parameters.DownSampleUseDipUnits, parameters.DownSampleInterpolationMode, allowUpscale, imageInformation).ConfigureAwait(false);
+                System.Diagnostics.Debug.WriteLine("Transformations not supported on wpf!!!!");
             }
+            var bitmap = await imageData.ToBitmapImageAsync(parameters.DownSampleSize, parameters.DownSampleUseDipUnits, parameters.DownSampleInterpolationMode, allowUpscale, imageInformation).ConfigureAwait(false);
+            imageIn = new BitmapHolder(bitmap);
 
             return new DecodedImage<BitmapHolder>() { Image = imageIn };
         }

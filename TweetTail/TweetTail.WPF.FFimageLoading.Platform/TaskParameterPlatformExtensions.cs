@@ -112,7 +112,7 @@ namespace FFImageLoading
         /// <param name="parameters">Parameters.</param>
         public static Task<WriteableBitmap> AsWriteableBitmapAsync(this TaskParameter parameters)
         {
-            var target = new BitmapTarget();
+            var target = new ImageSourceTarget();
             var userErrorCallback = parameters.OnError;
             var finishCallback = parameters.OnFinish;
             var tcs = new TaskCompletionSource<WriteableBitmap>();
@@ -126,7 +126,7 @@ namespace FFImageLoading
                 .Finish(scheduledWork =>
                 {
                     finishCallback?.Invoke(scheduledWork);
-                    tcs.TrySetResult(target.BitmapSource as WriteableBitmap);
+                    tcs.TrySetResult(target.ImageSource as WriteableBitmap);
                 });
 
             if (parameters.Source != Work.ImageSource.Stream && string.IsNullOrWhiteSpace(parameters.Path))

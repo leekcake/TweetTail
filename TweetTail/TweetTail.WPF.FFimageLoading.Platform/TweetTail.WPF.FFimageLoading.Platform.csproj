@@ -67,7 +67,7 @@
     <Compile Include="Helper\PlatformPerformance.cs" />
     <Compile Include="Helper\ScaleHelper.cs" />
     <Compile Include="ImageService.cs" />
-    <Compile Include="Target\BitmapTarget.cs" />
+    <Compile Include="Target\ImageSourceTarget.cs" />
     <Compile Include="Target\ImageTarget.cs" />
     <Compile Include="TaskParameterPlatformExtensions.cs" />
     <Compile Include="Work\BitmapHolder.cs" />

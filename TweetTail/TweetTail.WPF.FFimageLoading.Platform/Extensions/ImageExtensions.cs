@@ -8,78 +8,61 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ImageSource = System.Windows.Media.ImageSource;
 
 namespace FFImageLoading.Extensions
 {
     public static class ImageExtensions
     {
-        public static async Task<WriteableBitmap> ToBitmapImageAsync(this BitmapHolder holder)
+        public static async Task<ImageSource> ToBitmapImageAsync(this BitmapHolder holder)
         {
             if (holder == null || holder.PixelData == null)
                 return null;
 
-            WriteableBitmap writeableBitmap = null;
-
-            await ImageService.Instance.Config.MainThreadDispatcher.PostAsync(async () =>
-            {
-                writeableBitmap = await holder.ToWriteableBitmap();
-                //writeableBitmap.Invalidate();
-            });
-
-            return writeableBitmap;
+            return await holder.ToWriteableBitmap();
         }
 
-        private static async Task<WriteableBitmap> ToWriteableBitmap(this BitmapHolder holder)
+        private static Task<WriteableBitmap> ToWriteableBitmap(this BitmapHolder holder)
         {
-            WriteableBitmap bitmap = null;
-            await ImageService.Instance.Config.MainThreadDispatcher.PostAsync(() =>
+            var task = new Task<WriteableBitmap>(() =>
             {
-                bitmap = new WriteableBitmap(holder.Width, holder.Height, 96, 96, PixelFormats.Rgba128Float, null);
+                WriteableBitmap bitmap = new WriteableBitmap(holder.Width, holder.Height, 96, 96, PixelFormats.Rgba128Float, null);
                 var all = new Int32Rect(0, 0, holder.Width, holder.Height);
                 bitmap.WritePixels(all, holder.PixelData, 4, 0);
+                bitmap.Freeze();
+                return bitmap;
             });
-
-            return bitmap;
+            task.Start();
+            return task;
         }
 
-        public async static Task<WriteableBitmap> ToBitmapImageAsync(this Stream imageStream, Tuple<int, int> downscale, bool downscaleDipUnits, InterpolationMode mode, bool allowUpscale, ImageInformation imageInformation = null)
+        public static Task<ImageSource> ToBitmapImageAsync(this Stream imageStream, Tuple<int, int> downscale, bool downscaleDipUnits, InterpolationMode mode, bool allowUpscale, ImageInformation imageInformation = null)
         {
             if (imageStream == null)
-                return null;
-            
-            //TODO: Downscale
-            WriteableBitmap bitmap = null;
-            await ImageService.Instance.Config.MainThreadDispatcher.PostAsync(() =>
+                return Task.FromResult<ImageSource>(null);
+
+            var task = new Task<ImageSource>(() =>
             {
-                var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                bitmap = new WriteableBitmap(decoder.Frames[0]);
+                var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                var frame = decoder.Frames[0];
+                frame.Freeze();
 
                 if (imageInformation != null)
                 {
-                    imageInformation.SetCurrentSize(bitmap.PixelWidth, bitmap.PixelHeight);
-                    imageInformation.SetOriginalSize(bitmap.PixelWidth, bitmap.PixelHeight);
+                    imageInformation.SetCurrentSize(frame.PixelWidth, frame.PixelHeight);
+                    imageInformation.SetOriginalSize(frame.PixelWidth, frame.PixelHeight);
                 }
+
+                return frame;
             });
-            return bitmap;
+            task.Start();
+
+            return task;
         }
 
         public async static Task<BitmapHolder> ToBitmapHolderAsync(this Stream imageStream, Tuple<int, int> downscale, bool downscaleDipUnits, InterpolationMode mode, bool allowUpscale, ImageInformation imageInformation = null)
         {
-            WriteableBitmap bitmap = null;
-            await ImageService.Instance.Config.MainThreadDispatcher.PostAsync(() =>
-            {
-                var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                bitmap = new WriteableBitmap(decoder.Frames[0]);
-
-                if (imageInformation != null)
-                {
-                    imageInformation.SetCurrentSize(bitmap.PixelWidth, bitmap.PixelHeight);
-                    imageInformation.SetOriginalSize(bitmap.PixelWidth, bitmap.PixelHeight);
-                }
-            });
-            var holder = new BitmapHolder(bitmap);
-
-            return holder;
+            throw new NotImplementedException();
         }
     }
 }

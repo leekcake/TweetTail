@@ -2,29 +2,31 @@
 using System.Windows.Media.Imaging;
 using FFImageLoading.Work;
 
+using ImageSource = System.Windows.Media.ImageSource;
+
 namespace FFImageLoading.Targets
 {
-    public class BitmapTarget : Target<BitmapSource, WriteableBitmap>
+    public class ImageSourceTarget : Target<ImageSource, WriteableBitmap>
     {
-        private WeakReference<BitmapSource> _imageWeakReference = null;
+        private WeakReference<ImageSource> _imageWeakReference = null;
 
-        public override void Set(IImageLoaderTask task, BitmapSource image, bool animated)
+        public override void Set(IImageLoaderTask task, ImageSource image, bool animated)
         {
             if (task == null || task.IsCancelled)
                 return;
 
             if (_imageWeakReference == null)
-                _imageWeakReference = new WeakReference<BitmapSource>(image);
+                _imageWeakReference = new WeakReference<ImageSource>(image);
             else
                 _imageWeakReference.SetTarget(image);
         }
 
-        public BitmapSource BitmapSource {
+        public ImageSource ImageSource {
             get {
                 if (_imageWeakReference == null)
                     return null;
 
-                _imageWeakReference.TryGetTarget(out BitmapSource image);
+                _imageWeakReference.TryGetTarget(out ImageSource image);
                 return image;
             }
         }

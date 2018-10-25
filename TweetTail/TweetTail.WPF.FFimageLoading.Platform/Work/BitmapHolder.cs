@@ -2,14 +2,17 @@
 using FFImageLoading.Helpers;
 using System;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
+
+using ImageSourceWin = System.Windows.Media.ImageSource;
 
 namespace FFImageLoading.Work
 {
     public class BitmapHolder : IBitmap
     {
-        public BitmapHolder(WriteableBitmap bitmap)
+        public BitmapHolder(ImageSourceWin source)
         {
-            WriteableBitmap = bitmap;
+            ImageSource = source;
         }
 
         public BitmapHolder(byte[] pixels, int width, int height)
@@ -19,9 +22,9 @@ namespace FFImageLoading.Work
             Height = height;
         }
 
-        public bool HasWriteableBitmap => WriteableBitmap != null;
+        public bool HasImageSource => ImageSource != null;
 
-        public WriteableBitmap WriteableBitmap { get; private set; }
+        public ImageSourceWin ImageSource { get; private set; }
 
         public int Height { get; private set; }
 
@@ -66,7 +69,7 @@ namespace FFImageLoading.Work
         public void FreePixels()
         {
             PixelData = null;
-            WriteableBitmap = null;
+            ImageSource = null;
         }
     }
 

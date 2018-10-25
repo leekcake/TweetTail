@@ -10,14 +10,15 @@ using System.Threading.Tasks;
 using FFImageLoading.Decoders;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
+using ImageSourceWin = System.Windows.Media.ImageSource;
 
 namespace FFImageLoading.Work
 {
-    public class PlatformImageLoaderTask<TImageView> : ImageLoaderTask<BitmapHolder, BitmapSource, TImageView> where TImageView : class
+    public class PlatformImageLoaderTask<TImageView> : ImageLoaderTask<BitmapHolder, ImageSourceWin, TImageView> where TImageView : class
     {
         static readonly SemaphoreSlim _decodingLock = new SemaphoreSlim(1, 1);
 
-        public PlatformImageLoaderTask(ITarget<BitmapSource, TImageView> target, TaskParameter parameters, IImageService imageService) : base(ImageCache.Instance, target, parameters, imageService)
+        public PlatformImageLoaderTask(ITarget<ImageSourceWin, TImageView> target, TaskParameter parameters, IImageService imageService) : base(ImageCache.Instance, target, parameters, imageService)
         {
         }
 
@@ -27,7 +28,7 @@ namespace FFImageLoading.Work
             await base.Init();
         }
 
-        protected override Task SetTargetAsync(BitmapSource image, bool animated)
+        protected override Task SetTargetAsync(ImageSourceWin image, bool animated)
         {
             if (Target == null)
                 return Task.FromResult(true);
@@ -97,7 +98,7 @@ namespace FFImageLoading.Work
             return bitmap;
         }
 
-        protected override async Task<BitmapSource> GenerateImageFromDecoderContainerAsync(IDecodedImage<BitmapHolder> decoded, ImageInformation imageInformation, bool isPlaceholder)
+        protected override async Task<ImageSourceWin> GenerateImageFromDecoderContainerAsync(IDecodedImage<BitmapHolder> decoded, ImageInformation imageInformation, bool isPlaceholder)
         {
             if (decoded.IsAnimated)
             {
@@ -107,8 +108,8 @@ namespace FFImageLoading.Work
             {
                 try
                 {
-                    if (decoded.Image.HasWriteableBitmap)
-                        return decoded.Image.WriteableBitmap;
+                    if (decoded.Image.HasImageSource)
+                        return decoded.Image.ImageSource;
 
                     return await decoded.Image.ToBitmapImageAsync();
                 }

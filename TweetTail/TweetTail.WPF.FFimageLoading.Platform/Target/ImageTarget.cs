@@ -19,9 +19,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using FFImageLoading.Work;
 
+using ImageSource = System.Windows.Media.ImageSource;
+
 namespace FFImageLoading.Targets
 {
-    public class ImageTarget : Target<BitmapSource, Image>
+    public class ImageTarget : Target<ImageSource, Image>
     {
         private readonly WeakReference<Image> _controlWeakReference;
 
@@ -45,7 +47,7 @@ namespace FFImageLoading.Targets
             control.Source = null;
         }
 
-        public override void Set(IImageLoaderTask task, BitmapSource image, bool animated)
+        public override void Set(IImageLoaderTask task, ImageSource image, bool animated)
         {
             if (task.IsCancelled)
                 return;

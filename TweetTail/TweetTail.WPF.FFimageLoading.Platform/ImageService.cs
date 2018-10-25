@@ -13,10 +13,12 @@ using FFImageLoading.DataResolvers;
 using FFImageLoading.Helpers;
 using FFImageLoading.Work;
 
+using ImageSource = System.Windows.Media.ImageSource;
+
 namespace FFImageLoading
 {
     [Preserve(AllMembers = true)]
-    public class ImageService : ImageServiceBase<BitmapSource>
+    public class ImageService : ImageServiceBase<ImageSource>
     {
         static ConditionalWeakTable<object, IImageLoaderTask> _viewsReferences = new ConditionalWeakTable<object, IImageLoaderTask>();
         static IImageService _instance;
@@ -42,7 +44,7 @@ namespace FFImageLoading
             configuration.ExecuteCallbacksOnUIThread = true;
         }
 
-        protected override IMemoryCache<BitmapSource> MemoryCache => ImageCache.Instance;
+        protected override IMemoryCache<ImageSource> MemoryCache => ImageCache.Instance;
         protected override IMD5Helper CreatePlatformMD5HelperInstance(Configuration configuration) => new MD5Helper();
         protected override IMiniLogger CreatePlatformLoggerInstance(Configuration configuration) => new MiniLogger();
         protected override IPlatformPerformance CreatePlatformPerformanceInstance(Configuration configuration) => new PlatformPerformance();
@@ -72,7 +74,7 @@ namespace FFImageLoading
             return new SimpleDiskCache(rootFolder, folderName, Config);
         }
 
-        internal static IImageLoaderTask CreateTask<TImageView>(TaskParameter parameters, ITarget<BitmapSource, TImageView> target) where TImageView : class
+        internal static IImageLoaderTask CreateTask<TImageView>(TaskParameter parameters, ITarget<ImageSource, TImageView> target) where TImageView : class
         {
             return new PlatformImageLoaderTask<TImageView>(target, parameters, Instance);
         }

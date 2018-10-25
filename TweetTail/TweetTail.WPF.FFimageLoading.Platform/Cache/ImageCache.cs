@@ -4,6 +4,8 @@ using FFImageLoading.Helpers;
 using System.Linq;
 using System.Windows.Media.Imaging;
 
+using ImageSource = System.Windows.Media.ImageSource;
+
 namespace FFImageLoading.Cache
 {
     class ImageCache : IImageCache
@@ -31,17 +33,17 @@ namespace FFImageLoading.Cache
             }
         }
 
-        public void Add(string key, ImageInformation imageInformation, BitmapSource bitmap)
+        public void Add(string key, ImageInformation imageInformation, ImageSource bitmap)
         {
             if (string.IsNullOrWhiteSpace(key) || bitmap == null)
                 return;
 
-            _reusableBitmaps.TryAdd(key, new Tuple<BitmapSource, ImageInformation>(bitmap, imageInformation));
+            _reusableBitmaps.TryAdd(key, new Tuple<ImageSource, ImageInformation>(bitmap, imageInformation));
         }
 
         public ImageInformation GetInfo(string key)
         {
-            if (_reusableBitmaps.TryGetValue(key, out Tuple<BitmapSource, ImageInformation> cacheEntry))
+            if (_reusableBitmaps.TryGetValue(key, out Tuple<ImageSource, ImageInformation> cacheEntry))
             {
                 return cacheEntry.Item2;
             }
@@ -49,15 +51,15 @@ namespace FFImageLoading.Cache
             return null;
         }
 
-        public Tuple<BitmapSource, ImageInformation> Get(string key)
+        public Tuple<ImageSource, ImageInformation> Get(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
                 return null;
 
 
-            if (_reusableBitmaps.TryGetValue(key, out Tuple<BitmapSource, ImageInformation> cacheEntry) && cacheEntry.Item1 != null)
+            if (_reusableBitmaps.TryGetValue(key, out Tuple<ImageSource, ImageInformation> cacheEntry) && cacheEntry.Item1 != null)
             {
-                return new Tuple<BitmapSource, ImageInformation>(cacheEntry.Item1, cacheEntry.Item2);
+                return new Tuple<ImageSource, ImageInformation>(cacheEntry.Item1, cacheEntry.Item2);
             }
 
             return null;
