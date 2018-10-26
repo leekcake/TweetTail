@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TweetTail.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,8 +18,23 @@ namespace TweetTail.Pages.Multi.Tails
 		{
 			InitializeComponent ();
 
-            HeaderLabel.Text = "타임라인 @" + group.AccountForRead.User.ScreenName;
+            HeaderView.Icon.Source = "ic_timeline_green_300_48dp";
+            HeaderView.HeaderLabel.Text = "타임라인 @" + group.AccountForRead.User.ScreenName;
+            HeaderView.OnRefreshRequested += HeaderView_OnRefreshRequested;
             TimelineListView.Fetchable = new AccountFetch.Timeline(App.Tail, group.AccountForRead);
         }
-	}
+        
+        private async void HeaderView_OnRefreshRequested()
+        {
+            try
+            {
+                await TimelineListView.Refresh();
+            }
+            catch(Exception e)
+            {
+                Util.HandleException(e);
+            }
+            HeaderView.InRefresh = false;
+        }
+    }
 }

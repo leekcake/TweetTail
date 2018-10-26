@@ -8,10 +8,7 @@
     x:Class="TweetTail.Pages.Multi.Tails.TimelineTail">
     <ContentView.Content>
         <StackLayout HorizontalOptions="Fill">
-            <StackLayout HeightRequest="50" HorizontalOptions="Fill" Orientation="Horizontal" VerticalOptions="StartAndExpand" >
-                <forms:CachedImage x:Name="Icon" WidthRequest="32" HeightRequest="32" Margin="5" Source="ic_timeline_green_300_48dp"></forms:CachedImage>
-                <Label x:Name="HeaderLabel" Margin="5" Text="타임라인 @?"></Label>
-            </StackLayout>
+            <tails:FetchableHeaderView x:Name="HeaderView"></tails:FetchableHeaderView>
             <status:StatusListView WidthRequest="300" HorizontalOptions="Fill" x:Name="TimelineListView" VerticalOptions="FillAndExpand"></status:StatusListView>
         </StackLayout>
     </ContentView.Content>

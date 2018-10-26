@@ -47,7 +47,7 @@ namespace TweetTail.Utils
             Items = new ObservableCollection<Data>();
             ItemsSource = Items;
             SelectionMode = ListViewSelectionMode.None;
-            RefreshCommand = new Command(Refresh);
+            RefreshCommand = new Command(RefreshInternal);
 
             if (Footer == null)
             {
@@ -115,7 +115,12 @@ namespace TweetTail.Utils
             }
         }
 
-        public async void Refresh() //Method to Get latest data
+        private async void RefreshInternal()
+        {
+            await Refresh();
+        }
+
+        public async Task Refresh() //Method to Get latest data
         {
             try
             {

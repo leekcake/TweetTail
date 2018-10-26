@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="TweetTail.Pages.Multi.Tails.FetchableHeaderView">
+  <ContentView.Content>
+        <StackLayout HeightRequest="50" HorizontalOptions="Fill" Orientation="Horizontal" VerticalOptions="StartAndExpand" >
+            <forms:CachedImage x:Name="Icon" x:FieldModifier="Public" WidthRequest="32" HeightRequest="32" Margin="5"></forms:CachedImage>
+            <StackLayout HorizontalOptions="Fill">
+                <Label x:Name="HeaderLabel" x:FieldModifier="Public" Margin="5"></Label>
+                <StackLayout x:Name="ExtraIconsView" x:FieldModifier="Public" HorizontalOptions="StartAndExpand">
+                    <forms:CachedImage x:Name="RefreshIcon" WidthRequest="16" HeightRequest="16"></forms:CachedImage>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
