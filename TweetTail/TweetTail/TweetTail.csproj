@@ -183,5 +183,113 @@
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Components\Account\AccountCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Account\Checkable\CheckableAccountCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Account\IssuerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Menu\MenuCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Mute\KeywordMuteCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Mute\StatusMuteCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Mute\UserMuteCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Notification\NotificationCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Status\PollView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Status\StatusCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Status\StatusView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\Status\StatusWriterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\User\UserCell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Components\User\UserView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Account\AccountPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Blend\BlendEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Blend\BlendListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\LoadingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Login\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Login\TDLoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Menu\MenuPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Multi\MutliTailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Multi\Tails\FetchableHeaderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Multi\Tails\TimelineTail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Mute\KeywordMutePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Mute\MuteListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Mute\MutePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Mute\UserMutePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Notification\NotificationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\SingleTailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Status\MentionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Status\SearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Status\StatusExpandPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\Status\TimelinePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\User\UserDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Pages\User\UserEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 </Project>
