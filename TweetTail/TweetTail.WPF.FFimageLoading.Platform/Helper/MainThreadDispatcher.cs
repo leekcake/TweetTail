@@ -9,7 +9,14 @@ namespace FFImageLoading.Helpers
     {
         public async void Post(Action action)
         {
-            await Application.Current.Dispatcher.BeginInvoke(action);
+            if(Application.Current.Dispatcher.CheckAccess())
+            {
+                action.Invoke();
+            }
+            else
+            {
+                await Application.Current.Dispatcher.BeginInvoke(action);
+            }
         }
 
         public Task PostAsync(Action action)
