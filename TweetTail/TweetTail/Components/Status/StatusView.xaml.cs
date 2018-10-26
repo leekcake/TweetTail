@@ -22,11 +22,11 @@ namespace TweetTail.Components.Status
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StatusView : ContentView
     {
-        private DataStatus Status {
-            get {
-                return BindingContext as DataStatus;
-            }
-        }
+        private bool NeedToPreventDisplay => Status.Creater.IsProtected || DisplayStatus.Creater.IsProtected;
+
+        private DataStatus Status => BindingContext as DataStatus;
+
+        private DataStatus DisplayStatus => Status.RetweetedStatus ?? Status;
 
         public ObservableCollection<DataStatus> Statuses {
             get {
@@ -65,7 +65,7 @@ namespace TweetTail.Components.Status
                 Command = new Command(() =>
                 {
                     if (Status == null) return;
-                    App.Navigation.PushAsync(new StatusExpandPage( GetDisplayStatus(Status) ));
+                    App.Navigation.PushAsync(new StatusExpandPage( DisplayStatus ));
                 })
             });
 
@@ -100,7 +100,7 @@ namespace TweetTail.Components.Status
                         App.Navigation.PushAsync(new UserDetailPage(user, App.Tail.Account.GetAccountGroup(user.Issuer[0]).AccountForRead));
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(GetDisplayStatus(Status).Creater, App.Tail.Account.GetAccountGroup(Status.Issuer[0]).AccountForRead));
+                    App.Navigation.PushAsync(new UserDetailPage(DisplayStatus.Creater, App.Tail.Account.GetAccountGroup(Status.Issuer[0]).AccountForRead));
                 }),
                 NumberOfTapsRequired = 1
             });
@@ -141,7 +141,7 @@ namespace TweetTail.Components.Status
                         var animation = new Animation(v => RetweetImage.Rotation = v, 0, 360);
                         RetweetImage.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
                         await App.Tail.TwitterAPI.RetweetStatusAsync(selected.AccountForWrite, Status.ID);
-                        GetDisplayStatus(Status).IsRetweetedByUser = true;
+                        DisplayStatus.IsRetweetedByUser = true;
                         UpdateButton();
                         RetweetImage.AbortAnimation("Spin");
 #pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.
@@ -173,7 +173,7 @@ namespace TweetTail.Components.Status
                         FavoriteImage.Animate("Spin", animation, 16, 500, null, null, () => { return true; });
 
                         await App.Tail.TwitterAPI.CreateFavoriteAsync(selected.AccountForWrite, Status.ID);
-                        GetDisplayStatus(Status).IsFavortedByUser = true;
+                        DisplayStatus.IsFavortedByUser = true;
                         UpdateButton();
 
                         FavoriteImage.AbortAnimation("Spin");
@@ -289,7 +289,7 @@ namespace TweetTail.Components.Status
                 {
                     Command = new Command(() =>
                     {
-                        App.Navigation.PushAsync(new MediaPage(GetDisplayStatus(Status), inx));
+                        App.Navigation.PushAsync(new MediaPage(DisplayStatus, inx));
                     }),
                     NumberOfTapsRequired = 1
                 });
@@ -299,18 +299,6 @@ namespace TweetTail.Components.Status
             for(int i = 0; i < 4; i++)
             {
                 pollViews[i] = new PollView();
-            }
-        }
-
-        private DataStatus GetDisplayStatus(DataStatus status)
-        {
-            if (status.RetweetedStatus != null)
-            {
-                return status.RetweetedStatus;
-            }
-            else
-            {
-                return status;
             }
         }
 
@@ -327,7 +315,9 @@ namespace TweetTail.Components.Status
         {
             ClearImage();
 
-            var display = GetDisplayStatus(Status);
+            if (NeedToPreventDisplay) return;
+
+            var display = DisplayStatus;
 
             ProfileImage.Source = display.Creater.ProfileHttpsImageURL;
 
@@ -343,7 +333,7 @@ namespace TweetTail.Components.Status
 
         protected void UpdateButton()
         {
-            var display = GetDisplayStatus(Status);
+            var display = DisplayStatus;
             
             if (display.IsRetweetedByUser)
             {
@@ -390,9 +380,9 @@ namespace TweetTail.Components.Status
                 return;
             }
             var status = BindingContext as DataStatus;
-            var display = GetDisplayStatus(status);
+            var display = DisplayStatus;
 
-            if (display != status)
+            if (display != status && !NeedToPreventDisplay)
             {
                 HeaderView.IsVisible = true;
                 HeaderLabel.Text = string.Format("{0} 님이 리트윗 하셨습니다", status.Creater.NickName);
@@ -401,17 +391,22 @@ namespace TweetTail.Components.Status
             {
                 HeaderView.IsVisible = false;
             }
-
+            
+            ClearImage();
             LockImage.IsVisible = display.Creater.IsProtected;
             CreatedAtLabel.Text = display.CreatedAt.ToLocalTime().ToString();
+
+            if (NeedToPreventDisplay)
+            {
+                NameLabel.Text = "이 유저는 보호된 유저입니다";
+                TextLabel.Text = "이 트윗은 보호된 유저의 트윗입니다";
+                MediaGrid.IsVisible = false;
+                return;
+            }
+            
             NameLabel.Text = string.Format("{0} @{1}", display.Creater.NickName, display.Creater.ScreenName);
             TextLabel.FormattedText = TwitterFormater.ParseFormattedString(display);
 
-            ProfileImage.Source = null;
-            for (int i = 0; i < 4; i++)
-            {
-                gridImageWrapper[i].Source = null;
-            }
             if (display.ExtendMedias != null)
             {
                 MediaGrid.IsVisible = true;
