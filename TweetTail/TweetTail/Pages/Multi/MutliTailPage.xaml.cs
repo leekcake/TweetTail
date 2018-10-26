@@ -18,7 +18,8 @@ namespace TweetTail.Pages.Multi
 
             foreach (var group in App.Tail.Account.ReadOnlyAccountGroups)
             {
-                TailContainer.Children.Add( new TimelineTail(group) );
+                if(!group.AccountForRead.User.IsProtected)
+                    TailContainer.Children.Add( new TimelineTail(group) );
             }
         }
     }
