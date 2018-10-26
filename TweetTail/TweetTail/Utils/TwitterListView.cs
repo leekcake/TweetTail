@@ -120,7 +120,18 @@ namespace TweetTail.Utils
             await Refresh();
         }
 
-        public async Task Refresh() //Method to Get latest data
+        private Task currentRefresh;
+
+        public Task Refresh()
+        {
+            if(currentRefresh == null)
+            {
+                currentRefresh = RefreshMethod();
+            }
+            return currentRefresh;
+        }
+
+        public async Task RefreshMethod() //Method to Get latest data
         {
             try
             {
@@ -157,7 +168,7 @@ namespace TweetTail.Utils
                     ScrollTo(topItem, ScrollToPosition.Start, false);
                     ScrollTo(topItem, ScrollToPosition.End, true);
                 }
-
+                
                 EndRefresh();
             }
             catch (Exception e)
@@ -165,6 +176,7 @@ namespace TweetTail.Utils
                 System.Diagnostics.Debug.WriteLine(e.Message + "\n" + e.StackTrace);
                 EndRefresh();
             }
+            currentRefresh = null;
         }
     }
 }
