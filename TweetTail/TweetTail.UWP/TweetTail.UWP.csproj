@@ -154,6 +154,8 @@
     <Content Include="ic_reply_black_24dp.png" />
     <Content Include="ic_reply_grey_500_24dp.png" />
     <Content Include="ic_search_grey_500_48dp.png" />
+    <Content Include="ic_sync_disabled_grey_500_24dp.png" />
+    <Content Include="ic_sync_green_300_24dp.png" />
     <Content Include="ic_timeline_green_300_48dp.png" />
     <Content Include="ic_visibility_off_black_24dp.png" />
     <Content Include="ic_visibility_off_grey_500_24dp.png" />

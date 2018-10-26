@@ -368,4 +368,22 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_search_grey_500_48dp%403x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_sync_disabled_grey_500_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_sync_disabled_grey_500_24dp%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_sync_disabled_grey_500_24dp%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_sync_green_300_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_sync_green_300_24dp%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_sync_green_300_24dp%403x.png" />
+  </ItemGroup>
 </Project>

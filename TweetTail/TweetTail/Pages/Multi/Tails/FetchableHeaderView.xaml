@@ -8,9 +8,9 @@
             <forms:CachedImage x:Name="Icon" x:FieldModifier="Public" WidthRequest="32" HeightRequest="32" Margin="5"></forms:CachedImage>
             <StackLayout HorizontalOptions="Fill">
                 <Label x:Name="HeaderLabel" x:FieldModifier="Public" Margin="5"></Label>
-                <StackLayout x:Name="ExtraIconsView" x:FieldModifier="Public" HorizontalOptions="StartAndExpand">
                 <StackLayout x:Name="ExtraIconsView" x:FieldModifier="Public" Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                     <forms:CachedImage x:Name="RefreshIcon" WidthRequest="16" HeightRequest="16"></forms:CachedImage>
+                    <forms:CachedImage x:Name="AutoRefreshIcon" WidthRequest="16" HeightRequest="16"></forms:CachedImage>
                 </StackLayout>
             </StackLayout>
         </StackLayout>
