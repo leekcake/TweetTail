@@ -68,23 +68,17 @@ namespace TweetTail.Pages.Multi.Tails
             }
         }
 
-        private Task autoRefreshWaiter;
-        private CancellationTokenSource autoRefreshToken = new CancellationTokenSource();
-        private async void AutoRefreshAsync()
+        private object autoRefreshWaiter = new object();
+        private async Task AutoRefreshAsync()
         {
-            if(autoRefreshWaiter != null)
-            {
-                return;
-            }
-            
             await Task.Delay(RefreshRate);
-            autoRefreshWaiter = null;
-            if (autoRefreshToken.Token.IsCancellationRequested)
+            lock(autoRefreshWaiter)
             {
-                autoRefreshToken = new CancellationTokenSource();
-                return;
+                if(!Monitor.Wait(autoRefreshWaiter, RefreshRate))
+                {
+                    DoRefresh();
+                }
             }
-            DoRefresh();
         }
 
         private void UpdateAutoRefreshIcon()
@@ -114,7 +108,7 @@ namespace TweetTail.Pages.Multi.Tails
                 {
                     AutoRefresh = !AutoRefresh;
                     if (AutoRefresh) AutoRefreshAsync();
-                    else autoRefreshToken.Cancel();
+                    else lock(autoRefreshWaiter) Monitor.PulseAll(autoRefreshWaiter);
                 })
             });
         }
