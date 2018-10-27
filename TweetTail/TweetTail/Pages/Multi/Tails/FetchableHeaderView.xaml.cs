@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -13,9 +14,17 @@ namespace TweetTail.Pages.Multi.Tails
     public partial class FetchableHeaderView : ContentView
     {
         public int RefreshRate = 7200; //큿
-        
-        public delegate void RefreshRequest();
-        public event RefreshRequest OnRefreshRequested;
+
+        private Action refreshAction;
+        public Action RefreshAction {
+            get {
+                return refreshAction;
+            }
+            set {
+                refreshAction = value;
+                DoRefresh();
+            }
+        }
 
         public bool IsAutomaticRefresh {
             get {
@@ -34,11 +43,7 @@ namespace TweetTail.Pages.Multi.Tails
 
                 if (!inRefresh && AutoRefresh)
                 {
-                    new Task(async () =>
-                    {
-                        await Task.Delay(RefreshRate);
-                        DoRefresh();
-                    }).Start();
+                    AutoRefreshAsync();
                 }
 
                 UpdateRefreshIcon();
@@ -62,6 +67,26 @@ namespace TweetTail.Pages.Multi.Tails
                 UpdateAutoRefreshIcon();
             }
         }
+
+        private Task autoRefreshWaiter;
+        private CancellationTokenSource autoRefreshToken = new CancellationTokenSource();
+        private async void AutoRefreshAsync()
+        {
+            if(autoRefreshWaiter != null)
+            {
+                return;
+            }
+            
+            await Task.Delay(RefreshRate);
+            autoRefreshWaiter = null;
+            if (autoRefreshToken.Token.IsCancellationRequested)
+            {
+                autoRefreshToken = new CancellationTokenSource();
+                return;
+            }
+            DoRefresh();
+        }
+
         private void UpdateAutoRefreshIcon()
         {
             AutoRefreshIcon.Source = AutoRefresh ? "ic_sync_green_300_24dp" : "ic_sync_disabled_grey_500_24dp";
@@ -73,8 +98,6 @@ namespace TweetTail.Pages.Multi.Tails
 
             UpdateRefreshIcon();
             UpdateAutoRefreshIcon();
-
-            if (AutoRefresh) DoRefresh();
 
             RefreshIcon.GestureRecognizers.Add(new TapGestureRecognizer()
             {
@@ -90,6 +113,8 @@ namespace TweetTail.Pages.Multi.Tails
                 Command = new Command(() =>
                 {
                     AutoRefresh = !AutoRefresh;
+                    if (AutoRefresh) AutoRefreshAsync();
+                    else autoRefreshToken.Cancel();
                 })
             });
         }
@@ -100,15 +125,9 @@ namespace TweetTail.Pages.Multi.Tails
             {
                 return;
             }
-            if(OnRefreshRequested != null)
-            {
-                InRefresh = true;
-                OnRefreshRequested.Invoke();
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("Warning: FetchabnleHeaderView without OnRefreshRequested");
-            }
+
+            InRefresh = true;
+            refreshAction?.Invoke();
         }
     }
 }

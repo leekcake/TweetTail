@@ -20,21 +20,21 @@ namespace TweetTail.Pages.Multi.Tails
 
             HeaderView.Icon.Source = "ic_timeline_green_300_48dp";
             HeaderView.HeaderLabel.Text = "타임라인 @" + group.AccountForRead.User.ScreenName;
-            HeaderView.OnRefreshRequested += HeaderView_OnRefreshRequested;
+
             TimelineListView.Fetchable = new AccountFetch.Timeline(App.Tail, group.AccountForRead);
-        }
-        
-        private async void HeaderView_OnRefreshRequested()
-        {
-            try
+
+            HeaderView.RefreshAction += new Action(async () =>
             {
-                await TimelineListView.Refresh();
-            }
-            catch(Exception e)
-            {
-                Util.HandleException(e);
-            }
-            HeaderView.InRefresh = false;
+                try
+                {
+                    await TimelineListView.Refresh();
+                }
+                catch (Exception e)
+                {
+                    Util.HandleException(e);
+                }
+                HeaderView.InRefresh = false;
+            });
         }
     }
 }
