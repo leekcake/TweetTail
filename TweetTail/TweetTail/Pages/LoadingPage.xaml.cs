@@ -23,6 +23,7 @@ namespace TweetTail.Pages
         public async Task StartVerify()
         {
             await App.Tail.Account.VerifyAccounts();
+            await Task.Delay(100); //for WPF
 
             try
             {
