@@ -36,7 +36,6 @@ namespace TweetTail.Pages.Multi.Tails
                 {
                     new Task(async () =>
                     {
-                        System.Diagnostics.Debug.WriteLine("Refresh requested");
                         await Task.Delay(RefreshRate);
                         DoRefresh();
                     }).Start();
