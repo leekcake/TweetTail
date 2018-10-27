@@ -98,6 +98,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\CookiesWebView\CookieWebViewRenderer.cs" />
     <Compile Include="Controls\CrossMedia\MediaImplementation.cs" />
+    <Compile Include="Controls\ListViewExpanded\ListViewExRenderer.cs" />
     <Compile Include="Hotfix\CellControlFix.cs" />
     <Compile Include="Hotfix\Renderers\ListViewRendererFix.cs" />
     <Compile Include="Hotfix\Renderers\NavigationPageRendererFix.cs" />

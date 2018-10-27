@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using TweetTail.Controls.ListViewExpanded;
 using TwitterInterface.Data;
 using Xamarin.Forms;
 
 namespace TweetTail.Utils
 {
-    public abstract class TwitterListView<Data, Cell> : ListView where Cell : ViewCell
+    public abstract class TwitterListView<Data, Cell> : ListViewEx where Cell : ViewCell
     {
         private Fetchable<Data> fetchable;
         public Fetchable<Data> Fetchable {
@@ -167,8 +168,11 @@ namespace TweetTail.Utils
 
                     //갑자기 아래로 내려가 있으면 이상하기 때문에 유저 경험을 위해 추가되기 전에 맨 위에 있었을 아이템을 맨 위로 팍 올린뒤
                     //스크롤을 자연스럽게 내려줌
-                    ScrollTo(topItem, ScrollToPosition.Start, false);
-                    ScrollTo(topItem, ScrollToPosition.End, true);
+                    if (IsNotScrolled)
+                    {
+                        ScrollTo(topItem, ScrollToPosition.Start, false);
+                        ScrollTo(topItem, ScrollToPosition.End, true);
+                    }
                 }
                 
                 EndRefresh();
