@@ -84,6 +84,14 @@ namespace TweetTail.Pages.Multi.Tails
                         DoRefresh();
                 })
             });
+
+            AutoRefreshIcon.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    AutoRefresh = !AutoRefresh;
+                })
+            });
         }
 
         private void DoRefresh()
