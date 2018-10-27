@@ -379,8 +379,11 @@ where T : DependencyObject
         protected virtual void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;
-            if (e.VerticalOffset != 0)
+
+            //try to Filter height changes by late loaded item (virtualization)
+            if (e.ExtentHeightChange != 0 && e.VerticalOffset != 0 && e.VerticalChange == 0)
             {
+                System.Diagnostics.Debug.WriteLine(e.VerticalChange + " / " + e.ExtentHeightChange);
                 scrollViewer.ScrollToVerticalOffset(e.VerticalOffset + e.ExtentHeightChange);
             }
         }
