@@ -126,12 +126,22 @@ namespace TweetTail.Utils
         {
             if(currentRefresh == null)
             {
-                await RefreshMethod();
+                currentRefresh = RefreshMethod();
+                
             }
             else
             {
-                await currentRefresh;
+                if(currentRefresh.Status != TaskStatus.Running &&
+                    currentRefresh.Status != TaskStatus.Created &&
+                    currentRefresh.Status != TaskStatus.WaitingForActivation &&
+                    currentRefresh.Status != TaskStatus.WaitingToRun)
+                {
+                    currentRefresh = null;
+                    await Refresh();
+                    return;
+                }
             }
+            await currentRefresh;
         }
 
         public async Task RefreshMethod() //Method to Get latest data
