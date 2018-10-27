@@ -100,14 +100,14 @@ namespace TweetTail.Pages.Multi.Tails
             {
                 return;
             }
-            InRefresh = true;
             if(OnRefreshRequested != null)
             {
+                InRefresh = true;
                 OnRefreshRequested.Invoke();
             }
             else
             {
-                InRefresh = false;
+                System.Diagnostics.Debug.WriteLine("Warning: FetchabnleHeaderView without OnRefreshRequested");
             }
         }
     }
