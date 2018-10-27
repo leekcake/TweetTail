@@ -29,6 +29,21 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
 {
     public class ListViewRendererFix : ViewRenderer<ListView, WList>
     {
+        public static T GetChildOfType<T>(DependencyObject depObj)
+where T : DependencyObject
+        {
+            if (depObj == null) return null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+
+                var result = (child as T) ?? GetChildOfType<T>(child);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
         protected class ListViewDataTemplateSelector : DataTemplateSelector
         {
             public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -327,6 +342,7 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                         Style = (System.Windows.Style)System.Windows.Application.Current.Resources["ListViewTemplate"]
                     };
                     SetNativeControl(listView);
+                    Control.ItemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
                     Control.MouseUp += OnNativeMouseUp;
                     Control.KeyUp += OnNativeKeyUp;
                     Control.TouchUp += OnNativeTouchUp;
@@ -337,9 +353,36 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
 
                 UpdateItemSource();
             }
-
+            
             Control.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
             base.OnElementChanged(e);
+        }
+
+        private void ItemContainerGenerator_ItemsChanged(object sender, System.Windows.Controls.Primitives.ItemsChangedEventArgs e)
+        {
+            CheckScroll();
+        }
+
+        private ScrollViewer scrollViewer;
+
+        private void CheckScroll()
+        {
+            if (scrollViewer != null) return;
+
+            scrollViewer = GetChildOfType<ScrollViewer>(Control);
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+            }
+        }
+
+        protected virtual void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var scrollViewer = sender as ScrollViewer;
+            if (e.VerticalOffset != 0)
+            {
+                scrollViewer.ScrollToVerticalOffset(e.VerticalOffset + e.ExtentHeightChange);
+            }
         }
 
         private void Element_ScrollToRequested(object sender, ScrollToRequestedEventArgs e)
@@ -419,6 +462,16 @@ namespace TweetTail.WPF.Hotfix.Renderers.ListViewFix
                     Control.KeyUp -= OnNativeKeyUp;
                     Control.TouchUp -= OnNativeTouchUp;
                     Control.StylusUp -= OnNativeStylusUp;
+                }
+
+                try
+                {
+                    scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+                    scrollViewer = null;
+                }
+                catch
+                {
+
                 }
             }
             _isDisposed = true;

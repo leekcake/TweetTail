@@ -19,74 +19,13 @@ namespace TweetTail.WPF.Controls.ListViewExpanded
 {
     public class ListViewExRenderer : ListViewRendererFix
     {
-        public static ScrollViewer FindScrollViewer(DependencyObject obj)
+        protected override void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            Decorator border = VisualTreeHelper.GetChild(obj, 0) as Decorator;
-            return border?.Child as ScrollViewer;
-        }
-
-        public static T GetChildOfType<T>(DependencyObject depObj)
-    where T : DependencyObject
-        {
-            if (depObj == null) return null;
-
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-            {
-                var child = VisualTreeHelper.GetChild(depObj, i);
-
-                var result = (child as T) ?? GetChildOfType<T>(child);
-                if (result != null) return result;
-            }
-            return null;
-        }
-
-        private ScrollViewer scrollViewer;
-
-        protected override void OnElementChanged(ElementChangedEventArgs<ListView> e)
-        {
-            base.OnElementChanged(e);
-            if(Control != null)
-            {
-                Control.ItemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
-            }
-        }
-
-        private void ItemContainerGenerator_ItemsChanged(object sender, System.Windows.Controls.Primitives.ItemsChangedEventArgs e)
-        {
-            CheckScroll();
-        }
-
-        private void CheckScroll()
-        {
-            if (scrollViewer != null) return;
-
-            scrollViewer = GetChildOfType<ScrollViewer>(Control);
-            if(scrollViewer != null)
-            {
-                scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
-            }
-        }
-
-        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
+            base.ScrollViewer_ScrollChanged(sender, e);
             if (Element is ListViewEx listview)
             {
                 listview.IsNotScrolled = e.VerticalOffset == 0;
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
-                scrollViewer = null;
-            }
-            catch
-            {
-
-            }
-            base.Dispose(disposing);
         }
     }
 }
