@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using TweetTail.Controls.ListViewExpanded;
 using TweetTail.WPF.Controls.ListViewExpanded;
-using TweetTail.WPF.Hotfix.Renderers.ListViewFix;
+using TweetTail.WPF.Hotfix.Renderers.Listview;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 using ListView = Xamarin.Forms.ListView;

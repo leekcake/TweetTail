@@ -100,7 +100,8 @@
     <Compile Include="Controls\CrossMedia\MediaImplementation.cs" />
     <Compile Include="Controls\ListViewExpanded\ListViewExRenderer.cs" />
     <Compile Include="Hotfix\CellControlFix.cs" />
-    <Compile Include="Hotfix\Renderers\ListViewRendererFix.cs" />
+    <Compile Include="Hotfix\Renderers\Listview\ListViewRendererFix.cs" />
+    <Compile Include="Hotfix\Renderers\Listview\TemplatedItemsListProxy.cs" />
     <Compile Include="Hotfix\Renderers\NavigationPageRendererFix.cs" />
     <Compile Include="Hotfix\Renderers\TabbedPageRendererFix.cs" />
     <Compile Include="Hotfix\StackingContentLoader.cs" />
