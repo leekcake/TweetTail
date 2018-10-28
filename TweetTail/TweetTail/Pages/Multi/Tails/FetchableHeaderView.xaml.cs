@@ -43,7 +43,7 @@ namespace TweetTail.Pages.Multi.Tails
 
                 if (!inRefresh && AutoRefresh)
                 {
-                    AutoRefreshAsync();
+                    StartAutoRefreshWaiter();
                 }
 
                 UpdateRefreshIcon();
@@ -69,16 +69,18 @@ namespace TweetTail.Pages.Multi.Tails
         }
 
         private object autoRefreshWaiter = new object();
-        private async Task AutoRefreshAsync()
+        private void StartAutoRefreshWaiter()
         {
-            await Task.Delay(RefreshRate);
-            lock(autoRefreshWaiter)
+            new Task(() =>
             {
-                if(!Monitor.Wait(autoRefreshWaiter, RefreshRate))
+                lock (autoRefreshWaiter)
                 {
-                    DoRefresh();
+                    if (!Monitor.Wait(autoRefreshWaiter, RefreshRate))
+                    {
+                        DoRefresh();
+                    }
                 }
-            }
+            }).Start();
         }
 
         private void UpdateAutoRefreshIcon()
@@ -107,7 +109,7 @@ namespace TweetTail.Pages.Multi.Tails
                 Command = new Command(() =>
                 {
                     AutoRefresh = !AutoRefresh;
-                    if (AutoRefresh) AutoRefreshAsync();
+                    if (AutoRefresh) StartAutoRefreshWaiter();
                     else lock(autoRefreshWaiter) Monitor.PulseAll(autoRefreshWaiter);
                 })
             });
