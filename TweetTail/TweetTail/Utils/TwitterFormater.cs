@@ -178,9 +178,9 @@ namespace TweetTail.Utils
                 builder.RegisterHyperlink(mention.Indices, new Command(async () =>
                 {
                     var account = issuer == null ?
-                        App.Tail.Account.SelectedAccountGroup.AccountForRead :
-                        (await Util.SelectAccount("유저페이지를 열때 사용할 계정", issuer)).AccountForRead;
-                    var user = await App.Tail.TwitterAPI.GetUserAsync(account, mention.ID);
+                        App.Tail.Account.SelectedAccountGroup :
+                        (await Util.SelectAccount("유저페이지를 열때 사용할 계정", issuer));
+                    var user = await App.Tail.TwitterAPI.GetUserAsync(account.AccountForRead, mention.ID);
                     if (user != null)
                     {
 #pragma warning disable CS4014 // 이 호출을 대기하지 않으므로 호출이 완료되기 전에 현재 메서드가 계속 실행됩니다.

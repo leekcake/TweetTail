@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Account;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TweetTail.Utils;
@@ -7,7 +8,7 @@ using DataAccount = TwitterInterface.Data.Account;
 
 namespace TweetTail.Components.Account
 {
-    public class AccountListView : TwitterListView<DataAccount, AccountCell>
+    public class AccountListView : TwitterListView<AccountGroup, AccountCell>
     {
 
     }

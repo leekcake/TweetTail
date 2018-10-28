@@ -35,7 +35,7 @@ namespace TweetTail.Pages.Notification
             }
             else
             {
-                NotificationListView.Fetchable = new AccountFetch.Notifications(App.Tail, App.Tail.Account.SelectedAccountGroup.AccountForRead);
+                NotificationListView.Fetchable = new AccountFetch.Notifications(App.Tail, App.Tail.Account.SelectedAccountGroup);
             }
         }
 

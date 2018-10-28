@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Account;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,10 +9,10 @@ namespace TweetTail.Components.Account.Checkable
 {
     public class CheckableAccount
     {
-        public DataAccount Account;
+        public AccountGroup Account;
         public bool IsChecked = false;
 
-        public CheckableAccount(DataAccount account)
+        public CheckableAccount(AccountGroup account)
         {
             this.Account = account;
         }

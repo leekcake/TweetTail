@@ -33,7 +33,7 @@ namespace TweetTail.Pages.Blend
 
             foreach(var accountGroup in App.Tail.Account.ReadOnlyAccountGroups)
             {
-                CheckableAccountListView.Items.Add(new CheckableAccount(accountGroup.AccountForRead));
+                CheckableAccountListView.Items.Add(new CheckableAccount(accountGroup));
             }
 		}
 

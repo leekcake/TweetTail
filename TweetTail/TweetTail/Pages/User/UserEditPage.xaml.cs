@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,10 @@ namespace TweetTail.Pages.User
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class UserEditPage : ContentPage
 	{
-        private DataAccount issuer;
+        private AccountGroup issuer;
         private UserDetailPage parent;
 
-		public UserEditPage (DataAccount issuer, UserDetailPage parent)
+		public UserEditPage (AccountGroup issuer, UserDetailPage parent)
 		{
 			InitializeComponent ();
             this.issuer = issuer;
@@ -59,9 +60,9 @@ namespace TweetTail.Pages.User
                         return;
                     }
 
-                    await App.Tail.TwitterAPI.UpdateProfileBannerAsync(issuer, media.GetStream());
+                    await App.Tail.TwitterAPI.UpdateProfileBannerAsync(issuer.AccountForWrite, media.GetStream());
 
-                    var user = await App.Tail.TwitterAPI.GetUserAsync(issuer, issuer.ID);
+                    var user = await App.Tail.TwitterAPI.GetUserAsync(issuer.AccountForRead, issuer.ID);
                     BannerImage.Source = user.ProfileBannerURL;
                     parent.UpdateBinding(user);
                 })
@@ -86,7 +87,7 @@ namespace TweetTail.Pages.User
                         return;
                     }
 
-                    var user = await App.Tail.TwitterAPI.UpdateProfileImageAsync(issuer, media.GetStream());
+                    var user = await App.Tail.TwitterAPI.UpdateProfileImageAsync(issuer.AccountForWrite, media.GetStream());
                     
                     ProfileImage.Source = user.ProfileHttpsImageURL;
                     parent.UpdateBinding(user);
@@ -98,7 +99,7 @@ namespace TweetTail.Pages.User
         {
             try
             {
-                var user = await App.Tail.TwitterAPI.UpdateProfileAsync(issuer, NickNameEditor.Text, URLEditor.Text, LocationEditor.Text, DescriptionEditor.Text, null);
+                var user = await App.Tail.TwitterAPI.UpdateProfileAsync(issuer.AccountForWrite, NickNameEditor.Text, URLEditor.Text, LocationEditor.Text, DescriptionEditor.Text, null);
                 parent.UpdateBinding(user);
                 await App.Navigation.PopAsync();
             }

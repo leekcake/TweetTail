@@ -14,6 +14,7 @@ using TweetTail.Utils;
 using TweetTail.Components.Status;
 using TweetTail.Components.User;
 using TweetTail.Pages.Mute;
+using Library.Container.Account;
 
 namespace TweetTail.Pages.User
 {
@@ -21,7 +22,7 @@ namespace TweetTail.Pages.User
 	public partial class UserDetailPage : ContentPage
 	{
         private DataUser binding;
-        private DataAccount issuer;
+        private AccountGroup issuer;
         private Relationship relationship;
 
         private bool SetVisibleByText(Label label, string text)
@@ -79,7 +80,7 @@ namespace TweetTail.Pages.User
 
                 RelationshipGrid.IsVisible = true;
 
-                relationship = await App.Tail.TwitterAPI.GetRelationshipAsync(issuer, issuer.ID, binding.ID);
+                relationship = await App.Tail.TwitterAPI.GetRelationshipAsync(issuer.AccountForRead, issuer.ID, binding.ID);
                 UpdateUser();
 
                 if (relationship.IsBlocked)
@@ -163,7 +164,7 @@ namespace TweetTail.Pages.User
             UpdateRelationship();
         }
 
-        public UserDetailPage (DataUser binding, DataAccount issuer)
+        public UserDetailPage (DataUser binding, AccountGroup issuer)
 		{
 			InitializeComponent ();
             this.issuer = issuer;
@@ -180,7 +181,7 @@ namespace TweetTail.Pages.User
                     try
                     {
                         var account = await Util.SelectAccount("전환할 계정을 선택하세요");
-                        this.issuer = account.AccountForRead;
+                        this.issuer = account;
 
                         IssuerView.BindingContext = this.issuer.User;
                         IssuerView.Update();
@@ -255,11 +256,11 @@ namespace TweetTail.Pages.User
             {
                 if(relationship.IsFollowing)
                 {
-                    await App.Tail.TwitterAPI.DestroyFriendshipAsync(issuer, binding.ID);
+                    await App.Tail.TwitterAPI.DestroyFriendshipAsync(issuer.AccountForWrite, binding.ID);
                 }
                 else
                 {
-                    await App.Tail.TwitterAPI.CreateFriendshipAsync(issuer, binding.ID);
+                    await App.Tail.TwitterAPI.CreateFriendshipAsync(issuer.AccountForWrite, binding.ID);
                 }
                 UpdateRelationship();
             }
@@ -277,11 +278,11 @@ namespace TweetTail.Pages.User
             {
                 if (relationship.IsBlocked)
                 {
-                    await App.Tail.TwitterAPI.UnblockAsync(issuer, binding.ID);
+                    await App.Tail.TwitterAPI.UnblockAsync(issuer.AccountForWrite, binding.ID);
                 }
                 else
                 {
-                    await App.Tail.TwitterAPI.BlockAsync(issuer, binding.ID);
+                    await App.Tail.TwitterAPI.BlockAsync(issuer.AccountForWrite, binding.ID);
                 }
                 UpdateRelationship();
             }
@@ -299,11 +300,11 @@ namespace TweetTail.Pages.User
             {
                 if (relationship.IsMuted)
                 {
-                    await App.Tail.TwitterAPI.UnmuteAsync(issuer, binding.ID);
+                    await App.Tail.TwitterAPI.UnmuteAsync(issuer.AccountForWrite, binding.ID);
                 }
                 else
                 {
-                    await App.Tail.TwitterAPI.MuteAsync(issuer, binding.ID);
+                    await App.Tail.TwitterAPI.MuteAsync(issuer.AccountForWrite, binding.ID);
                 }
                 UpdateRelationship();
             }

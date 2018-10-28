@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Container.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,13 +22,13 @@ namespace TweetTail.Components.Account
 
         protected override void OnBindingContextChanged()
         {
-            if (BindingContext is DataAccount) { }
+            if (BindingContext is AccountGroup) { }
             else
             {
                 return;
             }
 
-            UserView.BindingContext = (BindingContext as DataAccount).User;
+            UserView.BindingContext = (BindingContext as AccountGroup).User;
             UserView.Update();
 
             base.OnBindingContextChanged();

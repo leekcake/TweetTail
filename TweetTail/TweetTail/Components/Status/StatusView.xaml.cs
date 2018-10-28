@@ -79,7 +79,7 @@ namespace TweetTail.Components.Status
                     {
                         return;
                     }
-                    await App.Navigation.PushAsync(new UserDetailPage(Status.Creater, selected.AccountForRead));
+                    await App.Navigation.PushAsync(new UserDetailPage(Status.Creater, selected));
                 })
             });
 
@@ -97,10 +97,10 @@ namespace TweetTail.Components.Status
                     if(BindingContext is DataUser)
                     {
                         var user = BindingContext as DataUser;
-                        App.Navigation.PushAsync(new UserDetailPage(user, App.Tail.Account.GetAccountGroup(user.Issuer[0]).AccountForRead));
+                        App.Navigation.PushAsync(new UserDetailPage(user, App.Tail.Account.GetAccountGroup(user.Issuer[0])));
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(DisplayStatus.Creater, App.Tail.Account.GetAccountGroup(Status.Issuer[0]).AccountForRead));
+                    App.Navigation.PushAsync(new UserDetailPage(DisplayStatus.Creater, App.Tail.Account.GetAccountGroup(Status.Issuer[0])));
                 }),
                 NumberOfTapsRequired = 1
             });

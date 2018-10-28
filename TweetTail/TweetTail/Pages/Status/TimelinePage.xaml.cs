@@ -36,7 +36,7 @@ namespace TweetTail.Pages.Status
             }
             else
             {
-                StatusListView.Fetchable = new AccountFetch.Timeline(App.Tail, App.Tail.Account.SelectedAccountGroup.AccountForRead);
+                StatusListView.Fetchable = new AccountFetch.Timeline(App.Tail, App.Tail.Account.SelectedAccountGroup);
             }
         }
 

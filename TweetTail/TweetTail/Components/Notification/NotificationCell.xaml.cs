@@ -62,7 +62,7 @@ namespace TweetTail.Components.Notification
                     {
                         return;
                     }
-                    App.Navigation.PushAsync(new UserDetailPage(performer, App.Tail.Account.GetAccountGroup(performer.Issuer[0]).AccountForRead));
+                    App.Navigation.PushAsync(new UserDetailPage(performer, App.Tail.Account.GetAccountGroup(performer.Issuer[0])));
                 })
             });
 		}

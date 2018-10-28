@@ -48,6 +48,19 @@ namespace Library.Container.Account
             }
         }
 
+        public User User {
+            get {
+                foreach(var account in accounts)
+                {
+                    if(account.User != null)
+                    {
+                        return account.User;
+                    }
+                }
+                return null;
+            }
+        }
+
         public JObject Save()
         {
             var result = new JObject

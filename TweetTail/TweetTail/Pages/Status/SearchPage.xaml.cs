@@ -24,7 +24,7 @@ namespace TweetTail.Pages.Status
 
         private void SearchButton_Clicked(object sender, EventArgs e)
         {
-            StatusListView.Fetchable = new AccountFetch.Search(App.Tail, issuer.AccountForRead, editKeyword.Text, true);
+            StatusListView.Fetchable = new AccountFetch.Search(App.Tail, issuer, editKeyword.Text, true);
         }
     }
 }

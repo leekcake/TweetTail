@@ -78,7 +78,7 @@ namespace Library.Container.Fetch
 
             protected override Fetchable<Status> GetFetchable(long id)
             {
-                return new AccountFetch.Timeline(tail, tail.Account.GetAccountGroup(id).AccountForRead);
+                return new AccountFetch.Timeline(tail, tail.Account.GetAccountGroup(id));
             }
 
             protected override long GetID(Status data)
@@ -100,7 +100,7 @@ namespace Library.Container.Fetch
 
             protected override Fetchable<Status> GetFetchable(long id)
             {
-                return new AccountFetch.Mentionline(tail, tail.Account.GetAccountGroup(id).AccountForRead);
+                return new AccountFetch.Mentionline(tail, tail.Account.GetAccountGroup(id));
             }
 
             protected override long GetID(Status data)
@@ -122,7 +122,7 @@ namespace Library.Container.Fetch
 
             protected override Fetchable<Notification> GetFetchable(long id)
             {
-                return new AccountFetch.Notifications(tail, tail.Account.GetAccountGroup(id).AccountForRead);
+                return new AccountFetch.Notifications(tail, tail.Account.GetAccountGroup(id));
             }
 
             protected override long GetID(Notification data)
