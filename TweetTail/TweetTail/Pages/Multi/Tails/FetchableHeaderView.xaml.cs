@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FFImageLoading.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -86,6 +87,17 @@ namespace TweetTail.Pages.Multi.Tails
         private void UpdateAutoRefreshIcon()
         {
             AutoRefreshIcon.Source = AutoRefresh ? "ic_sync_green_300_24dp" : "ic_sync_disabled_grey_500_24dp";
+        }
+
+        public CachedImage AddIcon(string image)
+        {
+            var result = new CachedImage();
+            result.WidthRequest = 16;
+            result.HeightRequest = 16;
+            ExtraIconsView.Children.Add(result);
+            result.Source = image;
+
+            return result;
         }
 
         public FetchableHeaderView()
