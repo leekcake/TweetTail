@@ -4,8 +4,8 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="TweetTail.Pages.Multi.TailSideMenuView">
     <ContentView.Content>
-        <StackLayout Margin="5" Orientation="Horizontal">
+        <Frame Margin="5" Padding="0" BackgroundColor="Gray">
             <forms:CachedImage WidthRequest="32" HeightRequest="32" x:Name="IconImage"></forms:CachedImage>
-        </StackLayout>
+        </Frame>
     </ContentView.Content>
 </ContentView>
