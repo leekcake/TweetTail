@@ -10,8 +10,16 @@ namespace TweetTail.Pages.Multi.Tails
     /// <summary>
     /// Base Class for Attachable Tail for Multi Tail Page
     /// </summary>
-	public class Tail : ContentView
+	public abstract class Tail : ContentView
 	{
+        public abstract string Icon {
+            get;
+        }
+
+        public abstract string Description {
+            get;
+        }
+
 		public Tail ()
 		{
             WidthRequest = 340;

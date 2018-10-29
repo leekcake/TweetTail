@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TweetTail.Pages.Multi.MutliTailPage">
     <ContentPage.Content>
-        <ScrollView Orientation="Horizontal">
-            <StackLayout x:Name="TailContainer" Orientation="Horizontal">
-                
-            </StackLayout>
-        </ScrollView>
+        <StackLayout Orientation="Horizontal">
+            <StackLayout x:Name="SideMenu" WidthRequest="40" HorizontalOptions="Fill"></StackLayout>
+            <ScrollView Orientation="Horizontal">
+                <StackLayout x:Name="TailContainer" Orientation="Horizontal">
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

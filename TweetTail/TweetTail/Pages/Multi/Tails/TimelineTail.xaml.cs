@@ -19,9 +19,12 @@ namespace TweetTail.Pages.Multi.Tails
         private CachedImage WriteIcon;
         private StatusWriterView WriterView;
 
+        private AccountGroup group;
+
 		public TimelineTail (AccountGroup group)
 		{
 			InitializeComponent ();
+            this.group = group;
 
             HeaderView.Icon.Source = "ic_timeline_green_300_48dp";
             HeaderView.HeaderLabel.Text = "타임라인 @" + group.AccountForRead.User.ScreenName;
@@ -54,5 +57,9 @@ namespace TweetTail.Pages.Multi.Tails
                 HeaderView.InRefresh = false;
             });
         }
+
+        public override string Icon => "ic_timeline_green_300_48dp";
+
+        public override string Description => "타임라인 @" + group.User.NickName;
     }
 }
